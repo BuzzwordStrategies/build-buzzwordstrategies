@@ -1,4 +1,5 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
 exports.handler = async function(event) {
   try {
     const { selectedTiers, subLength, bundleName, finalMonthly } = JSON.parse(event.body || '{}');
@@ -10,9 +11,15 @@ exports.handler = async function(event) {
       };
     }
 
+    // Format the selected products into readable descriptions
+    const productList = Object.entries(selectedTiers)
+      .map(([product, tier]) => `${product} - ${tier}`)
+      .join(', ');
+
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
       payment_method_types: ['card'],
+      allow_promotion_codes: true, // ✅ Enables promo code field at checkout
       line_items: [{
         price_data: {
           currency: 'usd',
@@ -20,7 +27,7 @@ exports.handler = async function(event) {
           recurring: { interval: 'month' },
           product_data: {
             name: bundleName || 'Custom Buzzword Bundle',
-            description: `${subLength}-month subscription`,
+            description: `${subLength}-month subscription | ${productList}`,
             metadata: {
               selectedTiers: JSON.stringify(selectedTiers),
               subLength
