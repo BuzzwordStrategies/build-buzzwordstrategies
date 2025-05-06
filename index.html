@@ -311,60 +311,82 @@
 
   
     body {
-        background: linear-gradient(to top, #f2f2f2, #ffffff) !important;
+        background: linear-gradient(to bottom, #ffffff 0%, #f2f2f2 100%) !important;
     }
-    .header-blur {
+    .banner-blur-wrap {
         position: relative;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        background: rgba(255, 255, 255, 0.6);
-        width: 100%;
-        padding: 1rem 0;
-        text-align: center;
-        z-index: 1000;
-    }
-    .header-blur img {
-        height: 100px;
-    }
-    .cart-summary {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        background: white;
-        border-bottom: 2px solid #ccc;
-        z-index: 999;
-        padding: 0.5rem 2rem;
-        font-weight: bold;
+        height: 500px;
+        background: url('https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/018540f1-5817-4b48-95f7-4ffeeb59a4b1/cookwhocantcook_a_backgrounf_of_a_lot_of_hexagons_that_are_as_7361cfca-04a8-4e54-b827-9de5d0fa5e01_2.png?format=1000w') center/cover no-repeat;
         display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .banner-blur-inner {
+        width: 100%;
+        height: 220px;
+        backdrop-filter: blur(12px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .banner-blur-inner img {
+        height: 200px;
+        z-index: 2;
+    }
+    .top-cart-bar {
+        position: sticky;
+        top: 0;
+        z-index: 10000;
+        background: #fff;
+        padding: 1rem 2rem;
+        display: flex;
+        flex-wrap: wrap;
         justify-content: space-between;
         align-items: center;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        border-bottom: 1px solid #ccc;
     }
-    .cart-summary .items {
+    .top-cart-bar .product-tags {
         display: flex;
         gap: 0.5rem;
         flex-wrap: wrap;
     }
-    .cart-summary .item-bubble {
+    .top-cart-bar .tag {
         background: #FFBA38;
         color: white;
+        padding: 0.4rem 1rem;
         border-radius: 999px;
-        padding: 0.25rem 1rem;
+        font-weight: 500;
         font-size: 0.9rem;
     }
-    .chatbot-bar {
-        margin-top: 2rem;
-        display: flex;
-        justify-content: center;
+    .top-cart-bar .price {
+        font-weight: bold;
+        font-size: 1.2rem;
+        color: #333;
     }
-    zapier-interfaces-chatbot-embed {
-        border-radius: 10px;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    .chat-wrapper {
+        margin: 3rem auto;
+        max-width: 600px;
+        padding: 2rem;
+        background: #fff;
+        border-radius: 1rem;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     }
     </style>
 </head>
-<body><div class="header-blur"><img alt="Buzzword Logo" src="https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/ab4663d3-4840-47f0-88cf-a5b1144ed31a/Remove+background+project+%281%29.png?format=1000w"/></div><div class="cart-summary">No bundle selected yet.</div>
+<body>
+
+<div class="banner-blur-wrap">
+<div class="banner-blur-inner">
+<img alt="Buzzword Logo" src="https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/ab4663d3-4840-47f0-88cf-a5b1144ed31a/Remove+background+project+%281%29.png?format=1000w"/>
+</div>
+</div>
+<div class="top-cart-bar">
+<div class="product-tags" id="cartTags">
+<span style="color: #999;">🛒 No bundle selected yet.</span>
+</div>
+<div class="price" id="cartPrice">$0.00 / month</div>
+</div>
+
 <div class="builder-wrapper">
 <!-- Service selection tags -->
 <div class="service-tags" id="serviceTags"></div>
@@ -1081,4 +1103,47 @@ html += `
   };
   updateSidebar();
 </script>
-<div class="chatbot-bar"><script async="" src="https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js" type="module"></script><zapier-interfaces-chatbot-embed chatbot-id="cma6zv294001y12wdgvajk0lj" height="600px" is-popup="false" width="400px"></zapier-interfaces-chatbot-embed></div></body></html>
+
+<div class="chat-wrapper">
+<zapier-interfaces-chatbot-embed chatbot-id="cma6zv294001y12wdgvajk0lj" height="600px" is-popup="false" width="100%"></zapier-interfaces-chatbot-embed>
+</div>
+<script async="" src="https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js" type="module"></script>
+
+<script>
+function updateTopCart() {
+  const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
+  const tagContainer = document.getElementById("cartTags");
+  const priceDisplay = document.getElementById("cartPrice");
+  tagContainer.innerHTML = "";
+  if (selected.length === 0) {
+    tagContainer.innerHTML = "<span style='color: #999;'>🛒 No bundle selected yet.</span>";
+    priceDisplay.textContent = "$0.00 / month";
+    return;
+  }
+
+  let total = 0;
+  selected.forEach(([product, tier]) => {
+    const tag = document.createElement("div");
+    tag.className = "tag";
+    tag.textContent = `${product}: ${tier}`;
+    tagContainer.appendChild(tag);
+    total += pricing[product][tier];
+  });
+
+  const bundleDiscount = getBundleDiscount(selected.length);
+  const months = parseInt(document.getElementById("subSlider").value);
+  const subDiscount = getSubscriptionDiscount(months);
+  const afterBundle = total * (1 - bundleDiscount / 100);
+  const final = afterBundle * (1 - subDiscount / 100);
+  priceDisplay.textContent = `$${final.toFixed(2)} / month`;
+}
+
+const originalRenderSummary = renderSummary;
+renderSummary = function () {
+  originalRenderSummary();
+  updateTopCart();
+};
+
+document.addEventListener("DOMContentLoaded", updateTopCart);
+</script>
+</body></html>
