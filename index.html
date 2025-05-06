@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Buzz Bundle Builder</title>
   <style>
+body {
+  background: url('https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/1746563083402-582QFDJAGR0BWG1VN7ZY/unsplash-image-3Cpws7ibtfo.jpg?format=1000w') center top / cover no-repeat fixed;
+  background-color: #000;
+  background-blend-mode: overlay;
+  color: #000;
+}
+.builder-wrapper {
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
     :root {
       --highlight: #FFBA38;
       --accent: #FFE400;
@@ -311,6 +323,23 @@
   </style>
 </head>
 <body>
+<!-- Top Branding Area -->
+<div style="
+  background: url('https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/018540f1-5817-4b48-95f7-4ffeeb59a4b1/cookwhocantcook_a_backgrounf_of_a_lot_of_hexagons_that_are_as_7361cfca-04a8-4e54-b827-9de5d0fa5e01_2.png?format=1000w') center/cover no-repeat;
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  border-bottom: 4px solid #FFBA38;
+  opacity: 0.9;
+">
+  <img src="https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/ab4663d3-4840-47f0-88cf-a5b1144ed31a/Remove+background+project+%281%29.png?format=1000w"
+       alt="Buzzword Strategies Logo"
+       style="height: 80px; object-fit: contain;" />
+</div>
+
   <div class="builder-wrapper">
 <!-- Service selection tags -->
 <div id="serviceTags" class="service-tags"></div>
@@ -1034,3 +1063,4 @@ html += `
   };
   updateSidebar();
 </script>
+
