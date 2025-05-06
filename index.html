@@ -336,8 +336,51 @@
   <div class="summary-label">Final Monthly Price</div>
   <div class="savings-bubble" id="savingsBubble">You're saving $0.00 per month</div>
   <input type="text" id="bundleName" placeholder="Name your bundle" />
-  <a href="https://www.buzzwordstrategies.com/buy-my-bundle" class="buy-button">Buy My Bundle</a>
+  <button class="buy-button">Buy My Bundle</button>
 </div>
+<script>
+  document.querySelector('.buy-button').addEventListener('click', async (e) => {
+    e.preventDefault();
+
+    const bundleName = document.getElementById('bundleName').value;
+    const subLength = parseInt(document.getElementById('subSlider').value);
+    const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
+
+    if (selected.length === 0) {
+      alert("Please select at least one product.");
+      return;
+    }
+
+    let total = selected.reduce((sum, [service, tier]) => sum + pricing[service][tier], 0);
+    const bundleDiscount = getBundleDiscount(selected.length);
+    const subDiscount = getSubscriptionDiscount(subLength);
+
+    const afterBundle = total * (1 - bundleDiscount / 100);
+    const finalMonthly = parseFloat((afterBundle * (1 - subDiscount / 100)).toFixed(2));
+
+    const response = await fetch('/.netlify/functions/create-checkout-session', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        selectedTiers,
+        subLength,
+        bundleName,
+        finalMonthly
+      })
+    });
+
+    const data = await response.json();
+
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      console.error("Checkout error:", data);
+      alert("There was a problem starting checkout.");
+    }
+  });
+</script>
 
 <script>
   const subSlider = document.getElementById('subSlider');
