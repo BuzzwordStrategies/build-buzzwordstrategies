@@ -1,59 +1,47 @@
-// File path: /netlify/functions/create-checkout-session.js
-
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-
-exports.handler = async (event, context) => {
+exports.handler = async function(event) {
   try {
-    const data = JSON.parse(event.body);
+    const { selectedTiers, subLength, bundleName, finalMonthly } = JSON.parse(event.body || '{}');
 
-    const { selectedTiers, subLength, bundleName, finalMonthly } = data;
-
-    if (!selectedTiers || !subLength || !finalMonthly) {
+    if (!finalMonthly || finalMonthly <= 0) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: "Missing required fields" }),
+        body: JSON.stringify({ error: 'Missing or invalid price.' })
       };
     }
 
-    const lineItems = Object.entries(selectedTiers).map(([product, tier]) => {
-      const price = finalMonthly; // Adjust if you want per-product price tracking
-      return {
+    const session = await stripe.checkout.sessions.create({
+      mode: 'subscription',
+      payment_method_types: ['card'],
+      line_items: [{
         price_data: {
           currency: 'usd',
+          unit_amount: Math.round(finalMonthly * 100),
+          recurring: { interval: 'month' },
           product_data: {
-            name: `${product} - ${tier}`,
-          },
-          unit_amount: Math.round(price * 100), // Stripe expects cents
-          recurring: {
-            interval: 'month',
-          },
+            name: bundleName || 'Custom Buzzword Bundle',
+            description: `${subLength}-month subscription`,
+            metadata: {
+              selectedTiers: JSON.stringify(selectedTiers),
+              subLength
+            }
+          }
         },
-        quantity: 1,
-      };
-    });
-
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      mode: 'subscription',
-      line_items: lineItems,
-      success_url: 'https://build.buzzwordstrategies.com/success.html',
-      cancel_url: 'https://build.buzzwordstrategies.com/cancel.html',
-      metadata: {
-        bundle_name: bundleName || 'Custom Bundle',
-        months: subLength,
-      },
+        quantity: 1
+      }],
+      success_url: 'https://www.buzzwordstrategies.com/my-bundle?success=true',
+      cancel_url: 'https://www.buzzwordstrategies.com/build-my-bundle?canceled=true'
     });
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ url: session.url }),
+      body: JSON.stringify({ url: session.url })
     };
   } catch (err) {
     console.error("Stripe error:", err);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Server error", details: err.message }),
+      body: JSON.stringify({ error: 'Checkout session creation failed.' })
     };
   }
 };
-
