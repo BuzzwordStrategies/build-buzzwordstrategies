@@ -225,6 +225,9 @@ body {
       border-radius: 8px;
     }
  #sidebar {
+  right: -8px;
+  max-width: 200px;
+
   position: fixed;
   top: 25%;
   right: 0;
@@ -337,7 +340,7 @@ body {
 ">
   <img src="https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/ab4663d3-4840-47f0-88cf-a5b1144ed31a/Remove+background+project+%281%29.png?format=1000w"
        alt="Buzzword Strategies Logo"
-       style="height: 80px; object-fit: contain;" />
+       style="height: 120px; object-fit: contain;" />
 </div>
 
   <div class="builder-wrapper">
@@ -361,7 +364,17 @@ body {
 
 <!-- Final summary section -->
 <div class="summary">
-  <div class="summary-price" id="finalPriceDisplay">$0.00</div>
+  <div class="summary-price" id="finalPriceDisplay">$0.00
+<div style="margin-top: 2rem; display: flex; justify-content: center;">
+  <zapier-interfaces-chatbot-embed
+    is-popup='false'
+    chatbot-id='cma6zv294001y12wdgvajk0lj'
+    height='600px'
+    width='400px'>
+  </zapier-interfaces-chatbot-embed>
+</div>
+<script async type='module' src='https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js'></script>
+</div>
   <div class="summary-label">Final Monthly Price</div>
   <div class="savings-bubble" id="savingsBubble">You're saving $0.00 per month</div>
   <input type="text" id="bundleName" placeholder="Name your bundle" />
@@ -1063,4 +1076,3 @@ html += `
   };
   updateSidebar();
 </script>
-
