@@ -1,0 +1,10 @@
+{
+  "name": "buzzword-bundle-builder",
+  "version": "1.0.0",
+  "description": "Stripe function for Buzzword checkout",
+  "main": "create-checkout-session.js",
+  "license": "MIT",
+  "dependencies": {
+    "stripe": "^12.0.0"
+  }
+}
