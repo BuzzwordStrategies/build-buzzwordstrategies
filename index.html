@@ -1,22 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Buzz Bundle Builder</title>
-  <style>
-body {
-  background: url('https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/1746563083402-582QFDJAGR0BWG1VN7ZY/unsplash-image-3Cpws7ibtfo.jpg?format=1000w') center top / cover no-repeat fixed;
-  background-color: #000;
-  background-blend-mode: overlay;
-  color: #000;
-}
-.builder-wrapper {
-  background-color: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(3px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-}
-
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Buzz Bundle Builder</title>
+<style>
     :root {
       --highlight: #FFBA38;
       --accent: #FFE400;
@@ -225,9 +214,6 @@ body {
       border-radius: 8px;
     }
  #sidebar {
-  right: -8px;
-  max-width: 200px;
-
   position: fixed;
   top: 25%;
   right: 0;
@@ -323,62 +309,84 @@ body {
 
 
 
-  </style>
+  
+    body {
+        background: linear-gradient(to top, #f2f2f2, #ffffff) !important;
+    }
+    .header-blur {
+        position: relative;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.6);
+        width: 100%;
+        padding: 1rem 0;
+        text-align: center;
+        z-index: 1000;
+    }
+    .header-blur img {
+        height: 100px;
+    }
+    .cart-summary {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: white;
+        border-bottom: 2px solid #ccc;
+        z-index: 999;
+        padding: 0.5rem 2rem;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .cart-summary .items {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    .cart-summary .item-bubble {
+        background: #FFBA38;
+        color: white;
+        border-radius: 999px;
+        padding: 0.25rem 1rem;
+        font-size: 0.9rem;
+    }
+    .chatbot-bar {
+        margin-top: 2rem;
+        display: flex;
+        justify-content: center;
+    }
+    zapier-interfaces-chatbot-embed {
+        border-radius: 10px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    </style>
 </head>
-<body>
-<!-- Top Branding Area -->
-<div style="
-  background: url('https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/018540f1-5817-4b48-95f7-4ffeeb59a4b1/cookwhocantcook_a_backgrounf_of_a_lot_of_hexagons_that_are_as_7361cfca-04a8-4e54-b827-9de5d0fa5e01_2.png?format=1000w') center/cover no-repeat;
-  height: 260px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  z-index: 1;
-  border-bottom: 4px solid #FFBA38;
-  opacity: 0.9;
-">
-  <img src="https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/ab4663d3-4840-47f0-88cf-a5b1144ed31a/Remove+background+project+%281%29.png?format=1000w"
-       alt="Buzzword Strategies Logo"
-       style="height: 120px; object-fit: contain;" />
-</div>
-
-  <div class="builder-wrapper">
+<body><div class="header-blur"><img alt="Buzzword Logo" src="https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/ab4663d3-4840-47f0-88cf-a5b1144ed31a/Remove+background+project+%281%29.png?format=1000w"/></div><div class="cart-summary">No bundle selected yet.</div>
+<div class="builder-wrapper">
 <!-- Service selection tags -->
-<div id="serviceTags" class="service-tags"></div>
+<div class="service-tags" id="serviceTags"></div>
 <div id="sidebar"></div>
-
 </div>
-
 <!-- Tier selection area -->
-<div id="tiersArea" class="tiers-area"></div>
-
+<div class="tiers-area" id="tiersArea"></div>
 <!-- Subscription length slider -->
 <div class="slider-wrap">
-  <label for="subSlider">
+<label for="subSlider">
     Subscription Length: <span id="subLength">3</span> months – 
     <span id="subDiscountLabel">0% off</span>
-  </label>
-  <input type="range" id="subSlider" min="3" max="24" step="3" value="3" />
+</label>
+<input id="subSlider" max="24" min="3" step="3" type="range" value="3"/>
 </div>
-
 <!-- Final summary section -->
 <div class="summary">
-  <div class="summary-price" id="finalPriceDisplay">$0.00
-<div style="margin-top: 2rem; display: flex; justify-content: center;">
-  <zapier-interfaces-chatbot-embed
-    is-popup='false'
-    chatbot-id='cma6zv294001y12wdgvajk0lj'
-    height='600px'
-    width='400px'>
-  </zapier-interfaces-chatbot-embed>
-</div>
-<script async type='module' src='https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js'></script>
-</div>
-  <div class="summary-label">Final Monthly Price</div>
-  <div class="savings-bubble" id="savingsBubble">You're saving $0.00 per month</div>
-  <input type="text" id="bundleName" placeholder="Name your bundle" />
-  <button class="buy-button">Buy My Bundle</button>
+<div class="summary-price" id="finalPriceDisplay">$0.00</div>
+<div class="summary-label">Final Monthly Price</div>
+<div class="savings-bubble" id="savingsBubble">You're saving $0.00 per month</div>
+<input id="bundleName" placeholder="Name your bundle" type="text"/>
+<button class="buy-button">Buy My Bundle</button>
 </div>
 <script>
   document.querySelector('.buy-button').addEventListener('click', async (e) => {
@@ -423,7 +431,6 @@ body {
     }
   });
 </script>
-
 <script>
   const subSlider = document.getElementById('subSlider');
   const subLengthDisplay = document.getElementById('subLength');
@@ -1027,8 +1034,6 @@ document.addEventListener("DOMContentLoaded", () => {
 }
   }
 </style>
-
-
 <script>
   function updateSidebar() {
     const container = document.getElementById("sidebar");
@@ -1076,3 +1081,4 @@ html += `
   };
   updateSidebar();
 </script>
+<div class="chatbot-bar"><script async="" src="https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js" type="module"></script><zapier-interfaces-chatbot-embed chatbot-id="cma6zv294001y12wdgvajk0lj" height="600px" is-popup="false" width="400px"></zapier-interfaces-chatbot-embed></div></body></html>
