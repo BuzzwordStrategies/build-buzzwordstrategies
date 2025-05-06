@@ -496,33 +496,6 @@
 <!-- Product tags injected here -->
 </div>
 
-<style>
-  zapier-interfaces-chatbot-embed {
-    max-height: 500px !important;
-    max-width: 360px !important;
-    width: 100% !important;
-    height: 100% !important;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  }
-  .chatbot-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    width: 100%;
-    padding: 1rem;
-  }
-  @media (max-width: 768px) {
-    .chatbot-wrapper {
-      flex-direction: column;
-      align-items: center;
-      padding: 0.5rem;
-    }
-  }
-</style>
-<div class="chatbot-wrapper">
-
 </div>
 <script async="" src="https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js" type="module"></script>
 <div class="builder-wrapper">
@@ -1260,31 +1233,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 <style>
-#chatbot-float {
-  position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  z-index: 9999;
-  width: 360px;
-  max-width: 95vw;
-  height: 500px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  border-radius: 18px;
-  overflow: hidden;
-}
-@media (max-width: 768px) {
-  #chatbot-float {
-    width: 90vw;
-    height: 450px;
-    right: 1rem;
-    bottom: 1rem;
-  }
-}
-</style>
-<div id="chatbot-float">
 
-</div>
-<script async="" src="https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js" type="module"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const origRenderSummary = window.renderSummary;
@@ -1300,7 +1249,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateTopCart();
 });
-</script>
 
 <script>
 function updateCartBanner() {
@@ -1373,10 +1321,3 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCartBanner();
 });
 </script>
-
-<div id="chatbot-float" style="position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999; width: 360px; max-width: 95vw; height: 500px; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.15);">
-<zapier-interfaces-chatbot-embed chatbot-id="cma6zv294001y12wdgvajk0lj" is-popup="false">
-</zapier-interfaces-chatbot-embed>
-</div>
-<script async="" src="https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js" type="module"></script>
-</body></html>
