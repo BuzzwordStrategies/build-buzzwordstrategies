@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Payment successful – Buzzword Strategies</title>
+  <style>
+    body{font-family:system-ui,Arial,sans-serif;text-align:center;padding:4rem;}
+    h1{color:#19a974;}
+  </style>
+</head>
+<body>
+  <h1>✅ Success!</h1>
+  <p>Thanks for purchasing <strong id="bundleName"></strong>.<br>
+     We’ve sent your receipt to the e‑mail address you used at checkout.</p>
+  <a href="/">Back to site</a>
+
+  <script>
+    // If we appended ?name=… in the redirect we can show it here
+    const params = new URLSearchParams(location.search);
+    document.getElementById('bundleName').textContent = params.get('name') || 'your bundle';
+  </script>
+</body>
+</html>

@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Buzz Bundle Builder</title>
+  <style>
+    :root {
+      --highlight: #FFBA38;
+      --accent: #FFE400;
+      --text: #000000;
+      --muted: #BBBBBB;
+      --white: #FFFFFF;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 2rem;
+      background: transparent;
+      color: var(--text);
+    }
+
+  .builder-wrapper {
+  max-width: 1200px;
+  margin: auto;
+  background: transparent;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: none;
+}
+
+
+
+    .service-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+
+  .tag {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--muted);
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 500;
+  background: #fefefe;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: all 0.25s ease-in-out;
+}
+
+.tag:hover {
+  box-shadow: 0 4px 10px rgba(255, 186, 56, 0.4);
+  transform: translateY(-2px);
+}
+
+  .tag.active {
+  background: #333333;
+  color: var(--white);
+  border-color: #333333;
+}
+
+.tag.selected {
+  background: var(--highlight);
+  color: var(--white);
+  border-color: var(--highlight);
+}
+
+.tag.selected {
+  background: var(--highlight);
+  color: var(--white);
+  border-color: var(--highlight);
+}
+    .tier-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .tier-card {
+      flex: 1 1 30%;
+      border: 1px solid var(--muted);
+      border-radius: 16px;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .tier-card:hover {
+      border-color: var(--accent);
+    }
+
+    .tier-card.selected {
+      border: 2px solid var(--highlight);
+      background-color: #fff9e6;
+    }
+
+    .tier-card img {
+      max-width: 60px;
+      margin-bottom: 0.5rem;
+    }
+
+    .tier-price {
+      font-weight: bold;
+      color: var(--highlight);
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .features span {
+      display: block;
+      font-size: 0.9rem;
+      margin: 2px 0;
+    }
+
+    .slider-wrap {
+      margin-top: 2rem;
+    }
+
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(to right, var(--highlight) 0%, var(--highlight) 50%, var(--muted) 50%, var(--muted) 100%);
+      border-radius: 4px;
+      outline: none;
+      transition: background 0.3s ease-in-out;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--highlight);
+      cursor: pointer;
+      border: none;
+    }
+
+    .summary {
+      text-align: center;
+      margin-top: 3rem;
+      background: var(--white);
+      border: 1px solid var(--highlight);
+      border-radius: 15px;
+      padding: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    .summary-price {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--highlight);
+      margin-bottom: 0.25rem;
+    }
+
+    .summary-label {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .savings-bubble {
+      display: inline-block;
+      background-color: var(--accent);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-top: 0.75rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .buy-button {
+      display: block;
+      margin: 2rem auto 0;
+      padding: 0.75rem 2rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--white);
+      background-color: var(--highlight);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: background 0.3s ease-in-out;
+    }
+
+    .buy-button:hover {
+      background-color: var(--accent);
+      color: var(--text);
+    }
+
+    #bundleName {
+      margin-top: 2rem;
+      padding: 0.75rem;
+      width: 100%;
+      font-size: 1rem;
+      border: 1px solid var(--muted);
+      border-radius: 8px;
+    }
+ #sidebar {
+  position: fixed;
+  top: 25%;
+  right: 0;
+  transform: translateY(0);
+  width: 22vw;
+  max-width: 265px;
+  z-index: 999;
+  padding: 1rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  background: transparent;
+  pointer-events: none;
+}
+
+.sidebar-item {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(to right, rgba(255,186,56,0) 0%, #FFBA38 60%);
+  color: white;
+  font-weight: bold;
+  border-radius: 6px 0 0 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: all;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.sidebar-item .tier {
+  font-weight: normal;
+  color: white;
+  margin-left: 0.25rem;
+  text-transform: capitalize;
+}
+
+.sidebar-total {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0), #ccc 80%);
+  color: black;
+  font-size: 1.5rem;
+  font-weight: 700;
+  border-radius: 6px 0 0 6px;
+  pointer-events: all;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.sidebar-total .per-month {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #444;
+}
+
+
+
+
+.product-name {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #000;
+  line-height: 1.2;
+}
+
+.tier-name {
+  font-size: 0.95rem;
+  color: white;
+  font-weight: normal;
+  margin-top: 0.1rem;
+}
+
+.total-block {
+  margin-top: auto;
+  background: linear-gradient(to right, #BBBBBB, rgba(187, 187, 187, 0));
+  color: black;
+  padding: 0.75rem 1rem;
+  font-size: 1.05rem;
+  font-weight: bold;
+  border-top-right-radius: 999px;
+  border-bottom-right-radius: 999px;
+  text-align: left;
+  pointer-events: auto;
+  white-space: nowrap;
+}
+
+
+
+
+  </style>
+</head>
+<body>
+  <div class="builder-wrapper">
+<!-- Service selection tags -->
+<div id="serviceTags" class="service-tags"></div>
+<div id="sidebar"></div>
+
+</div>
+
+<!-- Tier selection area -->
+<div id="tiersArea" class="tiers-area"></div>
+
+<!-- Subscription length slider -->
+<div class="slider-wrap">
+  <label for="subSlider">
+    Subscription Length: <span id="subLength">3</span> months – 
+    <span id="subDiscountLabel">0% off</span>
+  </label>
+  <input type="range" id="subSlider" min="3" max="24" step="3" value="3" />
+</div>
+
+<!-- Final summary section -->
+<div class="summary">
+  <div class="summary-price" id="finalPriceDisplay">$0.00</div>
+  <div class="summary-label">Final Monthly Price</div>
+  <div class="savings-bubble" id="savingsBubble">You're saving $0.00 per month</div>
+  <input type="text" id="bundleName" placeholder="Name your bundle" />
+  <a href="https://www.buzzwordstrategies.com/buy-my-bundle" class="buy-button">Buy My Bundle</a>
+</div>
+
+<script>
+  const subSlider = document.getElementById('subSlider');
+  const subLengthDisplay = document.getElementById('subLength');
+  const subDiscountLabel = document.getElementById('subDiscountLabel');
+
+  function updateSliderFill(slider) {
+    const val = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+    slider.style.background = `linear-gradient(to right, #FFBA38 0%, #FFBA38 ${val}%, #BBBBBB ${val}%, #BBBBBB 100%)`;
+  }
+
+  subSlider.addEventListener('input', function () {
+    subLengthDisplay.textContent = this.value;
+
+  Update discount label text dynamically
+    const discountMap = {
+      3: '0% off',
+      6: '2% off',
+      9: '3.5% off',
+      12: '5% off',
+      15: '6.5% off',
+      18: '8% off',
+      21: '9% off',
+      24: '10% off'
+    };
+    subDiscountLabel.textContent = discountMap[this.value] || '0% off';
+    updateSliderFill(this);
+  });
+
+  // Init on load
+  function updateSidebar() {
+  const container = document.getElementById("sidebar");
+  const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
+  if (selected.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+
+  let html = '';
+  let total = 0;
+
+  selected.forEach(([product, tier]) => {
+    const price = pricing[product][tier];
+    total += price;
+    html += `
+      <div class="product-block">
+        <span class="product-name">${product}</span>
+        <span class="tier-name">${tier}</span>
+      </div>
+    `;
+  });
+
+  html += `
+    <div class="total-block">
+      Total: $${total.toFixed(2)} <span style="font-size: 0.85rem; font-weight: 400;">/ month</span>
+    </div>
+  `;
+
+  container.innerHTML = html;
+}
+
+// Hook into existing renderSummary function
+const originalRenderSummary = renderSummary;
+renderSummary = function () {
+  originalRenderSummary();
+  updateSidebar();
+};
+updateSidebar();
+
+    updateSliderFill(subSlider);
+</script>
+<script>
+  const products = [
+    "Meta Ads", "Google Ads", "TikTok Ads", "SEO",
+    "GBP Ranker", "Backlinks", "Content", "Social Posts"
+  ];
+
+  const pricing = {
+    "Meta Ads": { Base: 770, Standard: 980, Premium: 1190 },
+    "Google Ads": { Base: 770, Standard: 980, Premium: 1190 },
+    "TikTok Ads": { Base: 770, Standard: 980, Premium: 1190 },
+    "SEO": { Base: 770, Standard: 980, Premium: 1190 },
+    "GBP Ranker": { Base: 315, Standard: 420, Premium: 525 },
+    "Backlinks": { Base: 420, Standard: 630, Premium: 840 },
+    "Content": { Base: 210, Standard: 420, Premium: 630 },
+    "Social Posts": { Base: 315, Standard: 525, Premium: 735 }
+  };
+
+  const logos = {
+    "Meta Ads": {
+      Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/348f698a-51e1-445e-97cf-df704334cf82/Meta+logo.png?format=1000w",
+      Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/348f698a-51e1-445e-97cf-df704334cf82/Meta+logo.png?format=1000w",
+      Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/b420567e-72b1-4cec-adf2-c655a2d65b63/Meta+premium+logo.png?format=1000w"
+    },
+    "Google Ads": {
+      Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/051181f0-7847-4b5e-8bbb-f1beb8c579c4/Google+logo.png?format=1000w",
+      Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/051181f0-7847-4b5e-8bbb-f1beb8c579c4/Google+logo.png?format=1000w",
+      Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/26113377-495f-4661-bc61-cd8c696853b6/google+premium+logo.png?format=1000w"
+    },
+    "TikTok Ads": {
+      Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/13406429-467d-47bd-8e03-3d59a11aa68e/TikTok+logo.png?format=1000w",
+      Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/13406429-467d-47bd-8e03-3d59a11aa68e/TikTok+logo.png?format=1000w",
+      Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/a7eb2f8c-9226-4f75-af38-538f0e57656b/tik+tok+premium+logo.png?format=1000w"
+    },
+    "SEO": {
+      Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/52dfb2a7-fc3a-4241-9702-f18e42f972a3/SEO+logo.png?format=1000w",
+      Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/52dfb2a7-fc3a-4241-9702-f18e42f972a3/SEO+logo.png?format=1000w",
+      Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/f1d3100c-0a5e-4f92-96b3-4ec1a656db04/SEO+premium+logo.png?format=1000w"
+    },
+    "GBP Ranker": {
+      Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/9fa62907-9484-4b4e-8223-f8e2b90e5da4/GBP+ranker+logo.png?format=1000w",
+      Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/9fa62907-9484-4b4e-8223-f8e2b90e5da4/GBP+ranker+logo.png?format=1000w",
+      Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/ac40a8f7-f30b-4392-b744-83b786d004bf/GBP+premium+logo.png?format=1000w"
+    },
+    "Backlinks": {
+      Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/b53aaa01-41a5-4934-8313-1518213bc0ae/Backlinks+logo.png?format=1000w",
+      Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/b53aaa01-41a5-4934-8313-1518213bc0ae/Backlinks+logo.png?format=1000w",
+      Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/20807f97-95fc-48a3-ad25-bc7f77e43b9d/backlinks+premium+logo.png?format=1000w"
+    },
+    "Content": {
+      Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/f30eb3cb-36d8-4c1b-be73-4d791858ee53/Content+Design+logo.png?format=1000w",
+      Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/f30eb3cb-36d8-4c1b-be73-4d791858ee53/Content+Design+logo.png?format=1000w",
+      Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/5f9850bd-6df9-4294-86c9-980a41bf4da3/content+premium+logo.png?format=1000w"
+    },
+    "Social Posts": {
+      Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/707f676b-7980-40d9-aa76-57d8561a167c/Social+Media+logo.png?format=1000w",
+      Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/707f676b-7980-40d9-aa76-57d8561a167c/Social+Media+logo.png?format=1000w",
+      Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/0302cd83-9ae7-4a6c-a6e1-636e1483e769/social+media+premium+logo.png?format=1000w"
+    }
+  };
+
+  const features = {
+    "Backlinks": {
+      Base: ["10 backlinks", "13 in-content links", "DA 10+"],
+      Standard: ["15 backlinks", "23 in-content links", "DA 30+"],
+      Premium: ["20 backlinks", "41 in-content links", "DA 50+"]
+    },
+    "Content": {
+      Base: ["1 article/mo", "500 words", "AI GPT-4o written"],
+      Standard: ["2 articles/mo", "1,000 words", "SEO keyword boost"],
+      Premium: ["4 articles/mo", "2,000 words", "Advanced topic research"]
+    },
+    "GBP Ranker": {
+      Base: ["1 image/wk optimized", "AI review replies", "Weekly Q&A"],
+      Standard: ["3 images/wk optimized", "AI data training", "Bi-weekly Q&A"],
+      Premium: ["Daily images + drip", "Human verification", "Custom AI tuning"]
+    },
+    "Google Ads": {
+      Base: ["Search/display campaigns", "Basic targeting", "Pixel + conversion setup"],
+      Standard: ["Keyword research", "Negative keywords", "Ad testing"],
+      Premium: ["Keyword expansion", "Performance Max", "Dedicated strategist"]
+    },
+    "Meta Ads": {
+      Base: ["3 graphics", "Basic campaign build", "Pixel + conversion setup"],
+      Standard: ["6 graphics", "Ad copy & budget guidance", "Retargeting setup"],
+      Premium: ["Unlimited creative sets", "Conversion testing", "Full funnel buildout"]
+    },
+    "SEO": {
+      Base: ["10 keywords", "Google Analytics & GSC", "On-page audits"],
+      Standard: ["20 keywords", "Schema setup", "Alt/title tag SEO"],
+      Premium: ["40 keywords", "Backlink strategy", "Technical SEO audit"]
+    },
+    "Social Posts": {
+      Base: ["1 post/week", "4 total posts", "1 channel"],
+      Standard: ["4 posts/week", "16 total posts", "3 channels"],
+      Premium: ["Posts every day", "28 total posts", "6 channels"]
+    },
+    "TikTok Ads": {
+      Base: ["Basic campaign build", "Ad copy creation", "Pixel setup"],
+      Standard: ["Audience targeting", "Conversion tracking", "Ad testing"],
+      Premium: ["UGC creative coordination", "Advanced targeting", "Scaling strategy"]
+    }
+  };
+
+const selectedTiers = {};
+let currentlyOpenService = null;
+
+</script>
+<script>
+  function renderTags() {
+    const container = document.getElementById("serviceTags");
+    container.innerHTML = "";
+    products.forEach(service => {
+      const tag = document.createElement("div");
+      tag.className = "tag";
+      tag.textContent = service;
+     if (service === currentlyOpenService) {
+  tag.classList.add("active");
+} else if (selectedTiers[service]) {
+  tag.classList.add("selected");
+}
+
+      tag.onclick = () => {
+        currentlyOpenService = service;
+renderTiers(service);
+        renderTags(); // refresh highlight
+      };
+      container.appendChild(tag);
+    });
+  }
+
+  function renderTiers(service) {
+    const container = document.getElementById("tiersArea");
+    container.innerHTML = "";
+    const row = document.createElement("div");
+    row.className = "tier-row";
+
+    ["Base", "Standard", "Premium"].forEach(tier => {
+      const card = document.createElement("div");
+      card.className = "tier-card";
+      if (selectedTiers[service] === tier) card.classList.add("selected");
+
+      const feat = features[service]?.[tier] || ["", "", ""];
+      card.innerHTML = `
+      <img src="${logos[service][tier]}" alt="${service} ${tier} logo" style="max-width: 60px; ${tier === 'Standard' ? 'filter: drop-shadow(0 0 12px #FFBA38);' : ''}" />
+        <h3>${tier}</h3>
+        <div class="tier-price">$${pricing[service][tier]}</div>
+        <div class="features">
+          <span style="color: #FFBA38;">✔️ ${feat[0]}</span>
+          <span style="color: #FFBA38;">✔️ ${feat[1]}</span>
+          <span style="color: #FFBA38;">✔️ ${feat[2]}</span>
+        </div>
+      `;
+
+      card.onclick = () => {
+        selectedTiers[service] = selectedTiers[service] === tier ? null : tier;
+        renderTiers(service);
+        renderSummary();
+        renderTags();
+      };
+
+      row.appendChild(card);
+    });
+
+    container.appendChild(row);
+  }
+
+  function getSubscriptionDiscount(months) {
+    if (months === 6) return 2;
+    if (months === 9) return 3.5;
+    if (months === 12) return 5;
+    if (months === 15) return 6.5;
+    if (months === 18) return 8;
+    if (months === 21) return 9;
+    if (months === 24) return 10;
+    return 0;
+  }
+
+  function getBundleDiscount(num) {
+    if (num === 2) return 2;
+    if (num === 3) return 5;
+    if (num === 4) return 7;
+    if (num >= 5) return 10;
+    return 0;
+  }
+
+ function renderSummary() {
+  const subMonths = parseInt(document.getElementById("subSlider").value);
+  const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
+  const productCount = selected.length;
+  let total = selected.reduce((sum, [service, tier]) => sum + pricing[service][tier], 0);
+
+  const bundleDiscount = getBundleDiscount(productCount);
+  const subDiscount = getSubscriptionDiscount(subMonths);
+
+  const afterBundle = total * (1 - bundleDiscount / 100);
+  const final = afterBundle * (1 - subDiscount / 100);
+  const totalSaved = total - final;
+
+  document.getElementById("finalPriceDisplay").textContent = `$${final.toFixed(2)}`;
+  document.getElementById("savingsBubble").textContent = `You're saving $${totalSaved.toFixed(2)} per month`;
+
+  // Update sidebar
+  const container = document.getElementById("sidebar");
+  if (selected.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+
+  let html = '';
+  selected.forEach(([product, tier]) => {
+    html += `
+      <div class="product-block">
+        <span class="product-name">${product}</span>
+        <span class="tier-name">${tier}</span>
+      </div>
+    `;
+  });
+
+  html += `
+    <div class="total-block">
+$${final.toFixed(2)} <span style="font-size: 0.85rem; font-weight: 400;">/ month</span>
+    </div>
+  `;
+
+  container.innerHTML = html;
+}
+// ✅ Safe save: don't break rendering if final is undefined
+let finalPrice = 0;
+try {
+  finalPrice = parseFloat(final.toFixed(2));
+} catch (e) {
+  finalPrice = 0;
+}
+
+const bundleData = {
+  selectedTiers,
+  subLength: parseInt(document.getElementById("subSlider").value),
+  bundleName: document.getElementById("bundleName").value,
+  finalMonthly: finalPrice
+};
+
+localStorage.setItem("buzzwordBundle", JSON.stringify(bundleData));
+
+
+  // Initialize slider and color fill
+  const subSlider = document.getElementById("subSlider");
+  function updateSliderFill(slider) {
+    const val = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+    slider.style.background = `linear-gradient(to right, #FFBA38 0%, #FFBA38 ${val}%, #BBBBBB ${val}%, #BBBBBB 100%)`;
+  }
+  subSlider.addEventListener("input", function () {
+    document.getElementById("subLength").textContent = this.value;
+    const discountLabelMap = {
+      3: "0% off", 6: "2% off", 9: "3.5% off", 12: "5% off",
+      15: "6.5% off", 18: "8% off", 21: "9% off", 24: "10% off"
+    };
+    document.getElementById("subDiscountLabel").textContent = discountLabelMap[this.value] || "0% off";
+    updateSliderFill(this);
+    renderSummary();
+  });
+
+  // Initial load
+  updateSliderFill(subSlider);
+  
+ // ✅ Restore saved bundle from localStorage and render all views correctly
+document.addEventListener("DOMContentLoaded", () => {
+  const saved = localStorage.getItem("buzzwordBundle");
+  if (saved) {
+    try {
+      const { selectedTiers: savedTiers, subLength, bundleName } = JSON.parse(saved);
+
+      // ✅ Replace entire selectedTiers object
+      selectedTiers = savedTiers || {};
+      document.getElementById("subSlider").value = subLength || 3;
+      document.getElementById("bundleName").value = bundleName || "";
+
+      // ✅ Use only services that exist in pricingData
+      const validServices = Object.keys(pricingData);
+      const firstService = Object.keys(savedTiers).find(service => validServices.includes(service)) || validServices[0];
+      currentlyOpenService = firstService;
+
+      renderTags();
+      renderTiers(currentlyOpenService);
+      renderSummary();
+    } catch (e) {
+      console.error("Error loading saved bundle:", e);
+      renderTags();
+      renderSummary();
+    }
+  } else {
+    renderTags();
+    renderSummary();
+  }
+});
+
+</script>
+<style>
+  :root {
+    --white: #ffffff;
+    --black: #000000;
+    --grey: #bbbbbb;
+    --highlight: #FFBA38;
+    --hover: #FFE400;
+    --premium-glow: 0 0 12px #FFBA38;
+  }
+
+  body {
+    background: transparent !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    margin: 0;
+    padding: 2rem;
+    color: var(--black);
+  }
+
+.builder-wrapper {
+  max-width: 1200px;
+  margin: auto;
+  background: transparent;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: none;
+}
+
+
+  .service-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+
+ .tag {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--muted);
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 500;
+  background: #fefefe;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: all 0.25s ease-in-out;
+}
+
+.tag:hover {
+  box-shadow: 0 4px 10px rgba(255, 186, 56, 0.4);
+  transform: translateY(-2px);
+}
+
+  .tag.active {
+  background: #333333;
+  color: var(--white);
+  border-color: #333333;
+}
+
+.tag.selected {
+  background: var(--highlight);
+  color: var(--white);
+  border-color: var(--highlight);
+}
+
+  .tier-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .tier-card {
+    flex: 1 1 30%;
+    border: 1px solid var(--grey);
+    border-radius: 20px;
+    padding: 1rem;
+    transition: 0.2s;
+    cursor: pointer;
+    text-align: center;
+    background-color: #fefefe;
+  }
+
+  .tier-card:hover {
+    border-color: var(--hover);
+  }
+
+  .tier-card.selected {
+    border: 2px solid var(--highlight);
+    box-shadow: 0 0 10px rgba(255, 186, 56, 0.4);
+    background-color: #fffaf0;
+  }
+
+  .tier-card img {
+    max-height: 60px;
+    margin-bottom: 0.75rem;
+  }
+
+  .tier-price {
+    font-weight: bold;
+    color: var(--highlight);
+    font-size: 1.25rem;
+    margin: 0.5rem 0;
+  }
+
+  .features {
+    margin-top: 1rem;
+    text-align: left;
+    font-size: 0.95rem;
+  }
+
+ .features span {
+  display: block;
+  margin: 2px 0;
+}
+
+ .features span::before {
+  content: "";
+}
+
+  .slider-wrap {
+    margin-top: 2rem;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 10px;
+    background: var(--grey);
+    border-radius: 5px;
+    outline: none;
+    margin-top: 0.5rem;
+    transition: background 0.3s ease-in-out;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--highlight);
+    cursor: pointer;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--highlight);
+    cursor: pointer;
+  }
+
+ .summary {
+  margin: 3rem auto 2rem;
+  max-width: 600px;
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+
+  .summary-price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--highlight);
+  white-space: nowrap;
+}
+
+
+  .summary-label {
+    margin-top: 0.25rem;
+    font-size: 1rem;
+    color: var(--grey);
+  }
+
+  .savings-bubble {
+    margin-top: 0.75rem;
+    display: inline-block;
+    background: var(--hover);
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    font-weight: 600;
+    color: var(--black);
+    font-size: 0.9rem;
+  }
+
+  input#bundleName {
+    margin-top: 2rem;
+    padding: 0.75rem;
+    width: 50%;
+    font-size: 1rem;
+    border: 1px solid var(--grey);
+    border-radius: 10px;
+  }
+
+  .buy-button {
+    display: block;
+    width: fit-content;
+    margin: 1rem auto 0;
+    background: var(--highlight);
+    color: var(--white);
+    padding: 0.75rem 2rem;
+    font-weight: bold;
+    font-size: 1rem;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background 0.2s ease-in-out;
+  }
+
+  .buy-button:hover {
+    background: var(--hover);
+    color: var(--black);
+  }
+
+  @media (max-width: 768px) {
+    .tier-card {
+      flex: 1 1 100%;
+    }
+
+    input#bundleName {
+      width: 100%;
+    }
+    .sidebar-total {
+  font-size: 1.25rem;
+}
+
+.sidebar-total .per-month {
+  font-size: 0.75rem;
+}
+  }
+</style>
+
+
+<script>
+  function updateSidebar() {
+    const container = document.getElementById("sidebar");
+    const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
+    if (selected.length === 0) {
+      container.innerHTML = '';
+      return;
+    }
+
+    let html = '';
+    selected.forEach(([product, tier]) => {
+      html += `
+        <div class="sidebar-item">
+          <span class="product-name">${product}</span>
+          <span class="tier">${tier}</span>
+        </div>
+      `;
+    });
+
+  const subMonths = parseInt(document.getElementById("subSlider").value);
+const productCount = selected.length;
+let rawTotal = selected.reduce((sum, [product, tier]) => sum + pricing[product][tier], 0);
+
+const bundleDiscount = getBundleDiscount(productCount);
+const subDiscount = getSubscriptionDiscount(subMonths);
+
+const afterBundle = rawTotal * (1 - bundleDiscount / 100);
+const final = afterBundle * (1 - subDiscount / 100);
+
+html += `
+  <div class="sidebar-total">
+    $${final.toFixed(2)}
+    <span class="per-month">/ month</span>
+  </div>
+`;
+
+
+    container.innerHTML = html;
+  }
+
+  const originalRenderSummary = renderSummary;
+  renderSummary = function () {
+    originalRenderSummary();
+    updateSidebar();
+  };
+  updateSidebar();
+</script>

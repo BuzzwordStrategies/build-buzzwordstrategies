@@ -1,0 +1,12 @@
+[build]
+  publish = "."            # site root = folder we just created
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild" # let Netlify bundle Stripe SDK
+
+[[redirects]]
+  from = "/buy-my-bundle"
+  to   = "/.netlify/functions/createCheckout"
+  status = 307
+  force  = true            # allow POST
