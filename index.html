@@ -213,37 +213,9 @@
       border: 1px solid var(--muted);
       border-radius: 8px;
     }
- #sidebar {
-  position: fixed;
-  top: 25%;
-  right: 0;
-  transform: translateY(0);
-  width: 22vw;
-  max-width: 265px;
-  z-index: 999;
-  padding: 1rem 0.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: flex-start;
-  gap: 0.5rem;
-  background: transparent;
-  pointer-events: none;
-}
+ 
 
-.sidebar-item {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  background: linear-gradient(to right, rgba(255,186,56,0) 0%, #FFBA38 60%);
-  color: white;
-  font-weight: bold;
-  border-radius: 6px 0 0 6px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  pointer-events: all;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
+
 
 .sidebar-item .tier {
   font-weight: normal;
@@ -252,22 +224,7 @@
   text-transform: capitalize;
 }
 
-.sidebar-total {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.25rem;
-  padding: 0.75rem 1rem;
-  background: linear-gradient(to left, rgba(255, 255, 255, 0), #ccc 80%);
-  color: black;
-  font-size: 1.5rem;
-  font-weight: 700;
-  border-radius: 6px 0 0 6px;
-  pointer-events: all;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  white-space: nowrap;
-  max-width: 100%;
-  box-sizing: border-box;
-}
+
 
 .sidebar-total .per-month {
   font-size: 0.8rem;
@@ -292,19 +249,7 @@
   margin-top: 0.1rem;
 }
 
-.total-block {
-  margin-top: auto;
-  background: linear-gradient(to right, #BBBBBB, rgba(187, 187, 187, 0));
-  color: black;
-  padding: 0.75rem 1rem;
-  font-size: 1.05rem;
-  font-weight: bold;
-  border-top-right-radius: 999px;
-  border-bottom-right-radius: 999px;
-  text-align: left;
-  pointer-events: auto;
-  white-space: nowrap;
-}
+
 
 
 
@@ -374,7 +319,6 @@
     </style>
 </head>
 <body>
-
 <div class="banner-blur-wrap">
 <div class="banner-blur-inner">
 <img alt="Buzzword Logo" src="https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/ab4663d3-4840-47f0-88cf-a5b1144ed31a/Remove+background+project+%281%29.png?format=1000w"/>
@@ -386,11 +330,9 @@
 </div>
 <div class="price" id="cartPrice">$0.00 / month</div>
 </div>
-
 <div class="builder-wrapper">
 <!-- Service selection tags -->
 <div class="service-tags" id="serviceTags"></div>
-<div id="sidebar"></div>
 </div>
 <!-- Tier selection area -->
 <div class="tiers-area" id="tiersArea"></div>
@@ -514,14 +456,8 @@
 }
 
 // Hook into existing renderSummary function
-const originalRenderSummary = renderSummary;
-renderSummary = function () {
-  originalRenderSummary();
-  updateSidebar();
-};
-updateSidebar();
 
-    updateSliderFill(subSlider);
+updateSliderFill(subSlider);
 </script>
 <script>
   const products = [
@@ -1096,19 +1032,12 @@ html += `
     container.innerHTML = html;
   }
 
-  const originalRenderSummary = renderSummary;
-  renderSummary = function () {
-    originalRenderSummary();
-    updateSidebar();
-  };
-  updateSidebar();
-</script>
-
+  
+  </script>
 <div class="chat-wrapper">
 <zapier-interfaces-chatbot-embed chatbot-id="cma6zv294001y12wdgvajk0lj" height="600px" is-popup="false" width="100%"></zapier-interfaces-chatbot-embed>
 </div>
 <script async="" src="https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js" type="module"></script>
-
 <script>
 function updateTopCart() {
   const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
@@ -1138,12 +1067,53 @@ function updateTopCart() {
   priceDisplay.textContent = `$${final.toFixed(2)} / month`;
 }
 
-const originalRenderSummary = renderSummary;
-renderSummary = function () {
-  originalRenderSummary();
-  updateTopCart();
-};
+
 
 document.addEventListener("DOMContentLoaded", updateTopCart);
+</script>
+
+<script>
+function updateTopCart() {
+  const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
+  const tagContainer = document.getElementById("cartTags");
+  const priceDisplay = document.getElementById("cartPrice");
+
+  if (!tagContainer || !priceDisplay) return;
+
+  tagContainer.innerHTML = "";
+  if (selected.length === 0) {
+    tagContainer.innerHTML = "<span style='color: #999;'>🛒 No bundle selected yet.</span>";
+    priceDisplay.textContent = "$0.00 / month";
+    return;
+  }
+
+  let total = 0;
+  selected.forEach(([product, tier]) => {
+    const tag = document.createElement("div");
+    tag.className = "tag";
+    tag.textContent = `${product}: ${tier}`;
+    tagContainer.appendChild(tag);
+    total += pricing[product][tier];
+  });
+
+  const bundleDiscount = getBundleDiscount(selected.length);
+  const months = parseInt(document.getElementById("subSlider").value || "3");
+  const subDiscount = getSubscriptionDiscount(months);
+  const afterBundle = total * (1 - bundleDiscount / 100);
+  const final = afterBundle * (1 - subDiscount / 100);
+
+  priceDisplay.textContent = `$${final.toFixed(2)} / month`;
+}
+
+// Sync when DOM and pricing are ready
+document.addEventListener("DOMContentLoaded", () => {
+  updateTopCart();
+
+  const origRenderSummary = renderSummary;
+  renderSummary = function () {
+    origRenderSummary();
+    updateTopCart();
+  };
+});
 </script>
 </body></html>
