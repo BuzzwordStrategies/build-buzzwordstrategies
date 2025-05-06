@@ -316,42 +316,241 @@
         border-radius: 1rem;
         box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     }
-    </style>
+    
+#sidebar {
+  position: fixed;
+  top: 25%;
+  right: 0;
+  transform: translateY(0);
+  width: 22vw;
+  max-width: 265px;
+  z-index: 999;
+  padding: 1rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  background: transparent;
+  pointer-events: none;
+}
+.sidebar-item {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(to right, rgba(255,186,56,0) 0%, #FFBA38 60%);
+  color: white;
+  font-weight: bold;
+  border-radius: 6px 0 0 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: all;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.sidebar-item .tier {
+  font-weight: normal;
+  color: white;
+  margin-left: 0.25rem;
+  text-transform: capitalize;
+}
+.sidebar-total {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0), #ccc 80%);
+  color: black;
+  font-size: 1.5rem;
+  font-weight: 700;
+  border-radius: 6px 0 0 6px;
+  pointer-events: all;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.sidebar-total .per-month {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #444;
+}
+
+.banner-blur-wrap {
+  position: relative;
+  height: 175px;
+  background: url('https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/018540f1-5817-4b48-95f7-4ffeeb59a4b1/cookwhocantcook_a_backgrounf_of_a_lot_of_hexagons_that_are_as_7361cfca-04a8-4e54-b827-9de5d0fa5e01_2.png?format=1000w') center/cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.banner-blur-inner {
+  height: 110px;
+  width: 100%;
+  backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-text-wrap {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-img {
+  height: 100px;
+}
+
+.bundle-label {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: rgba(255, 186, 56, 0.75);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+</style>
 </head>
 <body>
 <div class="banner-blur-wrap">
 <div class="banner-blur-inner">
-<img alt="Buzzword Logo" src="https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/ab4663d3-4840-47f0-88cf-a5b1144ed31a/Remove+background+project+%281%29.png?format=1000w"/>
+<div class="logo-text-wrap">
+<h1 class="bundle-label">BUNDLE <img alt="Buzzword Logo" class="logo-img" src="https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/ab4663d3-4840-47f0-88cf-a5b1144ed31a/Remove+background+project+%281%29.png?format=1000w"/> BUILDER</h1>
 </div>
 </div>
-<div class="top-cart-bar">
-<div class="product-tags" id="cartTags">
-<span style="color: #999;">🛒 No bundle selected yet.</span>
 </div>
-<div class="price" id="cartPrice">$0.00 / month</div>
+<style>
+  zapier-interfaces-chatbot-embed {
+    max-height: 500px !important;
+    max-width: 360px !important;
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+  .chatbot-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    padding: 1rem;
+  }
+  @media (max-width: 768px) {
+    .chatbot-wrapper {
+      flex-direction: column;
+      align-items: center;
+      padding: 0.5rem;
+    }
+  }
+</style>
+<div class="chatbot-wrapper">
+<zapier-interfaces-chatbot-embed chatbot-id="cma6zv294001y12wdgvajk0lj" is-popup="false">
+</zapier-interfaces-chatbot-embed>
 </div>
+<script async="" src="https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js" type="module"></script>
 <div class="builder-wrapper">
 <!-- Service selection tags -->
-<div class="service-tags" id="serviceTags"></div>
-</div>
-<!-- Tier selection area -->
-<div class="tiers-area" id="tiersArea"></div>
-<!-- Subscription length slider -->
+
+<style>
+.cart-bar {
+  margin: 1.5rem auto;
+  max-width: 680px;
+  background: white;
+  border: 2px solid #FFBA38;
+  border-radius: 18px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+  font-family: sans-serif;
+}
+
+#cartTags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+#cartTags .tag {
+  background-color: #FFBA38;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+#cartPrice {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #FFBA38;
+}
+
+#savingsBubble {
+  background: #FFE400;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: black;
+}
+
+#bundleName {
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  width: 70%;
+  font-size: 1rem;
+}
+
+.buy-button {
+  background-color: #FFBA38;
+  color: white;
+  padding: 0.5rem 1.25rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.buy-button:hover {
+  background-color: #FFE400;
+  color: black;
+}
+</style>
 <div class="slider-wrap">
 <label for="subSlider">
     Subscription Length: <span id="subLength">3</span> months – 
     <span id="subDiscountLabel">0% off</span>
 </label>
 <input id="subSlider" max="24" min="3" step="3" type="range" value="3"/>
-</div>
-<!-- Final summary section -->
-<div class="summary">
-<div class="summary-price" id="finalPriceDisplay">$0.00</div>
-<div class="summary-label">Final Monthly Price</div>
-<div class="savings-bubble" id="savingsBubble">You're saving $0.00 per month</div>
+</div><div class="cart-bar">
+<div id="cartTags">No bundle selected yet.</div>
+<div id="cartPrice">$0.00 / month</div>
+<div id="savingsBubble">You're saving $0.00 per month</div>
 <input id="bundleName" placeholder="Name your bundle" type="text"/>
 <button class="buy-button">Buy My Bundle</button>
 </div>
+<div class="service-tags" id="serviceTags"></div>
+</div>
+<!-- Tier selection area -->
+<div class="tiers-area" id="tiersArea"></div>
+<!-- Subscription length slider -->
+<!-- Final summary section -->
+
 <script>
   document.querySelector('.buy-button').addEventListener('click', async (e) => {
     e.preventDefault();
@@ -394,70 +593,6 @@
       alert("There was a problem starting checkout.");
     }
   });
-</script>
-<script>
-  const subSlider = document.getElementById('subSlider');
-  const subLengthDisplay = document.getElementById('subLength');
-  const subDiscountLabel = document.getElementById('subDiscountLabel');
-
-  function updateSliderFill(slider) {
-    const val = (slider.value - slider.min) / (slider.max - slider.min) * 100;
-    slider.style.background = `linear-gradient(to right, #FFBA38 0%, #FFBA38 ${val}%, #BBBBBB ${val}%, #BBBBBB 100%)`;
-  }
-
-  subSlider.addEventListener('input', function () {
-    subLengthDisplay.textContent = this.value;
-
-  Update discount label text dynamically
-    const discountMap = {
-      3: '0% off',
-      6: '2% off',
-      9: '3.5% off',
-      12: '5% off',
-      15: '6.5% off',
-      18: '8% off',
-      21: '9% off',
-      24: '10% off'
-    };
-    subDiscountLabel.textContent = discountMap[this.value] || '0% off';
-    updateSliderFill(this);
-  });
-
-  // Init on load
-  function updateSidebar() {
-  const container = document.getElementById("sidebar");
-  const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
-  if (selected.length === 0) {
-    container.innerHTML = '';
-    return;
-  }
-
-  let html = '';
-  let total = 0;
-
-  selected.forEach(([product, tier]) => {
-    const price = pricing[product][tier];
-    total += price;
-    html += `
-      <div class="product-block">
-        <span class="product-name">${product}</span>
-        <span class="tier-name">${tier}</span>
-      </div>
-    `;
-  });
-
-  html += `
-    <div class="total-block">
-      Total: $${total.toFixed(2)} <span style="font-size: 0.85rem; font-weight: 400;">/ month</span>
-    </div>
-  `;
-
-  container.innerHTML = html;
-}
-
-// Hook into existing renderSummary function
-
-updateSliderFill(subSlider);
 </script>
 <script>
   const products = [
@@ -992,48 +1127,6 @@ document.addEventListener("DOMContentLoaded", () => {
 }
   }
 </style>
-<script>
-  function updateSidebar() {
-    const container = document.getElementById("sidebar");
-    const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
-    if (selected.length === 0) {
-      container.innerHTML = '';
-      return;
-    }
-
-    let html = '';
-    selected.forEach(([product, tier]) => {
-      html += `
-        <div class="sidebar-item">
-          <span class="product-name">${product}</span>
-          <span class="tier">${tier}</span>
-        </div>
-      `;
-    });
-
-  const subMonths = parseInt(document.getElementById("subSlider").value);
-const productCount = selected.length;
-let rawTotal = selected.reduce((sum, [product, tier]) => sum + pricing[product][tier], 0);
-
-const bundleDiscount = getBundleDiscount(productCount);
-const subDiscount = getSubscriptionDiscount(subMonths);
-
-const afterBundle = rawTotal * (1 - bundleDiscount / 100);
-const final = afterBundle * (1 - subDiscount / 100);
-
-html += `
-  <div class="sidebar-total">
-    $${final.toFixed(2)}
-    <span class="per-month">/ month</span>
-  </div>
-`;
-
-
-    container.innerHTML = html;
-  }
-
-  
-  </script>
 <div class="chat-wrapper">
 <zapier-interfaces-chatbot-embed chatbot-id="cma6zv294001y12wdgvajk0lj" height="600px" is-popup="false" width="100%"></zapier-interfaces-chatbot-embed>
 </div>
@@ -1043,10 +1136,15 @@ function updateTopCart() {
   const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
   const tagContainer = document.getElementById("cartTags");
   const priceDisplay = document.getElementById("cartPrice");
+  const savingsDisplay = document.getElementById("savingsBubble");
+  const subLength = parseInt(document.getElementById("subSlider").value);
+
   tagContainer.innerHTML = "";
+
   if (selected.length === 0) {
-    tagContainer.innerHTML = "<span style='color: #999;'>🛒 No bundle selected yet.</span>";
+    tagContainer.innerHTML = "<span style='color:#888;font-style:italic'>🛒 No bundle selected yet.</span>";
     priceDisplay.textContent = "$0.00 / month";
+    savingsDisplay.textContent = "You're saving $0.00 per month";
     return;
   }
 
@@ -1060,60 +1158,82 @@ function updateTopCart() {
   });
 
   const bundleDiscount = getBundleDiscount(selected.length);
-  const months = parseInt(document.getElementById("subSlider").value);
-  const subDiscount = getSubscriptionDiscount(months);
+  const subDiscount = getSubscriptionDiscount(subLength);
   const afterBundle = total * (1 - bundleDiscount / 100);
   const final = afterBundle * (1 - subDiscount / 100);
+  const savings = total - final;
+
   priceDisplay.textContent = `$${final.toFixed(2)} / month`;
-}
+  savingsDisplay.textContent = `You're saving $${savings.toFixed(2)} per month`;
 
-
-
-document.addEventListener("DOMContentLoaded", updateTopCart);
-</script>
-
-<script>
-function updateTopCart() {
-  const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
-  const tagContainer = document.getElementById("cartTags");
-  const priceDisplay = document.getElementById("cartPrice");
-
-  if (!tagContainer || !priceDisplay) return;
-
-  tagContainer.innerHTML = "";
-  if (selected.length === 0) {
-    tagContainer.innerHTML = "<span style='color: #999;'>🛒 No bundle selected yet.</span>";
-    priceDisplay.textContent = "$0.00 / month";
-    return;
+  let finalPrice = 0;
+  try {
+    finalPrice = parseFloat(final.toFixed(2));
+  } catch (e) {
+    finalPrice = 0;
   }
 
-  let total = 0;
-  selected.forEach(([product, tier]) => {
-    const tag = document.createElement("div");
-    tag.className = "tag";
-    tag.textContent = `${product}: ${tier}`;
-    tagContainer.appendChild(tag);
-    total += pricing[product][tier];
-  });
-
-  const bundleDiscount = getBundleDiscount(selected.length);
-  const months = parseInt(document.getElementById("subSlider").value || "3");
-  const subDiscount = getSubscriptionDiscount(months);
-  const afterBundle = total * (1 - bundleDiscount / 100);
-  const final = afterBundle * (1 - subDiscount / 100);
-
-  priceDisplay.textContent = `$${final.toFixed(2)} / month`;
+  const bundleData = {
+    selectedTiers,
+    subLength,
+    bundleName: document.getElementById("bundleName").value,
+    finalMonthly: finalPrice
+  };
+  localStorage.setItem("buzzwordBundle", JSON.stringify(bundleData));
 }
 
-// Sync when DOM and pricing are ready
 document.addEventListener("DOMContentLoaded", () => {
-  updateTopCart();
-
   const origRenderSummary = renderSummary;
   renderSummary = function () {
     origRenderSummary();
     updateTopCart();
   };
+  updateTopCart();
+});
+</script>
+
+<style>
+#chatbot-float {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  width: 360px;
+  max-width: 95vw;
+  height: 500px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  border-radius: 18px;
+  overflow: hidden;
+}
+@media (max-width: 768px) {
+  #chatbot-float {
+    width: 90vw;
+    height: 450px;
+    right: 1rem;
+    bottom: 1rem;
+  }
+}
+</style>
+<div id="chatbot-float">
+<zapier-interfaces-chatbot-embed chatbot-id="cma6zv294001y12wdgvajk0lj" is-popup="false">
+</zapier-interfaces-chatbot-embed>
+</div>
+<script async="" src="https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js" type="module"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const origRenderSummary = renderSummary;
+  renderSummary = function () {
+    origRenderSummary();
+    updateTopCart();
+  };
+  updateTopCart();
+
+  // Hook slider to re-render cart
+  const subSlider = document.getElementById("subSlider");
+  if (subSlider) {
+    subSlider.addEventListener("input", () => updateTopCart());
+  }
 });
 </script>
 </body></html>
