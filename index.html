@@ -1080,5 +1080,30 @@ html += `
   };
   updateSidebar();
 </script>
+    <!-- CONTRACT MODAL (insert directly above the Zapier script below) -->
+<div id="contractModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.75); z-index:9999; justify-content:center; align-items:center;">
+  <div style="background:white; padding:2rem; max-width:600px; width:90%; border-radius:12px; overflow-y:auto; max-height:90vh; position:relative;">
+    <h2>Buzzword Strategies Service Agreement</h2>
+    <form id="contractForm">
+      <label>First Name<br><input type="text" id="firstName" required></label><br><br>
+      <label>Last Name<br><input type="text" id="lastName" required></label><br><br>
+      <label>Email<br><input type="email" id="email" required></label><br><br>
+      <label>Phone<br><input type="tel" id="phone" required></label><br><br>
+      <label>Company<br><input type="text" id="company" required></label><br><br>
+      <label>Company Website<br><input type="url" id="website" required></label><br><br>
+      <label>Target Audience<br><textarea id="audience" required></textarea></label><br><br>
+      <div id="bundleSOW" style="background:#f9f9f9; padding:1rem; border-radius:8px;"></div><br>
+      <div style="font-size:0.9rem; line-height:1.5;">
+        <strong>Terms & Liability:</strong><br>
+        Buzzword Strategies will perform marketing services as selected above. By signing, client agrees to the monthly billing term, service scope, and acknowledges that no guarantees are made regarding ROI. Client is responsible for compliance with all applicable advertising laws. Buzzword is not liable for platform policy changes, account bans, or client business practices. Service may be paused or modified with 30 days written notice. Additional services require a new agreement.<br><br>
+      </div>
+      <label>Full Name (Digital Signature)<br><input type="text" id="signature" required></label><br><br>
+      <label>Date<br><input type="date" id="contractDate" required></label><br><br>
+      <button type="submit" style="background:#FFBA38; color:white; font-weight:bold; border:none; padding:0.75rem 1.5rem; border-radius:6px; cursor:pointer;">Agree & Proceed to Checkout</button>
+      <button type="button" onclick="document.getElementById('contractModal').style.display='none'" style="margin-left:1rem; background:#ccc; padding:0.75rem 1.5rem; border:none; border-radius:6px; cursor:pointer;">Cancel</button>
+    </form>
+  </div>
+</div>
+
 <script async type='module' src='https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js'></script>
 <zapier-interfaces-chatbot-embed is-popup='true' chatbot-id='cma6zv294001y12wdgvajk0lj'></zapier-interfaces-chatbot-embed>
