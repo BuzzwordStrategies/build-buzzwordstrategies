@@ -385,50 +385,36 @@
 <div class="summary-label">Final Monthly Price</div>
 <div class="savings-bubble" id="savingsBubble">You're saving $0.00 per month</div>
 <input id="bundleName" placeholder="Name your bundle" type="text"/>
-<button class="buy-button">Buy My Bundle</button>
+<button class="buy-button" onclick="openPandaDocModal()">Buy My Bundle</button>
+
 </div>
 <script>
-  document.querySelector('.buy-button').addEventListener('click', async (e) => {
-    e.preventDefault();
+document.querySelector('.buy-button').addEventListener('click', async (e) => {
+  e.preventDefault();
 
-    const bundleName = document.getElementById('bundleName').value;
-    const subLength = parseInt(document.getElementById('subSlider').value);
-    const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
+  const bundleName = encodeURIComponent(document.getElementById('bundleName').value);
+  const subLength = parseInt(document.getElementById('subSlider').value);
+  const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
 
-    if (selected.length === 0) {
-      alert("Please select at least one product.");
-      return;
-    }
+  if (selected.length === 0) {
+    alert("Please select at least one product.");
+    return;
+  }
 
-    let total = selected.reduce((sum, [service, tier]) => sum + pricing[service][tier], 0);
-    const bundleDiscount = getBundleDiscount(selected.length);
-    const subDiscount = getSubscriptionDiscount(subLength);
+  let total = selected.reduce((sum, [service, tier]) => sum + pricing[service][tier], 0);
+  const bundleDiscount = getBundleDiscount(selected.length);
+  const subDiscount = getSubscriptionDiscount(subLength);
+  const afterBundle = total * (1 - bundleDiscount / 100);
+  const finalMonthly = parseFloat((afterBundle * (1 - subDiscount / 100)).toFixed(2));
 
-    const afterBundle = total * (1 - bundleDiscount / 100);
-    const finalMonthly = parseFloat((afterBundle * (1 - subDiscount / 100)).toFixed(2));
+  const bundle_scope = selected.map(([product, tier]) => `${product}: ${tier}`).join(', ');
+  const encodedScope = encodeURIComponent(bundle_scope);
 
-    const response = await fetch('/.netlify/functions/create-checkout-session', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        selectedTiers,
-        subLength,
-        bundleName,
-        finalMonthly
-      })
-    });
+  const formURL = `https://eform.pandadoc.com/?efsid=3c944c0f-4396-4b85-b7a9-9358da8b76a7&bundle_name=${bundleName}&subLength=${subLength}&finalMonthly=${finalMonthly}&bundle_scope=${encodedScope}`;
 
-    const data = await response.json();
+  window.open(formURL, '_blank');
+});
 
-    if (data.url) {
-      window.location.href = data.url;
-    } else {
-      console.error("Checkout error:", data);
-      alert("There was a problem starting checkout.");
-    }
-  });
 </script>
 <script>
   const subSlider = document.getElementById('subSlider');
@@ -1080,30 +1066,80 @@ html += `
   };
   updateSidebar();
 </script>
-    <!-- CONTRACT MODAL (insert directly above the Zapier script below) -->
-<div id="contractModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.75); z-index:9999; justify-content:center; align-items:center;">
-  <div style="background:white; padding:2rem; max-width:600px; width:90%; border-radius:12px; overflow-y:auto; max-height:90vh; position:relative;">
-    <h2>Buzzword Strategies Service Agreement</h2>
-    <form id="contractForm">
-      <label>First Name<br><input type="text" id="firstName" required></label><br><br>
-      <label>Last Name<br><input type="text" id="lastName" required></label><br><br>
-      <label>Email<br><input type="email" id="email" required></label><br><br>
-      <label>Phone<br><input type="tel" id="phone" required></label><br><br>
-      <label>Company<br><input type="text" id="company" required></label><br><br>
-      <label>Company Website<br><input type="url" id="website" required></label><br><br>
-      <label>Target Audience<br><textarea id="audience" required></textarea></label><br><br>
-      <div id="bundleSOW" style="background:#f9f9f9; padding:1rem; border-radius:8px;"></div><br>
-      <div style="font-size:0.9rem; line-height:1.5;">
-        <strong>Terms & Liability:</strong><br>
-        Buzzword Strategies will perform marketing services as selected above. By signing, client agrees to the monthly billing term, service scope, and acknowledges that no guarantees are made regarding ROI. Client is responsible for compliance with all applicable advertising laws. Buzzword is not liable for platform policy changes, account bans, or client business practices. Service may be paused or modified with 30 days written notice. Additional services require a new agreement.<br><br>
-      </div>
-      <label>Full Name (Digital Signature)<br><input type="text" id="signature" required></label><br><br>
-      <label>Date<br><input type="date" id="contractDate" required></label><br><br>
-      <button type="submit" style="background:#FFBA38; color:white; font-weight:bold; border:none; padding:0.75rem 1.5rem; border-radius:6px; cursor:pointer;">Agree & Proceed to Checkout</button>
-      <button type="button" onclick="document.getElementById('contractModal').style.display='none'" style="margin-left:1rem; background:#ccc; padding:0.75rem 1.5rem; border:none; border-radius:6px; cursor:pointer;">Cancel</button>
-    </form>
+ <div id="pandadocModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); z-index:99999; justify-content:center; align-items:center;">
+  <div style="position:relative; width:90%; height:90%; background:white; border-radius:12px; overflow:hidden;">
+    <button onclick="closePandaDocModal()" style="position:absolute; top:10px; right:10px; background:#FFBA38; color:white; border:none; border-radius:6px; padding:0.5rem 1rem; font-weight:bold; cursor:pointer; z-index:10;">Close</button>
+    <div id='form-container-3c944c0f-4396-4b85-b7a9-9358da8b76a7' style="width:100%; height:100%;"></div>
   </div>
 </div>
+
+</div>
+<script>
+  function openPandaDocModal() {
+    const modal = document.getElementById("pandadocModal");
+    modal.style.display = "flex";
+
+    const container = document.getElementById("form-container-3c944c0f-4396-4b85-b7a9-9358da8b76a7");
+    if (!container.hasChildNodes()) {
+      (function () {
+        var config = {
+          nodeId: 'form-container-3c944c0f-4396-4b85-b7a9-9358da8b76a7',
+          width: '100%',
+          height: '100%',
+          url: 'https://eform.pandadoc.com/?eform=1f13962f-5943-480d-b1d1-c1751a095570',
+          events: {
+            completed: function (data) {
+              console.log("Form completed", data);
+              window.location.href = '/.netlify/functions/create-checkout-session'; // Optional: update this URL
+            }
+          },
+       data: {
+  "Bundle Name": document.getElementById("bundleName").value,
+  "Subscription Length": document.getElementById("subSlider").value + " months",
+  "Monthly Price": document.getElementById("finalPriceDisplay").textContent.replace('$', ''),
+  "Selected Services": Object.entries(selectedTiers)
+    .map(([product, tier]) => `${product}: ${tier}`)
+    .join(', ')
+}
+        };
+
+        const dataQueryString = config.data ? Object.keys(config.data)
+          .map(function (key) {
+            return '&' + key + '=' + encodeURIComponent(JSON.stringify(config.data[key]));
+          })
+          .join('') : '';
+
+        var iframe = document.createElement('iframe');
+        iframe.frameBorder = 0;
+        iframe.src = config.url + dataQueryString;
+        iframe.height = '100%';
+        iframe.width = '100%';
+
+        document.getElementById(config.nodeId).append(iframe);
+
+        var eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
+        var messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
+
+        window[eventMethod](messageEvent, function(e) {
+          if (e && e.data && config && iframe && e.source === iframe.contentWindow) {
+            try {
+              var message = JSON.parse(e.data);
+              if (message && message.event) {
+                var event = message.event.replace('embed.form.', '');
+                var callback = config.events ? config.events[event] : null;
+                if (callback) callback(message.data);
+              }
+            } catch(e) {}
+          }
+        }, false);
+      })();
+    }
+  }
+
+  function closePandaDocModal() {
+    document.getElementById("pandadocModal").style.display = "none";
+  }
+</script>
 
 <script async type='module' src='https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js'></script>
 <zapier-interfaces-chatbot-embed is-popup='true' chatbot-id='cma6zv294001y12wdgvajk0lj'></zapier-interfaces-chatbot-embed>
