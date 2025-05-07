@@ -1075,103 +1075,102 @@ html += `
 
 </div>
 <script>
-  function openPandaDocModal() {
-    const modal = document.getElementById("pandadocModal");
-    modal.style.display = "flex";
+function openPandaDocModal() {
+  const modal = document.getElementById("pandadocModal");
+  modal.style.display = "flex";
 
-    const container = document.getElementById("form-container-91910be4-9cc3-4a49-8501-f64ce1f8d09d");
-    if (!container.hasChildNodes()) {
-      (function () {
-        var config = {
-          nodeId: 'form-container-91910be4-9cc3-4a49-8501-f64ce1f8d09d',
-          width: '100%',
-          height: '100%',
+  const container = document.getElementById("form-container-91910be4-9cc3-4a49-8501-f64ce1f8d09d");
+  if (!container.hasChildNodes()) {
+    (function () {
+      const bundleName = document.getElementById("bundleName").value;
+      const subLength = document.getElementById("subSlider").value + " months";
+      const finalMonthly = document.getElementById("finalPriceDisplay").textContent.replace('$', '');
+      const selectedServices = Object.entries(selectedTiers)
+        .map(([product, tier]) => `${product}: ${tier}`)
+        .join(', ');
+
+      var config = {
+        nodeId: 'form-container-91910be4-9cc3-4a49-8501-f64ce1f8d09d',
+        width: '100%',
+        height: '100%',
         url: 'https://eform.pandadoc.com/?eform=fe0897ba-fea0-4cdd-8e83-ad3b3261b396',
-          events: {
-           completed: function (data) {
-  // Gather data again in case it changed
-  const bundleName = document.getElementById("bundleName").value;
-  const subLength = parseInt(document.getElementById("subSlider").value);
-  const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
+        events: {
+          completed: function (data) {
+            const bundleName = document.getElementById("bundleName").value;
+            const subLength = parseInt(document.getElementById("subSlider").value);
+            const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
 
-  let total = selected.reduce((sum, [service, tier]) => sum + pricing[service][tier], 0);
-  const bundleDiscount = getBundleDiscount(selected.length);
-  const subDiscount = getSubscriptionDiscount(subLength);
-  const afterBundle = total * (1 - bundleDiscount / 100);
-  const finalMonthly = parseFloat((afterBundle * (1 - subDiscount / 100)).toFixed(2));
+            let total = selected.reduce((sum, [service, tier]) => sum + pricing[service][tier], 0);
+            const bundleDiscount = getBundleDiscount(selected.length);
+            const subDiscount = getSubscriptionDiscount(subLength);
+            const afterBundle = total * (1 - bundleDiscount / 100);
+            const finalMonthly = parseFloat((afterBundle * (1 - subDiscount / 100)).toFixed(2));
 
-  fetch('/.netlify/functions/create-checkout-session', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      selectedTiers,
-      subLength,
-      bundleName,
-      finalMonthly
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.url) {
-      window.location.href = data.url;
-    } else {
-      alert("Checkout failed. Please try again.");
-      console.error(data);
-    }
-  })
-  .catch(err => {
-    alert("Error starting checkout.");
-    console.error(err);
-  });
-},
-
-       data: {
-  "Bundle Name": document.getElementById("bundleName").value,
-  "Subscription Length": document.getElementById("subSlider").value + " months",
-  "Monthly Price": document.getElementById("finalPriceDisplay").textContent.replace('$', ''),
-  "Selected Services": Object.entries(selectedTiers)
-    .map(([product, tier]) => `${product}: ${tier}`)
-    .join(', ')
-}
-        };
-
-        const dataQueryString = config.data ? Object.keys(config.data)
-          .map(function (key) {
-            return '&' + key + '=' + encodeURIComponent(JSON.stringify(config.data[key]));
-          })
-          .join('') : '';
-
-        var iframe = document.createElement('iframe');
-        iframe.frameBorder = 0;
-        iframe.src = config.url + dataQueryString;
-        iframe.height = '100%';
-        iframe.width = '100%';
-
-        document.getElementById(config.nodeId).append(iframe);
-
-        var eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
-        var messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
-
-        window[eventMethod](messageEvent, function(e) {
-          if (e && e.data && config && iframe && e.source === iframe.contentWindow) {
-            try {
-              var message = JSON.parse(e.data);
-              if (message && message.event) {
-                var event = message.event.replace('embed.form.', '');
-                var callback = config.events ? config.events[event] : null;
-                if (callback) callback(message.data);
+            fetch('/.netlify/functions/create-checkout-session', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                selectedTiers,
+                subLength,
+                bundleName,
+                finalMonthly
+              })
+            })
+            .then(res => res.json())
+            .then(data => {
+              if (data.url) {
+                window.location.href = data.url;
+              } else {
+                alert("Checkout failed. Please try again.");
+                console.error(data);
               }
-            } catch(e) {}
+            })
+            .catch(err => {
+              alert("Error starting checkout.");
+              console.error(err);
+            });
           }
-        }, false);
-      })();
-    }
-  }
+        },
+        data: {
+          "Bundle Name": bundleName,
+          "Subscription Length": subLength,
+          "Monthly Price": finalMonthly,
+          "Selected Services": selectedServices
+        }
+      };
 
-  function closePandaDocModal() {
-    document.getElementById("pandadocModal").style.display = "none";
+      const dataQueryString = Object.keys(config.data)
+        .map(key => '&' + key + '=' + encodeURIComponent(JSON.stringify(config.data[key])))
+        .join('');
+
+      const iframe = document.createElement('iframe');
+      iframe.frameBorder = 0;
+      iframe.src = config.url + dataQueryString;
+      iframe.height = '100%';
+      iframe.width = '100%';
+
+      document.getElementById(config.nodeId).append(iframe);
+
+      const eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
+      const messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
+
+      window[eventMethod](messageEvent, function(e) {
+        if (e && e.data && config && iframe && e.source === iframe.contentWindow) {
+          try {
+            const message = JSON.parse(e.data);
+            if (message && message.event) {
+              const event = message.event.replace('embed.form.', '');
+              const callback = config.events ? config.events[event] : null;
+              if (callback) callback(message.data);
+            }
+          } catch (e) {}
+        }
+      }, false);
+    })();
   }
+}
 </script>
+
 
 <script async type='module' src='https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js'></script>
 <zapier-interfaces-chatbot-embed is-popup='true' chatbot-id='cma6zv294001y12wdgvajk0lj'></zapier-interfaces-chatbot-embed>
