@@ -1088,11 +1088,43 @@ html += `
           height: '100%',
         url: 'https://eform.pandadoc.com/?eform=fe0897ba-fea0-4cdd-8e83-ad3b3261b396',
           events: {
-            completed: function (data) {
-              console.log("Form completed", data);
-              window.location.href = '/.netlify/functions/create-checkout-session'; // Optional: update this URL
-            }
-          },
+           completed: function (data) {
+  // Gather data again in case it changed
+  const bundleName = document.getElementById("bundleName").value;
+  const subLength = parseInt(document.getElementById("subSlider").value);
+  const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
+
+  let total = selected.reduce((sum, [service, tier]) => sum + pricing[service][tier], 0);
+  const bundleDiscount = getBundleDiscount(selected.length);
+  const subDiscount = getSubscriptionDiscount(subLength);
+  const afterBundle = total * (1 - bundleDiscount / 100);
+  const finalMonthly = parseFloat((afterBundle * (1 - subDiscount / 100)).toFixed(2));
+
+  fetch('/.netlify/functions/create-checkout-session', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      selectedTiers,
+      subLength,
+      bundleName,
+      finalMonthly
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      alert("Checkout failed. Please try again.");
+      console.error(data);
+    }
+  })
+  .catch(err => {
+    alert("Error starting checkout.");
+    console.error(err);
+  });
+},
+
        data: {
   "Bundle Name": document.getElementById("bundleName").value,
   "Subscription Length": document.getElementById("subSlider").value + " months",
