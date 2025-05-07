@@ -1087,31 +1087,21 @@ function openPandaDocModal() {
         .map(([product, tier]) => `${product}: ${tier}`)
         .join(', ');
 
-      var config = {
+      const config = {
         nodeId: 'form-container-91910be4-9cc3-4a49-8501-f64ce1f8d09d',
         width: '100%',
         height: '100%',
         url: 'https://eform.pandadoc.com/?eform=fe0897ba-fea0-4cdd-8e83-ad3b3261b396',
         events: {
-          completed: function (data) {
-            const bundleName = document.getElementById("bundleName").value;
-            const subLength = parseInt(document.getElementById("subSlider").value);
-            const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
-
-            let total = selected.reduce((sum, [service, tier]) => sum + pricing[service][tier], 0);
-            const bundleDiscount = getBundleDiscount(selected.length);
-            const subDiscount = getSubscriptionDiscount(subLength);
-            const afterBundle = total * (1 - bundleDiscount / 100);
-            const finalMonthly = parseFloat((afterBundle * (1 - subDiscount / 100)).toFixed(2));
-
+          completed: function () {
             fetch('/.netlify/functions/create-checkout-session', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 selectedTiers,
-                subLength,
+                subLength: parseInt(document.getElementById("subSlider").value),
                 bundleName,
-                finalMonthly
+                finalMonthly: parseFloat(finalMonthly)
               })
             })
             .then(res => res.json())
@@ -1138,7 +1128,7 @@ function openPandaDocModal() {
       };
 
       const dataQueryString = Object.keys(config.data)
-        .map(key => '&' + key + '=' + encodeURIComponent(JSON.stringify(config.data[key])))
+        .map(key => `&${encodeURIComponent(key)}=${encodeURIComponent(config.data[key])}`)
         .join('');
 
       const iframe = document.createElement('iframe');
@@ -1168,6 +1158,7 @@ function openPandaDocModal() {
   }
 }
 </script>
+
 
 
 <script async type='module' src='https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js'></script>
