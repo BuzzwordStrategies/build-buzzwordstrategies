@@ -176,13 +176,13 @@
     }
     
     .view-details-text {
-      display: block;
-      margin-top: 0.75rem;
-      font-size: 0.85rem;
-      color: var(--highlight);
-      text-decoration: underline;
-      cursor: pointer;
-    }
+  display: block;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--highlight);
+  text-decoration: underline;
+  cursor: pointer;
+}
     
     .slider-wrap {
       margin-top: 2rem;
@@ -361,24 +361,25 @@
       font-size: 1.2rem;
     }
 
-    .tier-details-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: var(--highlight);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 28px;
-      height: 28px;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: 0.2s;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
+  .tier-details-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: var(--highlight);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 10;
+}
 
     .tier-details-btn:hover {
       background-color: var(--accent);
@@ -630,16 +631,16 @@ function renderTiers(service) {
     };
 
     card.innerHTML = `
-      <img src="${logos[service][tier]}" alt="${service} ${tier} logo" style="max-width: 60px; ${tier === 'Standard' ? 'filter: drop-shadow(0 0 12px #FFBA38);' : ''}" />
-      <h3>${tier}</h3>
-      <div class="tier-price">$${pricing[service][tier]}</div>
-      <div class="features">
-        <span style="color: #FFBA38;">✔️ ${feat[0]}</span>
-        <span style="color: #FFBA38;">✔️ ${feat[1]}</span>
-        <span style="color: #FFBA38;">✔️ ${feat[2]}</span>
-      </div>
-      <span class="view-details-text" onclick="openTierDetailsModal('${service}', '${tier}'); event.stopPropagation();">View all features</span>
-    `;
+  <img src="${logos[service][tier]}" alt="${service} ${tier} logo" style="max-width: 60px; ${tier === 'Standard' ? 'filter: drop-shadow(0 0 12px #FFBA38);' : ''}" />
+  <h3>${tier}</h3>
+  <div class="tier-price">$${pricing[service][tier]}</div>
+  <div class="features">
+    <span style="color: #FFBA38;">✔️ ${feat[0]}</span>
+    <span style="color: #FFBA38;">✔️ ${feat[1]}</span>
+    <span style="color: #FFBA38;">✔️ ${feat[2]}</span>
+  </div>
+  <span class="view-details-text" onclick="openTierDetailsModal('${service}', '${tier}'); event.stopPropagation();">View all features</span>
+`;
     
     card.appendChild(detailsBtn);
 
