@@ -579,7 +579,25 @@ const features = {
     Premium: ["UGC creative coordination", "Advanced targeting", "Scaling strategy"]
   }
 };
-
+.tier-details-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: var(--highlight);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 10;
+}
 // Application state variables
 const selectedTiers = {};
 let currentlyOpenService = null;
