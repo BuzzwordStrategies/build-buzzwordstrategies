@@ -34,7 +34,7 @@ exports.handler = async function(event) {
 
     // Send data to Make.com webhook
     try {
-      await fetch('https://hook.us2.make.com/hrnmgunqo9gtxhjf18htvao8vscfin6r', {
+      await fetch('https://hooks.zapier.com/hooks/catch/22745558/2nfquug/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
