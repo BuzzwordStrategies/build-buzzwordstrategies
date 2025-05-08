@@ -1,15 +1,14 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
 exports.handler = async function(event) {
   try {
     const { selectedTiers, subLength, bundleName, finalMonthly } = JSON.parse(event.body || '{}');
-
     if (!finalMonthly || finalMonthly <= 0) {
       return {
         statusCode: 400,
         body: JSON.stringify({ error: 'Missing or invalid price.' })
       };
     }
-
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
       payment_method_types: ['card'],
@@ -32,6 +31,26 @@ exports.handler = async function(event) {
       success_url: 'https://www.buzzwordstrategies.com/my-bundle?success=true',
       cancel_url: 'https://www.buzzwordstrategies.com/build-my-bundle?canceled=true'
     });
+
+    // Send data to Make.com webhook
+    try {
+      await fetch('https://hook.us2.make.com/hrnmgunqo9gtxhjf18htvao8vscfin6r', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sessionId: session.id,
+          bundleName: bundleName || 'Custom Buzzword Bundle',
+          price: finalMonthly,
+          selectedTiers,
+          subLength
+        })
+      });
+      console.log('Webhook notification sent');
+    } catch (webhookError) {
+      console.log('Webhook error, but continuing checkout:', webhookError);
+    }
 
     return {
       statusCode: 200,
