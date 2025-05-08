@@ -1,4 +1,6 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+// Add this line to import node-fetch
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 exports.handler = async function(event) {
   try {
@@ -31,8 +33,7 @@ exports.handler = async function(event) {
       success_url: 'https://www.buzzwordstrategies.com/my-bundle?success=true',
       cancel_url: 'https://www.buzzwordstrategies.com/build-my-bundle?canceled=true'
     });
-
-    // Send data to Make.com webhook
+    // Send data to Zapier webhook
     try {
       await fetch('https://hooks.zapier.com/hooks/catch/22745558/2nfquug/', {
         method: 'POST',
@@ -51,7 +52,6 @@ exports.handler = async function(event) {
     } catch (webhookError) {
       console.log('Webhook error, but continuing checkout:', webhookError);
     }
-
     return {
       statusCode: 200,
       body: JSON.stringify({ url: session.url })
