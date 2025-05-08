@@ -389,31 +389,7 @@
 
 </div>
 <script>
-document.querySelector('.buy-button').addEventListener('click', async (e) => {
-  e.preventDefault();
 
-  const bundleName = encodeURIComponent(document.getElementById('bundleName').value);
-  const subLength = parseInt(document.getElementById('subSlider').value);
-  const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
-
-  if (selected.length === 0) {
-    alert("Please select at least one product.");
-    return;
-  }
-
-  let total = selected.reduce((sum, [service, tier]) => sum + pricing[service][tier], 0);
-  const bundleDiscount = getBundleDiscount(selected.length);
-  const subDiscount = getSubscriptionDiscount(subLength);
-  const afterBundle = total * (1 - bundleDiscount / 100);
-  const finalMonthly = parseFloat((afterBundle * (1 - subDiscount / 100)).toFixed(2));
-
-  const bundle_scope = selected.map(([product, tier]) => `${product}: ${tier}`).join(', ');
-  const encodedScope = encodeURIComponent(bundle_scope);
-
-  const formURL = `https://eform.pandadoc.com/?efsid=3c944c0f-4396-4b85-b7a9-9358da8b76a7&bundle_name=${bundleName}&subLength=${subLength}&finalMonthly=${finalMonthly}&bundle_scope=${encodedScope}`;
-});
-
-</script>
 <script>
   const subSlider = document.getElementById('subSlider');
   const subLengthDisplay = document.getElementById('subLength');
@@ -1109,7 +1085,7 @@ function openPandaDocModal () {
                                   .join(', ');
 
     /* -------- build PandaDoc‑compliant embed URL -------- */
-    const pandaBaseURL = 'https://eform.pandadoc.com/?eform=0b4441ee-2edf-425e-b78f-43cc608a1d7f';
+  const pandaBaseURL = 'https://eform.pandadoc.com/?eform=0b4441ee-2edf-425e-b78f-43cc608a1d7f';
 
     /* JSON of custom variables the template expects */
     const variablePayload = {
@@ -1121,7 +1097,7 @@ function openPandaDocModal () {
 
     /* One single “variables” parameter with URL‑encoded JSON */
     const variablesParam = encodeURIComponent(JSON.stringify(variablePayload));
-    const iframeSrc      = `${pandaBaseURL}&variables=${variablesParam}`;
+    const iframeSrc = `${pandaBaseURL}&variables=${variablesParam}`;
 
     /* -------- create & insert iframe -------- */
     const iframe = document.createElement('iframe');
