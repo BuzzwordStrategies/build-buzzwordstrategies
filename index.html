@@ -4,7 +4,24 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Buzz Bundle Builder</title>
- .logo-header {
+<style>
+    :root {
+      --highlight: #FFBA38;
+      --accent: #FFE400;
+      --text: #000000;
+      --muted: #BBBBBB;
+      --white: #FFFFFF;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 2rem;
+      background: url('https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/1746563083402-582QFDJAGR0BWG1VN7ZY/unsplash-image-3Cpws7ibtfo.jpg?format=1000w') center center/cover fixed;
+      color: var(--text);
+    }
+
+    .logo-header {
       text-align: center;
       padding: 1.5rem 0;
       margin-bottom: 1rem;
@@ -14,7 +31,7 @@
       max-width: 300px;
       height: auto;
     }
-    
+ 
     .top-cart-summary {
       position: sticky;
       top: 0;
@@ -58,23 +75,15 @@
       white-space: nowrap;
     }
 
-    body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  margin: 0;
-  padding: 2rem;
-  background: url('https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/1746563083402-582QFDJAGR0BWG1VN7ZY/unsplash-image-3Cpws7ibtfo.jpg?format=1000w') center center/cover fixed;
-  color: var(--text);
-}
-
     .builder-wrapper {
-  max-width: 900px;
-  margin: auto;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 20px;
-  padding: 2rem;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-}
-
+      max-width: 900px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    }
+ 
     .service-tags {
       display: flex;
       flex-wrap: wrap;
@@ -121,23 +130,23 @@
     }
 
     .tier-card {
-  flex: 1 1 30%;
-  border: 1px solid var(--muted);
-  border-radius: 16px;
-  padding: 1.2rem;
-  text-align: center;
-  cursor: pointer;
-  transition: 0.2s;
-  position: relative;
-  background: white;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 280px;
-  margin: 0 auto;
-}
-
+      flex: 1 1 30%;
+      border: 1px solid var(--muted);
+      border-radius: 16px;
+      padding: 1.2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+      position: relative;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 280px;
+      margin: 0 auto;
+    }
+ 
     .tier-card:hover {
       border-color: var(--accent);
     }
@@ -165,6 +174,15 @@
       margin: 2px 0;
     }
     
+    .view-details-text {
+      display: block;
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+      color: var(--highlight);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    
     .slider-wrap {
       margin-top: 2rem;
     }
@@ -188,7 +206,7 @@
       cursor: pointer;
       border: none;
     }
-
+ 
     .summary {
       text-align: center;
       margin-top: 3rem;
@@ -257,90 +275,7 @@
       border: 1px solid var(--muted);
       border-radius: 8px;
     }
-
-    #sidebar {
-      position: fixed;
-      top: 25%;
-      right: 0;
-      transform: translateY(0);
-      width: 22vw;
-      max-width: 265px;
-      z-index: 999;
-      padding: 1rem 0.5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      justify-content: flex-start;
-      gap: 0.5rem;
-      background: transparent;
-      pointer-events: none;
-    }
-
-    .sidebar-item {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      background: linear-gradient(to right, rgba(255,186,56,0) 0%, #FFBA38 60%);
-      color: white;
-      font-weight: bold;
-      border-radius: 6px 0 0 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      pointer-events: all;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-
-    .sidebar-total {
-      display: inline-flex;
-      align-items: baseline;
-      gap: 0.25rem;
-      padding: 0.75rem 1rem;
-      background: linear-gradient(to left, rgba(255, 255, 255, 0), #ccc 80%);
-      color: black;
-      font-size: 1.5rem;
-      font-weight: 700;
-      border-radius: 6px 0 0 6px;
-      pointer-events: all;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      white-space: nowrap;
-      max-width: 100%;
-      box-sizing: border-box;
-    }
-
-    .sidebar-total .per-month {
-      font-size: 0.8rem;
-      font-weight: 400;
-      color: #444;
-    }
-
-    .product-name {
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #000;
-      line-height: 1.2;
-    }
-
-    .tier-name {
-      font-size: 0.95rem;
-      color: white;
-      font-weight: normal;
-      margin-top: 0.1rem;
-    }
-
-    .total-block {
-      margin-top: auto;
-      background: linear-gradient(to right, #BBBBBB, rgba(187, 187, 187, 0));
-      color: black;
-      padding: 0.75rem 1rem;
-      font-size: 1.05rem;
-      font-weight: bold;
-      border-top-right-radius: 999px;
-      border-bottom-right-radius: 999px;
-      text-align: left;
-      pointer-events: auto;
-      white-space: nowrap;
-    }
-
+ 
     /* Modal styles for tier details popup */
     .tier-modal {
       display: none;
@@ -402,7 +337,7 @@
       border-collapse: collapse;
       margin-top: 15px;
     }
-
+ 
     .tier-feature-table th,
     .tier-feature-table td {
       padding: 10px;
@@ -425,129 +360,67 @@
       font-size: 1.2rem;
     }
 
-   .tier-details-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: var(--highlight);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 28px;
-  height: 28px;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: 0.2s;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-.view-details-text {
-  display: block;
-  margin-top: 0.75rem;
-  font-size: 0.85rem;
-  color: var(--highlight);
-  text-decoration: underline;
-  cursor: pointer;
-}
+    .tier-details-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: var(--highlight);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
 
     .tier-details-btn:hover {
       background-color: var(--accent);
       color: var(--text);
     }
-
-    body {
-        background: linear-gradient(to top, #f2f2f2, #ffffff) !important;
-    }
-    .header-blur {
-        position: relative;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        background: rgba(255, 255, 255, 0.6);
-        width: 100%;
-        padding: 1rem 0;
-        text-align: center;
-        z-index: 1000;
-    }
-    .header-blur img {
-        height: 100px;
-    }
-     .cart-summary {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        background: white;
-        border-bottom: 2px solid #ccc;
-        z-index: 999;
-        padding: 0.5rem 2rem;
-        font-weight: bold;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .cart-summary .items {
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-    }
-    .cart-summary .item-bubble {
-        background: #FFBA38;
-        color: white;
-        border-radius: 999px;
-        padding: 0.25rem 1rem;
-        font-size: 0.9rem;
-    }
-    .chatbot-bar {
-        margin-top: 2rem;
-        display: flex;
-        justify-content: center;
-    }
-    zapier-interfaces-chatbot-embed {
-        border-radius: 10px;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-    }
     
     /* Responsive styles */
- @media (max-width: 768px) {
-  .tier-card {
-    flex: 1 1 100%;
-    max-width: 100%;
-    margin-bottom: 1rem;
-  }
-  
-  .top-cart-summary {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .cart-items {
-    justify-content: center;
-  }
-  
-  .cart-total {
-    font-size: 1.1rem;
-  }
-  
-  .logo-header img {
-    max-width: 80%;
-  }
-  
-  input#bundleName {
-    width: 100%;
-  }
-  
-  .modal-content {
-    width: 95%;
-  }
-  
-  .builder-wrapper {
-    padding: 1rem;
-  }
-}
+    @media (max-width: 768px) {
+      .tier-card {
+        flex: 1 1 100%;
+        max-width: 100%;
+        margin-bottom: 1rem;
+      }
+      
+      .top-cart-summary {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .cart-items {
+        justify-content: center;
+      }
+      
+      .cart-total {
+        font-size: 1.1rem;
+      }
+      
+      .logo-header img {
+        max-width: 80%;
+      }
+      
+      input#bundleName {
+        width: 100%;
+      }
+      
+      .modal-content {
+        width: 95%;
+      }
+      
+      .builder-wrapper {
+        padding: 1rem;
+      }
+    }
 </style>
 </head>
 
@@ -630,7 +503,7 @@ const logos = {
     Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/051181f0-7847-4b5e-8bbb-f1beb8c579c4/Google+logo.png?format=1000w",
     Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/26113377-495f-4661-bc61-cd8c696853b6/google+premium+logo.png?format=1000w"
   },
-  "TikTok Ads": {
+"TikTok Ads": {
     Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/13406429-467d-47bd-8e03-3d59a11aa68e/TikTok+logo.png?format=1000w",
     Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/13406429-467d-47bd-8e03-3d59a11aa68e/TikTok+logo.png?format=1000w",
     Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/a7eb2f8c-9226-4f75-af38-538f0e57656b/tik+tok+premium+logo.png?format=1000w"
@@ -678,7 +551,7 @@ const features = {
     Standard: ["3 images/wk optimized", "AI data training", "Bi-weekly Q&A"],
     Premium: ["Daily images + drip", "Human verification", "Custom AI tuning"]
   },
-  "Google Ads": {
+ "Google Ads": {
     Base: ["Search/display campaigns", "Basic targeting", "Pixel + conversion setup"],
     Standard: ["Keyword research", "Negative keywords", "Ad testing"],
     Premium: ["Keyword expansion", "Performance Max", "Dedicated strategist"]
@@ -702,181 +575,6 @@ const features = {
     Base: ["Basic campaign build", "Ad copy creation", "Pixel setup"],
     Standard: ["Audience targeting", "Conversion tracking", "Ad testing"],
     Premium: ["UGC creative coordination", "Advanced targeting", "Scaling strategy"]
-  }
-};
-    
-// Define detailed service features for modal popups
-const detailedServiceFeatures = {
-  "Social Posts": {
-    features: [
-      { name: "Posting Frequency", Base: "1 Post / Week", Standard: "4 Posts / Week", Premium: "Everyday", description: "How often we post content." },
-      { name: "Original Posts Per Month", Base: "4 Posts", Standard: "16 Posts", Premium: "28 Posts", description: "The number of posts we create for your account each month." },
-      { name: "Social Channels", Base: "1 Channel", Standard: "3 Channels", Premium: "6 Channels", description: "The number of social media platforms we post to based on your selection." },
-      { name: "Posting Time Optimization", Base: false, Standard: false, Premium: true, description: "Posts scheduled at times of peak engagement using analytics." },
-      { name: "Licensed Images", Base: true, Standard: true, Premium: true, description: "Each post includes one licensed stock image, usually as the featured image." },
-      { name: "Image Submissions", Base: true, Standard: true, Premium: true, description: "Clients can submit custom images, and we'll create posts with them." },
-      { name: "Trending Hashtags", Base: true, Standard: true, Premium: true, description: "We research and select the best hashtags based on trends and traffic." },
-      { name: "Scheduled Posts", Base: true, Standard: true, Premium: true, description: "Posts are scheduled according to your preference or optimized for peak traffic times." },
-      { name: "3 Point Inspection", Base: true, Standard: true, Premium: true, description: "Each post is checked for grammar, spelling, originality, and creativity." },
-      { name: "Quality Assurance Audit", Base: true, Standard: true, Premium: true, description: "Posts are reviewed by a specialist to ensure high quality." },
-      { name: "Monthly Reporting", Base: true, Standard: true, Premium: true, description: "A report showing published posts and their metrics is sent to you monthly." }
-    ]
-  },
-  "Content": {
-    features: [
-      { name: "Blog Articles", Base: "1 Blog Article", Standard: "2 Blog Articles", Premium: "4 Blog Articles", description: "The number of blog articles we create for your account each month." },
-      { name: "Word Count", Base: "500 Words", Standard: "1,000 Words", Premium: "2,000 Words", description: "The word count for each article." },
-      { name: "SEO Keyword Boost", Base: true, Standard: true, Premium: true, description: "Researching and integrating SEO keywords into your articles for better visibility." },
-      { name: "AI Enhanced Topic Research", Base: true, Standard: true, Premium: true, description: "Identifying the best topics based on trends and competitiveness." },
-      { name: "AI GPT-4o Written", Base: true, Standard: true, Premium: true, description: "High-quality content created by GPT-4o AI." },
-      { name: "Curated Stock Images", Base: true, Standard: true, Premium: true, description: "Each article includes one licensed stock image, typically as the featured image." },
-      { name: "Human Reviewed & Refined", Base: true, Standard: true, Premium: true, description: "Our editors meticulously polish each piece for accuracy and quality." },
-      { name: "Article Publishing", Base: true, Standard: true, Premium: true, description: "Our team publishes approved articles directly to your website." }
-    ]
-  },
-  "Backlinks": {
-    features: [
-      { name: "Backlink Domain Authority", Base: "DA 10+", Standard: "DA 30+", Premium: "DA 50+", description: "The higher the domain authority of a site, the more valuable its backlink is for SEO." },
-      { name: "Total Amount of Links", Base: "10 Backlinks", Standard: "15 Backlinks", Premium: "20 Backlinks", description: "The number of backlinks provided each month based on your selected tier." },
-      { name: "Total Amount of In-Content Links", Base: "13 In-Content Backlinks", Standard: "23 In-Content Backlinks", Premium: "41 In-Content Backlinks", description: "The number of backlinks embedded within webpage content to boost SEO." },
-      { name: "Target URL", Base: "1 URL", Standard: "1 URL", Premium: "1 URL", description: "The specific page that backlinks will direct traffic to." },
-      { name: "Social Bookmark", Base: "2 (x2)", Standard: "3 (x3)", Premium: "4 (x3)", description: "Backlinks created by submitting your site to reputable social bookmarking sites." },
-      { name: "Q&A Content Submission", Base: "1 (x2)", Standard: "2 (x3)", Premium: "3 (x3)", description: "Backlinks generated by providing answers on reputable Q&A websites." },
-      { name: "Image Sharing", Base: "2", Standard: "3", Premium: "4", description: "Backlinks generated by sharing images that link to your website." },
-      { name: "Business Profile Link", Base: "2", Standard: "3", Premium: "4", description: "Backlinks created by adding your site information to reputable online profiles." },
-      { name: "Directory Submission", Base: "1", Standard: "1", Premium: "1", description: "Backlinks created by listing your site on reputable online directories." },
-      { name: "Citation Submission", Base: "1", Standard: "1", Premium: "1", description: "Backlinks generated by submitting your site to reputable citation listings." },
-      { name: "Classified Ad Submission", Base: "1", Standard: "1", Premium: "1", description: "Backlinks created by submitting your site to reputable online classified ads." },
-      { name: "Web 2.0 Blog Content", Base: false, Standard: "500 Words", Premium: "1,000 Words", description: "Content created for submission to Web 2.0 blogs." },
-      { name: "Web 2.0 Blog Posting", Base: false, Standard: "1 (x3)", Premium: "1 (x3)", description: "Backlinks created by submitting blogs to reputable Web 2.0 platforms." },
-      { name: "Press Release Content", Base: false, Standard: false, Premium: "1,000 Words", description: "Content created for press release submissions." },
-      { name: "Press Release Submission", Base: false, Standard: false, Premium: "1 (x2)", description: "Backlinks generated by submitting press releases to reputable news and press sites." },
-      { name: "Monthly Backlink Report", Base: true, Standard: true, Premium: true, description: "A monthly report detailing all backlinks generated for your account." }
-    ]
-  },
-  "GBP Ranker": {
-    features: [
-      { name: "AI Enhanced Image Optimization", Base: "1 Image / Week", Standard: "3 Image / Week", Premium: "Every day", description: "We auto optimize your images with keywords in the filename & meta description plus geotag them for better visibility and SEO." },
-      { name: "AI Q&A's", Base: "Every Month", Standard: "Every Two Weeks", Premium: "Every Week", description: "We ask then answer questions on your Google Business Profile." },
-      { name: "AI Data-Driven Training", Base: true, Standard: true, Premium: true, description: "We auto train our AI using your website data and information to create content that perfectly reflects your business." },
-      { name: "AI Custom Tuning", Base: true, Standard: true, Premium: true, description: "We auto optimize our AI to continuously analyze and adjust your profile settings based on top-performing strategies." },
-      { name: "AI Review Replies", Base: true, Standard: true, Premium: true, description: "We auto respond to all your Google reviews using AI." },
-      { name: "Optimized Image Drip", Base: true, Standard: true, Premium: true, description: "Upload unlimited images for AI processing. We optimize their meta data for your target keywords plus geo-tag them for your target cities, then drip them out over time for maximum impact." },
-      { name: "Image Upload Reminders", Base: true, Standard: true, Premium: true, description: "We'll notify you when we're running low on images to optimize and use." },
-      { name: "Human Content Verification", Base: true, Standard: true, Premium: true, description: "We ensure all AI-generated content is reviewed by humans for quality and accuracy." },
-      { name: "Custom Requests", Base: true, Standard: true, Premium: true, description: "We can customize the content to match your brand. Whether you want to sound funnier, more professional, include certain hashtags, we can accomodate." },
-      { name: "Weekly Work Logs", Base: true, Standard: true, Premium: true, description: "Receive weekly summary emails that show exactly what was done in the previous week, and what we're going to do in the upcoming week." },
-      { name: "Monthly Performance Reports", Base: true, Standard: true, Premium: true, description: "We provide monthly reports with rankings and heatmaps for your Google listing's key target search terms." }
-    ]
-  },
-      "SEO": {
-    features: [
-      { name: "Primary Keywords", Base: "10 Keywords", Standard: "20 Keywords", Premium: "40 Keywords", description: "The number of keywords we'll monitor and prioritize for higher rankings, with regular tracking of their performance." },
-      { name: "SSL Certification Check", Base: true, Standard: true, Premium: true, description: "Ensuring your website is secure and trusted by search engines." },
-      { name: "Google Analytics", Base: true, Standard: true, Premium: true, description: "Setting up Google Analytics to track and report on your website's traffic and user behavior." },
-      { name: "Google Search Console", Base: true, Standard: true, Premium: true, description: "Configuring Google Search Console to monitor and optimize your website's visibility in Google search results." },
-      { name: "XML Sitemap Setup & Submission", Base: true, Standard: true, Premium: true, description: "Creating and submitting a sitemap to search engines for effective indexing." },
-      { name: "Robots.txt Setup & Optimization", Base: true, Standard: true, Premium: true, description: "Configuring your robots.txt file to guide search engines on which parts of your site to crawl and index." },
-      { name: "Google Analytics Goal Setup", Base: true, Standard: true, Premium: true, description: "Setting up goals in Google Analytics to track important user actions like purchases or form submissions." },
-      { name: "Competitor Research", Base: true, Standard: true, Premium: true, description: "Analyzing competitors' strategies to give your SEO efforts an edge." },
-      { name: "Schema Setup", Base: true, Standard: true, Premium: true, description: "Adding schema markup to your website to help search engines better understand your content." },
-      { name: "Monthly Report Setup & Schedule", Base: true, Standard: true, Premium: true, description: "Setting up automated reports to keep you informed of SEO progress." },
-      { name: "On-page Audits", Base: true, Standard: true, Premium: true, description: "Regularly auditing your website optimize existing content." },
-      { name: "Google Search Console Management", Base: true, Standard: true, Premium: true, description: "Resolving errors flagged by Google to improve site performance." },
-      { name: "Title Tag Optimization", Base: true, Standard: true, Premium: true, description: "Enhancing title tags to improve click-through rates and rankings." },
-      { name: "Meta Description Optimization", Base: true, Standard: true, Premium: true, description: "Refining meta descriptions to attract more clicks from search results." },
-      { name: "Image Alt & Title Tag Optimization", Base: true, Standard: true, Premium: true, description: "Optimizing image descriptions for better search visibility." },
-      { name: "Internal Linking", Base: true, Standard: true, Premium: true, description: "Improving site navigation and SEO by linking related content within your website." },
-      { name: "Outbound Linking", Base: true, Standard: true, Premium: true, description: "Optimizing external links to boost credibility." },
-      { name: "URL Optimization", Base: true, Standard: true, Premium: true, description: "Simplifying and optimizing URLs for better search engine understanding and user experience." },
-      { name: "301 Page Redirects", Base: true, Standard: true, Premium: true, description: "Managing redirects from old URLs to new ones to preserve SEO value." },
-      { name: "Backlink Audits", Base: true, Standard: true, Premium: true, description: "Reviewing all backlinks, manually disavowing any flagged as harmful to your site's SEO." },
-      { name: "Monthly Ranking & Analytics Report", Base: true, Standard: true, Premium: true, description: "Providing monthly insights into your site's search engine rankings and traffic." },
-      { name: "Monthly Progress Report", Base: true, Standard: true, Premium: true, description: "Summarizing the results and impact of SEO efforts each month." }
-    ]
-  },
-  "TikTok Ads": {
-    features: [
-      { name: "Budget Requirements", Base: "$0 - $2,500", Standard: "$2,500 - $5,000", Premium: "$5,000+", description: "The monthly budget needed to support your selected service tier." },
-      { name: "Campaign Build-Out", Base: true, Standard: true, Premium: true, description: "Structuring and launching comprehensive ad campaigns aligned with your goals." },
-      { name: "Pixel Installation & Configuration", Base: true, Standard: true, Premium: true, description: "Setting up tracking pixels to monitor and optimize campaign performance." },
-      { name: "Conversion Tracking Setup", Base: true, Standard: true, Premium: true, description: "Implementing systems to accurately track conversions and measure success." },
-      { name: "Audience Targeting", Base: true, Standard: true, Premium: true, description: "Identifying and selecting the most relevant audience segments for your ads." },
-      { name: "Ad Copy Creation", Base: true, Standard: true, Premium: true, description: "Crafting compelling ad copy designed to capture attention and drive action." },
-      { name: "Offer Recommendations", Base: true, Standard: true, Premium: true, description: "Suggesting effective offers to boost engagement and conversions" },
-      { name: "Budget Recommendations", Base: true, Standard: true, Premium: true, description: "Providing guidance on optimal budget allocation for your campaigns." },
-      { name: "Retargeting Ads", Base: true, Standard: true, Premium: true, description: "Creating ads aimed at re-engaging users who have previously interacted with your brand." },
-      { name: "Weekly Performance Review & Enhancements", Base: true, Standard: true, Premium: true, description: "Regular updates to optimize your ad account for better performance." },
-      { name: "Performance Insights", Base: true, Standard: true, Premium: true, description: "Delivering reports and analysis on key metrics and trends in your campaigns as needed." },
-      { name: "Landing Page Recommendations", Base: true, Standard: true, Premium: true, description: "Suggesting improvements to your landing pages to increase conversion rates." },
-      { name: "Offer Strategy Recommendations", Base: true, Standard: true, Premium: true, description: "Advising on the best offers to attract and convert your target audience." },
-      { name: "Ad Copy Optimizations", Base: true, Standard: true, Premium: true, description: "Enhancing your ad copy to improve engagement and effectiveness." },
-      { name: "Audience Testing", Base: true, Standard: true, Premium: true, description: "Experimenting with different audience segments to find the most responsive groups." },
-      { name: "Ad Testing", Base: true, Standard: true, Premium: true, description: "Running tests on different ad variations to optimize performance." },
-      { name: "Budget Management", Base: true, Standard: true, Premium: true, description: "Overseeing and adjusting your budget to ensure optimal spending." },
-      { name: "Conversion Tracking Audits", Base: true, Standard: true, Premium: true, description: "Reviewing and optimizing your conversion tracking setup to ensure accurate data." },
-      { name: "Monthly Progress Report", Base: true, Standard: true, Premium: true, description: "Summarizing your campaign's monthly performance with key takeaways and next steps." }
-    ]
-  },
-  "Google Ads": {
-    features: [
-      { name: "Budget Requirements", Base: "$0 - $2,500", Standard: "$2,500 - $5,000", Premium: "$5,000+", description: "The monthly budget needed to support your selected service tier." },
-      { name: "Search Campaigns", Base: true, Standard: true, Premium: true, description: "Text ads on Google Search results for specific keywords." },
-      { name: "Display Campaigns", Base: true, Standard: true, Premium: true, description: "Visual banners across the Google Display Network (websites, apps, videos)." },
-      { name: "Shopping Campaigns", Base: true, Standard: true, Premium: true, description: "Product ads with images and prices on Google Shopping and other networks." },
-      { name: "Video Campaigns", Base: true, Standard: true, Premium: true, description: "Ads on YouTube and the Google Display Network." },
-      { name: "App Campaigns", Base: true, Standard: true, Premium: true, description: "Ads promoting mobile apps across Google Search, YouTube, and Play Store." },
-      { name: "Performance Max Campaigns", Base: true, Standard: true, Premium: true, description: "Automated campaigns maximizing performance across all Google channels." },
-      { name: "Demand Gen Campaigns", Base: true, Standard: true, Premium: true, description: "Driving demand and conversions on YouTube, Discover, and Gmail." },
-      { name: "Campaign Build-Out", Base: true, Standard: true, Premium: true, description: "Structuring and setting up your Google Ads campaign." },
-      { name: "Pixel Installation & Configuration", Base: true, Standard: true, Premium: true, description: "Setting up tracking pixels to monitor user actions." },
-      { name: "Conversion Tracking Setup", Base: true, Standard: true, Premium: true, description: "Implementing tracking to measure campaign success." },
-      { name: "Keyword Research", Base: true, Standard: true, Premium: true, description: "Identifying the best keywords to target in your ads." },
-      { name: "Negative Keywords", Base: true, Standard: true, Premium: true, description: "Excluding irrelevant keywords to avoid wasted spend" },
-      { name: "Location Targeting", Base: true, Standard: true, Premium: true, description: "Defining geographic areas where your ads will be shown." },
-      { name: "Audience Targeting", Base: true, Standard: true, Premium: true, description: "Selecting specific audience segments to reach with your ads." },
-      { name: "Ad Copy Creation", Base: true, Standard: true, Premium: true, description: "Crafting compelling text for your Google ads." },
-      { name: "Ad Extensions", Base: true, Standard: true, Premium: true, description: "Adding extra information to your ads to improve visibility" },
-      { name: "Budget Recommendations", Base: true, Standard: true, Premium: true, description: "Suggesting an optimal budget for your campaign." },
-      { name: "Retargeting Ads", Base: true, Standard: true, Premium: true, description: "Creating ads to re-engage visitors who didn't convert." },
-      { name: "Weekly Performance Review & Enhancements", Base: true, Standard: true, Premium: true, description: "Regularly reviewing and optimizing campaign performance." },
-      { name: "Conversion Tracking Audits", Base: true, Standard: true, Premium: true, description: "Checking and refining your conversion tracking setup." },
-      { name: "Landing Page Recommendations", Base: true, Standard: true, Premium: true, description: "Suggesting improvements to boost landing page effectiveness." },
-      { name: "Ad Copy Optimizations", Base: true, Standard: true, Premium: true, description: "Refining ad text for better engagement and results." },
-      { name: "Extension Testing", Base: true, Standard: true, Premium: true, description: "Testing different ad extensions to enhance ad performance." },
-      { name: "Audience Testing", Base: true, Standard: true, Premium: true, description: "Experimenting with various audience segments to find the best fit" },
-      { name: "Ad Testing", Base: true, Standard: true, Premium: true, description: "Running tests on different ad variations to optimize performance." },
-      { name: "Budget Management", Base: true, Standard: true, Premium: true, description: "Overseeing and adjusting budget allocation for optimal spend." },
-      { name: "Performance Insights", Base: true, Standard: true, Premium: true, description: "Analyzing key metrics to understand and improve campaign outcomes." },
-      { name: "Monthly Progress Report", Base: true, Standard: true, Premium: true, description: "Summarizing campaign performance and progress each month." }
-    ]
-  },
-     "Meta Ads": {
-    features: [
-      { name: "Budget Requirements", Base: "$0 - $2,500", Standard: "$2,500 - $5,000", Premium: "$5,000+", description: "The monthly budget needed to support your selected service tier." },
-      { name: "Meta Ads", Base: true, Standard: true, Premium: true, description: "Ads that appear across Facebook and its family of apps, including Messenger and Audience Network." },
-      { name: "Instagram Ads", Base: true, Standard: true, Premium: true, description: "Visual and video ads displayed in Instagram's feed, Stories, Explore, and Reels." },
-      { name: "Custom Graphic Image Creatives", Base: "3 Graphics", Standard: "6 Graphics", Premium: "9 Graphics", description: "Designing tailored visual graphics to enhance your ad campaigns." },
-      { name: "Campaign Build-Out", Base: true, Standard: true, Premium: true, description: "Structuring and launching comprehensive ad campaigns aligned with your goals." },
-      { name: "Pixel Installation & Configuration", Base: true, Standard: true, Premium: true, description: "Setting up tracking pixels to monitor and optimize campaign performance." },
-      { name: "Conversion Tracking Setup", Base: true, Standard: true, Premium: true, description: "Implementing systems to accurately track conversions and measure success." },
-      { name: "Audience Targeting", Base: true, Standard: true, Premium: true, description: "Identifying and selecting the most relevant audience segments for your ads." },
-      { name: "Ad Copy Creation", Base: true, Standard: true, Premium: true, description: "Crafting compelling ad copy designed to capture attention and drive action." },
-      { name: "Offer Recommendations", Base: true, Standard: true, Premium: true, description: "Suggesting effective offers to boost engagement and conversions" },
-      { name: "Budget Recommendations", Base: true, Standard: true, Premium: true, description: "Providing guidance on optimal budget allocation for your campaigns." },
-      { name: "In-App Lead Form Creation", Base: true, Standard: true, Premium: true, description: "Designing and setting up lead forms within the app to capture user information." },
-      { name: "Retargeting Ads", Base: true, Standard: true, Premium: true, description: "Creating ads aimed at re-engaging users who have previously interacted with your brand." },
-      { name: "Weekly Performance Review & Enhancements", Base: true, Standard: true, Premium: true, description: "Regular updates to optimize your ad account for better performance." },
-      { name: "Performance Insights", Base: true, Standard: true, Premium: true, description: "Delivering reports and analysis on key metrics and trends in your campaigns as needed." },
-      { name: "Landing Page Recommendations", Base: true, Standard: true, Premium: true, description: "Suggesting improvements to your landing pages to increase conversion rates." },
-      { name: "Offer Strategy Recommendations", Base: true, Standard: true, Premium: true, description: "Advising on the best offers to attract and convert your target audience." },
-      { name: "Ad Copy Optimizations", Base: true, Standard: true, Premium: true, description: "Enhancing your ad copy to improve engagement and effectiveness." },
-      { name: "Audience Testing", Base: true, Standard: true, Premium: true, description: "Experimenting with different audience segments to find the most responsive groups." },
-      { name: "Ad Testing", Base: true, Standard: true, Premium: true, description: "Running tests on different ad variations to optimize performance." },
-      { name: "Budget Management", Base: true, Standard: true, Premium: true, description: "Overseeing and adjusting your budget to ensure optimal spending." },
-      { name: "Conversion Tracking Audits", Base: true, Standard: true, Premium: true, description: "Reviewing and optimizing your conversion tracking setup to ensure accurate data." },
-      { name: "Monthly Progress Report", Base: true, Standard: true, Premium: true, description: "Summarizing your campaign's monthly performance with key takeaways and next steps." }
-    ]
   }
 };
 
@@ -956,7 +654,7 @@ function renderTiers(service) {
 
   container.appendChild(row);
 }
-    
+     
 function getSubscriptionDiscount(months) {
   if (months === 6) return 2;
   if (months === 9) return 3.5;
@@ -992,7 +690,7 @@ function renderSummary() {
   document.getElementById("finalPriceDisplay").textContent = `$${final.toFixed(2)}`;
   document.getElementById("savingsBubble").textContent = `You're saving $${totalSaved.toFixed(2)} per month`;
 
-// Update top cart summary
+  // Update top cart summary
   updateTopCartSummary();
   
   // Save bundle data to localStorage
@@ -1153,7 +851,7 @@ document.addEventListener("DOMContentLoaded", () => {
     currentlyOpenService = products[0];
   }
   
- // Initial render
+  // Initial render
   renderTags();
   renderTiers(currentlyOpenService);
   renderSummary();
