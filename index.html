@@ -389,29 +389,7 @@
 
 </div>
 <script>
-document.querySelector('.buy-button').addEventListener('click', async (e) => {
-  e.preventDefault();
 
-  const bundleName = encodeURIComponent(document.getElementById('bundleName').value);
-  const subLength = parseInt(document.getElementById('subSlider').value);
-  const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
-
-  if (selected.length === 0) {
-    alert("Please select at least one product.");
-    return;
-  }
-
-  let total = selected.reduce((sum, [service, tier]) => sum + pricing[service][tier], 0);
-  const bundleDiscount = getBundleDiscount(selected.length);
-  const subDiscount = getSubscriptionDiscount(subLength);
-  const afterBundle = total * (1 - bundleDiscount / 100);
-  const finalMonthly = parseFloat((afterBundle * (1 - subDiscount / 100)).toFixed(2));
-
-  const bundle_scope = selected.map(([product, tier]) => `${product}: ${tier}`).join(', ');
-  const encodedScope = encodeURIComponent(bundle_scope);
-
-  const formURL = `https://eform.pandadoc.com/?efsid=3c944c0f-4396-4b85-b7a9-9358da8b76a7&bundle_name=${bundleName}&subLength=${subLength}&finalMonthly=${finalMonthly}&bundle_scope=${encodedScope}`;
-});
 
 </script>
 <script>
@@ -1063,100 +1041,119 @@ html += `
     updateSidebar();
   };
   updateSidebar();
-</script>
-<div id="pandadocModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); z-index:99999; justify-content:center; align-items:center;">
-  <div style="position:relative; width:90%; height:90%; background:white; border-radius:12px; overflow:hidden;">
-    <button onclick="closePandaDocModal()" style="position:absolute; top:10px; right:10px; background:#FFBA38; color:white; border:none; border-radius:6px; padding:0.5rem 1rem; font-weight:bold; cursor:pointer; z-index:10;">Close</button>
-    <div id='form-container-377ffc49-8123-4582-8181-d7f87b7a9621' style="width:100%; height:100%;"></div>
+<!-- ========= PandaDoc MODAL (copy‑paste entire block) ========= -->
+<div id="pandadocModal"
+     style="display:none; position:fixed; inset:0; width:100vw; height:100vh;
+            background:rgba(0,0,0,.8); z-index:99999; justify-content:center; align-items:center;">
+  <div style="position:relative; width:90%; height:90%; background:#ffffff;
+              border-radius:12px; overflow:hidden;">
+    <button onclick="closePandaDocModal()"
+            style="position:absolute; top:10px; right:10px; background:#FFBA38;
+                   color:#ffffff; border:none; border-radius:6px; padding:.5rem 1rem;
+                   font-weight:bold; cursor:pointer; z-index:10;">
+      Close
+    </button>
+
+    <!-- PandaDoc form will be injected here -->
+    <div id="form-container-377ffc49-8123-4582-8181-d7f87b7a9621"
+         style="width:100%; height:100%;"></div>
   </div>
 </div>
 
 <script>
-function openPandaDocModal() {
-  const modal = document.getElementById("pandadocModal");
-  modal.style.display = "flex";
+/* ---------- helper to hide modal ---------- */
+function closePandaDocModal () {
+  document.getElementById('pandadocModal').style.display = 'none';
+}
 
-  const container = document.getElementById("form-container-377ffc49-8123-4582-8181-d7f87b7a9621");
+/* ---------- open modal, inject PandaDoc iframe with pre‑filled variables ---------- */
+function openPandaDocModal () {
+  const modal = document.getElementById('pandadocModal');
+  modal.style.display = 'flex';
+
+  const containerId = 'form-container-377ffc49-8123-4582-8181-d7f87b7a9621';
+  const container   = document.getElementById(containerId);
+
+  /* do this only the first time the modal opens */
   if (!container.hasChildNodes()) {
-    (function () {
-      const bundleName = document.getElementById("bundleName").value || '';
-      const subLength = document.getElementById("subSlider").value + " months";
-      const finalMonthly = document.getElementById("finalPriceDisplay").textContent.replace('$', '');
-      const selectedServices = Object.entries(selectedTiers)
-        .filter(([_, tier]) => tier)
-        .map(([product, tier]) => `${product}: ${tier}`)
-        .join(', ');
 
-      const config = {
-        nodeId: 'form-container-377ffc49-8123-4582-8181-d7f87b7a9621',
-        width: '100%',
-        height: '700px',
-        url: 'https://eform.pandadoc.com/?eform=0b4441ee-2edf-425e-b78f-43cc608a1d7f',
-        events: {
-          completed: function () {
-            fetch('/.netlify/functions/create-checkout-session', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                selectedTiers,
-                subLength: parseInt(document.getElementById("subSlider").value),
-                bundleName,
-                finalMonthly: parseFloat(finalMonthly)
+    /* gather live data from the page */
+    const bundleName       = document.getElementById('bundleName').value.trim();
+    const subLength        = document.getElementById('subSlider').value;          // numeric, e.g. "12"
+    const finalMonthly     = document.getElementById('finalPriceDisplay').textContent.replace('$','');
+    const selectedServices = Object.entries(selectedTiers)
+                                  .filter(([ , tier]) => tier)
+                                  .map(([product, tier]) => `${product}: ${tier}`)
+                                  .join(', ');
+
+    /* -------- build PandaDoc‑compliant embed URL -------- */
+    const pandaBaseURL = 'https://eform.pandadoc.com/?eform=0b4441ee-2edf-425e-b78f-43cc608a1d7f';
+
+    /* JSON of custom variables the template expects */
+    const variablePayload = {
+      bundleName,
+      subLength,          // just the number
+      finalMonthly,
+      selectedServices
+    };
+
+    /* One single “variables” parameter with URL‑encoded JSON */
+    const variablesParam = encodeURIComponent(JSON.stringify(variablePayload));
+    const iframeSrc      = `${pandaBaseURL}&variables=${variablesParam}`;
+
+    /* -------- create & insert iframe -------- */
+    const iframe = document.createElement('iframe');
+    iframe.frameBorder = 0;
+    iframe.width       = '100%';
+    iframe.height      = '100%';
+    iframe.src         = iframeSrc;
+
+    container.appendChild(iframe);
+
+    /* -------- listen for PandaDoc events (optional) -------- */
+    const eventMethod   = window.addEventListener ? 'addEventListener' : 'attachEvent';
+    const messageEvent  = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
+
+    window[eventMethod](messageEvent, function (e) {
+      if (e && e.data && iframe && e.source === iframe.contentWindow) {
+        try {
+          const msgObj = JSON.parse(e.data);
+          if (msgObj && msgObj.event) {
+            const evt = msgObj.event.replace('embed.form.','');
+
+            /* handle “completed” → create Stripe checkout session */
+            if (evt === 'completed') {
+              fetch('/.netlify/functions/create-checkout-session', {
+                method : 'POST',
+                headers: { 'Content-Type':'application/json' },
+                body   : JSON.stringify({
+                  selectedTiers,
+                  subLength   : parseInt(subLength,10),
+                  bundleName,
+                  finalMonthly: parseFloat(finalMonthly)
+                })
               })
-            })
-            .then(res => res.json())
-            .then(data => {
-              if (data.url) {
-                window.location.href = data.url;
-              } else {
-                alert("Checkout failed. Please try again.");
-              }
-            })
-            .catch(err => {
-              alert("Error starting checkout.");
-              console.error(err);
-            });
-          }
-        },
-        data: {
-          bundleName,
-          subLength,
-          finalMonthly,
-          selectedServices
-        }
-      };
-
-      const dataQueryString = Object.keys(config.data)
-        .map(key => `&${encodeURIComponent(key)}=${encodeURIComponent(config.data[key])}`)
-        .join('');
-
-      const iframe = document.createElement('iframe');
-      iframe.frameBorder = 0;
-      iframe.src = config.url + dataQueryString;
-      iframe.height = '100%';
-      iframe.width = '100%';
-
-      document.getElementById(config.nodeId).append(iframe);
-
-      const eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
-      const messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
-
-      window[eventMethod](messageEvent, function(e) {
-        if (e && e.data && config && iframe && e.source === iframe.contentWindow) {
-          try {
-            const message = JSON.parse(e.data);
-            if (message && message.event) {
-              const event = message.event.replace('embed.form.', '');
-              const callback = config.events ? config.events[event] : null;
-              if (callback) callback(message.data);
+              .then(r => r.json())
+              .then(json => {
+                if (json.url) {
+                  window.location.href = json.url;
+                } else {
+                  alert('Checkout failed. Please try again.');
+                }
+              })
+              .catch(err => {
+                console.error(err);
+                alert('Error starting checkout.');
+              });
             }
-          } catch (e) {}
-        }
-      }, false);
-    })();
+          }
+        } catch (err) {}
+      }
+    }, false);
   }
 }
 </script>
+<!-- ========= end PandaDoc MODAL ========= -->
 
 
 
