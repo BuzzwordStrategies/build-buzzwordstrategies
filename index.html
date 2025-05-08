@@ -1119,12 +1119,13 @@ function openPandaDocModal() {
             });
           }
         },
-        data: {
-          "Bundle Name": bundleName,
-          "Subscription Length": subLength,
-          "Monthly Price": finalMonthly,
-          "Selected Services": selectedServices
-        }
+       data: {
+  "bundleName": bundleName,
+  "subLength": subLength,
+  "finalMonthly": finalMonthly,
+  "selectedServices": selectedServices
+}
+
       };
 
       const dataQueryString = Object.keys(config.data)
