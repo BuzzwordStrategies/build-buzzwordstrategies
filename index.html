@@ -389,7 +389,29 @@
 
 </div>
 <script>
+document.querySelector('.buy-button').addEventListener('click', async (e) => {
+  e.preventDefault();
 
+  const bundleName = encodeURIComponent(document.getElementById('bundleName').value);
+  const subLength = parseInt(document.getElementById('subSlider').value);
+  const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
+
+  if (selected.length === 0) {
+    alert("Please select at least one product.");
+    return;
+  }
+
+  let total = selected.reduce((sum, [service, tier]) => sum + pricing[service][tier], 0);
+  const bundleDiscount = getBundleDiscount(selected.length);
+  const subDiscount = getSubscriptionDiscount(subLength);
+  const afterBundle = total * (1 - bundleDiscount / 100);
+  const finalMonthly = parseFloat((afterBundle * (1 - subDiscount / 100)).toFixed(2));
+
+  const bundle_scope = selected.map(([product, tier]) => `${product}: ${tier}`).join(', ');
+  const encodedScope = encodeURIComponent(bundle_scope);
+
+  const formURL = `https://eform.pandadoc.com/?efsid=3c944c0f-4396-4b85-b7a9-9358da8b76a7&bundle_name=${bundleName}&subLength=${subLength}&finalMonthly=${finalMonthly}&bundle_scope=${encodedScope}`;
+});
 
 </script>
 <script>
@@ -1041,7 +1063,7 @@ html += `
     updateSidebar();
   };
   updateSidebar();
-<!-- ========= PandaDoc MODAL (copy‑paste entire block) ========= -->
+</script>
 <div id="pandadocModal"
      style="display:none; position:fixed; inset:0; width:100vw; height:100vh;
             background:rgba(0,0,0,.8); z-index:99999; justify-content:center; align-items:center;">
