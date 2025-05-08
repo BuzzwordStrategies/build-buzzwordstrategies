@@ -4,31 +4,76 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Buzz Bundle Builder</title>
-<style>
-    :root {
-      --highlight: #FFBA38;
-      --accent: #FFE400;
-      --text: #000000;
-      --muted: #BBBBBB;
-      --white: #FFFFFF;
+ .logo-header {
+      text-align: center;
+      padding: 1.5rem 0;
+      margin-bottom: 1rem;
+    }
+    
+    .logo-header img {
+      max-width: 300px;
+      height: auto;
+    }
+    
+    .top-cart-summary {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+      margin-bottom: 2rem;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      backdrop-filter: blur(10px);
+    }
+    
+    .cart-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    
+    .cart-item {
+      background: #FFBA38;
+      color: white;
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    
+    .cart-total {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--highlight);
+      white-space: nowrap;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      margin: 0;
-      padding: 2rem;
-      background: transparent;
-      color: var(--text);
-    }
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  margin: 0;
+  padding: 2rem;
+  background: url('https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/1746563083402-582QFDJAGR0BWG1VN7ZY/unsplash-image-3Cpws7ibtfo.jpg?format=1000w') center center/cover fixed;
+  color: var(--text);
+}
 
     .builder-wrapper {
-      max-width: 1200px;
-      margin: auto;
-      background: transparent;
-      border-radius: 20px;
-      padding: 2rem;
-      box-shadow: none;
-    }
+  max-width: 900px;
+  margin: auto;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
 
     .service-tags {
       display: flex;
@@ -76,15 +121,22 @@
     }
 
     .tier-card {
-      flex: 1 1 30%;
-      border: 1px solid var(--muted);
-      border-radius: 16px;
-      padding: 1rem;
-      text-align: center;
-      cursor: pointer;
-      transition: 0.2s;
-      position: relative;
-    }
+  flex: 1 1 30%;
+  border: 1px solid var(--muted);
+  border-radius: 16px;
+  padding: 1.2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
+  position: relative;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 280px;
+  margin: 0 auto;
+}
 
     .tier-card:hover {
       border-color: var(--accent);
@@ -373,23 +425,33 @@
       font-size: 1.2rem;
     }
 
-    .tier-details-btn {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      background-color: var(--highlight);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 22px;
-      height: 22px;
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+   .tier-details-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: var(--highlight);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.view-details-text {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--highlight);
+  text-decoration: underline;
+  cursor: pointer;
+}
 
     .tier-details-btn:hover {
       background-color: var(--accent);
@@ -450,34 +512,62 @@
     }
     
     /* Responsive styles */
-    @media (max-width: 768px) {
-      .tier-card {
-        flex: 1 1 100%;
-      }
-    
-      input#bundleName {
-        width: 100%;
-      }
-      
-      .sidebar-total {
-        font-size: 1.25rem;
-      }
-    
-      .sidebar-total .per-month {
-        font-size: 0.75rem;
-      }
-      
-      .modal-content {
-        width: 95%;
-      }
-    }
+ @media (max-width: 768px) {
+  .tier-card {
+    flex: 1 1 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .top-cart-summary {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .cart-items {
+    justify-content: center;
+  }
+  
+  .cart-total {
+    font-size: 1.1rem;
+  }
+  
+  .logo-header img {
+    max-width: 80%;
+  }
+  
+  input#bundleName {
+    width: 100%;
+  }
+  
+  .modal-content {
+    width: 95%;
+  }
+  
+  .builder-wrapper {
+    padding: 1rem;
+  }
+}
 </style>
 </head>
 
 <body>
+<!-- Logo Header -->
+<div class="logo-header">
+  <img src="https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/1745467172251-PVUMMAI1RIRAXLGH8YCM/BuzzHorizontal+no+background.png?format=1000w" alt="Buzzword Strategies Logo">
+</div>
+
+<!-- Top Cart Summary (Replace Sidebar) -->
+<div class="top-cart-summary" id="topCartSummary">
+  <div class="cart-items" id="cartItems">
+    <!-- Selected items will go here -->
+  </div>
+  <div class="cart-total" id="cartTotal">$0.00 / month</div>
+</div>
+
+<div class="builder-wrapper">
 <!-- Service selection tags -->
 <div class="service-tags" id="serviceTags"></div>
-<div id="sidebar"></div>
 
 <!-- Tier selection area -->
 <div class="tiers-area" id="tiersArea"></div>
@@ -849,6 +939,7 @@ function renderTiers(service) {
         <span style="color: #FFBA38;">✔️ ${feat[1]}</span>
         <span style="color: #FFBA38;">✔️ ${feat[2]}</span>
       </div>
+      <span class="view-details-text" onclick="openTierDetailsModal('${service}', '${tier}'); event.stopPropagation();">View all features</span>
     `;
     
     card.appendChild(detailsBtn);
@@ -901,8 +992,8 @@ function renderSummary() {
   document.getElementById("finalPriceDisplay").textContent = `$${final.toFixed(2)}`;
   document.getElementById("savingsBubble").textContent = `You're saving $${totalSaved.toFixed(2)} per month`;
 
-  // Update sidebar
-  updateSidebar();
+// Update top cart summary
+  updateTopCartSummary();
   
   // Save bundle data to localStorage
   let finalPrice = 0;
@@ -922,23 +1013,27 @@ function renderSummary() {
   localStorage.setItem("buzzwordBundle", JSON.stringify(bundleData));
 }
 
-function updateSidebar() {
-  const container = document.getElementById("sidebar");
+function updateTopCartSummary() {
+  const container = document.getElementById("cartItems");
+  const totalElement = document.getElementById("cartTotal");
   const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
+  
   if (selected.length === 0) {
-    container.innerHTML = '';
+    container.innerHTML = '<div class="empty-cart">No services selected yet</div>';
+    totalElement.textContent = '$0.00 / month';
     return;
   }
 
   let html = '';
   selected.forEach(([product, tier]) => {
     html += `
-      <div class="sidebar-item">
-        <span class="product-name">${product}</span>
-        <span class="tier">${tier}</span>
+      <div class="cart-item">
+        ${product}: ${tier}
       </div>
     `;
   });
+
+  container.innerHTML = html;
 
   const subMonths = parseInt(document.getElementById("subSlider").value);
   const productCount = selected.length;
@@ -950,14 +1045,7 @@ function updateSidebar() {
   const afterBundle = rawTotal * (1 - bundleDiscount / 100);
   const final = afterBundle * (1 - subDiscount / 100);
 
-  html += `
-    <div class="sidebar-total">
-      $${final.toFixed(2)}
-      <span class="per-month">/ month</span>
-    </div>
-  `;
-
-  container.innerHTML = html;
+  totalElement.textContent = `$${final.toFixed(2)} / month`;
 }
 
 // Tier details modal functions
@@ -1065,11 +1153,12 @@ document.addEventListener("DOMContentLoaded", () => {
     currentlyOpenService = products[0];
   }
   
-  // Initial render
+ // Initial render
   renderTags();
   renderTiers(currentlyOpenService);
   renderSummary();
   updateSliderFill(subSlider);
+  updateTopCartSummary(); // Update the top cart summary
 });
 
 // Initialize variables for PandaDoc modal
@@ -1183,5 +1272,6 @@ function closePandaDocModal() {
 
 <script async type='module' src='https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js'></script>
 <zapier-interfaces-chatbot-embed is-popup='true' chatbot-id='cma6zv294001y12wdgvajk0lj'></zapier-interfaces-chatbot-embed>
+</div> <!-- Close builder-wrapper -->
 </body>
 </html>
