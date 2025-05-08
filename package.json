@@ -5,6 +5,7 @@
   "main": "create-checkout-session.js",
   "license": "MIT",
   "dependencies": {
-    "stripe": "^12.0.0"
+    "stripe": "^12.0.0",
+    "node-fetch": "^3.3.0"
   }
 }
