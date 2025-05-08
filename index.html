@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
@@ -22,61 +21,53 @@
       color: var(--text);
     }
 
-  .builder-wrapper {
-  max-width: 1200px;
-  margin: auto;
-  background: transparent;
-  border-radius: 20px;
-  padding: 2rem;
-  box-shadow: none;
-}
-
-
+    .builder-wrapper {
+      max-width: 1200px;
+      margin: auto;
+      background: transparent;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: none;
+    }
 
     .service-tags {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 2rem;
-  text-align: center;
-}
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
 
+    .tag {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--muted);
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 500;
+      background: #fefefe;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      transition: all 0.25s ease-in-out;
+    }
 
-  .tag {
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--muted);
-  border-radius: 999px;
-  cursor: pointer;
-  font-weight: 500;
-  background: #fefefe;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  transition: all 0.25s ease-in-out;
-}
+    .tag:hover {
+      box-shadow: 0 4px 10px rgba(255, 186, 56, 0.4);
+      transform: translateY(-2px);
+    }
 
-.tag:hover {
-  box-shadow: 0 4px 10px rgba(255, 186, 56, 0.4);
-  transform: translateY(-2px);
-}
+    .tag.active {
+      background: #333333;
+      color: var(--white);
+      border-color: #333333;
+    }
 
-  .tag.active {
-  background: #333333;
-  color: var(--white);
-  border-color: #333333;
-}
+    .tag.selected {
+      background: var(--highlight);
+      color: var(--white);
+      border-color: var(--highlight);
+    }
 
-.tag.selected {
-  background: var(--highlight);
-  color: var(--white);
-  border-color: var(--highlight);
-}
-
-.tag.selected {
-  background: var(--highlight);
-  color: var(--white);
-  border-color: var(--highlight);
-}
     .tier-row {
       display: flex;
       flex-wrap: wrap;
@@ -92,6 +83,7 @@
       text-align: center;
       cursor: pointer;
       transition: 0.2s;
+      position: relative;
     }
 
     .tier-card:hover {
@@ -120,7 +112,7 @@
       font-size: 0.9rem;
       margin: 2px 0;
     }
-
+    
     .slider-wrap {
       margin-top: 2rem;
     }
@@ -213,103 +205,197 @@
       border: 1px solid var(--muted);
       border-radius: 8px;
     }
- #sidebar {
-  position: fixed;
-  top: 25%;
-  right: 0;
-  transform: translateY(0);
-  width: 22vw;
-  max-width: 265px;
-  z-index: 999;
-  padding: 1rem 0.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: flex-start;
-  gap: 0.5rem;
-  background: transparent;
-  pointer-events: none;
-}
 
-.sidebar-item {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  background: linear-gradient(to right, rgba(255,186,56,0) 0%, #FFBA38 60%);
-  color: white;
-  font-weight: bold;
-  border-radius: 6px 0 0 6px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  pointer-events: all;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
+    #sidebar {
+      position: fixed;
+      top: 25%;
+      right: 0;
+      transform: translateY(0);
+      width: 22vw;
+      max-width: 265px;
+      z-index: 999;
+      padding: 1rem 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: flex-start;
+      gap: 0.5rem;
+      background: transparent;
+      pointer-events: none;
+    }
 
-.sidebar-item .tier {
-  font-weight: normal;
-  color: white;
-  margin-left: 0.25rem;
-  text-transform: capitalize;
-}
+    .sidebar-item {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: linear-gradient(to right, rgba(255,186,56,0) 0%, #FFBA38 60%);
+      color: white;
+      font-weight: bold;
+      border-radius: 6px 0 0 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: all;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
 
-.sidebar-total {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.25rem;
-  padding: 0.75rem 1rem;
-  background: linear-gradient(to left, rgba(255, 255, 255, 0), #ccc 80%);
-  color: black;
-  font-size: 1.5rem;
-  font-weight: 700;
-  border-radius: 6px 0 0 6px;
-  pointer-events: all;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  white-space: nowrap;
-  max-width: 100%;
-  box-sizing: border-box;
-}
+    .sidebar-total {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.25rem;
+      padding: 0.75rem 1rem;
+      background: linear-gradient(to left, rgba(255, 255, 255, 0), #ccc 80%);
+      color: black;
+      font-size: 1.5rem;
+      font-weight: 700;
+      border-radius: 6px 0 0 6px;
+      pointer-events: all;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      white-space: nowrap;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
 
-.sidebar-total .per-month {
-  font-size: 0.8rem;
-  font-weight: 400;
-  color: #444;
-}
+    .sidebar-total .per-month {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: #444;
+    }
 
+    .product-name {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #000;
+      line-height: 1.2;
+    }
 
+    .tier-name {
+      font-size: 0.95rem;
+      color: white;
+      font-weight: normal;
+      margin-top: 0.1rem;
+    }
 
+    .total-block {
+      margin-top: auto;
+      background: linear-gradient(to right, #BBBBBB, rgba(187, 187, 187, 0));
+      color: black;
+      padding: 0.75rem 1rem;
+      font-size: 1.05rem;
+      font-weight: bold;
+      border-top-right-radius: 999px;
+      border-bottom-right-radius: 999px;
+      text-align: left;
+      pointer-events: auto;
+      white-space: nowrap;
+    }
 
-.product-name {
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #000;
-  line-height: 1.2;
-}
+    /* Modal styles for tier details popup */
+    .tier-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5);
+    }
+    
+    .modal-content {
+      background-color: #ffffff;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      border-radius: 15px;
+      width: 80%;
+      max-width: 800px;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
 
-.tier-name {
-  font-size: 0.95rem;
-  color: white;
-  font-weight: normal;
-  margin-top: 0.1rem;
-}
+    .close-modal {
+      color: #aaaaaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      position: absolute;
+      top: 10px;
+      right: 20px;
+    }
 
-.total-block {
-  margin-top: auto;
-  background: linear-gradient(to right, #BBBBBB, rgba(187, 187, 187, 0));
-  color: black;
-  padding: 0.75rem 1rem;
-  font-size: 1.05rem;
-  font-weight: bold;
-  border-top-right-radius: 999px;
-  border-bottom-right-radius: 999px;
-  text-align: left;
-  pointer-events: auto;
-  white-space: nowrap;
-}
+    .close-modal:hover,
+    .close-modal:focus {
+      color: #000;
+      text-decoration: none;
+    }
 
+    .modal-header {
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #eee;
+    }
 
+    .modal-header h2 {
+      margin-top: 0;
+      color: var(--highlight);
+      font-size: 1.8rem;
+    }
 
+    .tier-feature-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
 
-  
+    .tier-feature-table th,
+    .tier-feature-table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    .tier-feature-table th {
+      background-color: #f5f5f5;
+      font-weight: bold;
+    }
+
+    .tier-feature-check {
+      color: green;
+      font-size: 1.2rem;
+    }
+
+    .tier-feature-x {
+      color: red;
+      font-size: 1.2rem;
+    }
+
+    .tier-details-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: var(--highlight);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .tier-details-btn:hover {
+      background-color: var(--accent);
+      color: var(--text);
+    }
+
     body {
         background: linear-gradient(to top, #f2f2f2, #ffffff) !important;
     }
@@ -326,7 +412,7 @@
     .header-blur img {
         height: 100px;
     }
-    .cart-summary {
+     .cart-summary {
         position: fixed;
         top: 0;
         left: 0;
@@ -362,15 +448,40 @@
         border-radius: 10px;
         box-shadow: 0 4px 16px rgba(0,0,0,0.15);
     }
-    </style>
+    
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .tier-card {
+        flex: 1 1 100%;
+      }
+    
+      input#bundleName {
+        width: 100%;
+      }
+      
+      .sidebar-total {
+        font-size: 1.25rem;
+      }
+    
+      .sidebar-total .per-month {
+        font-size: 0.75rem;
+      }
+      
+      .modal-content {
+        width: 95%;
+      }
+    }
+</style>
 </head>
 
+<body>
 <!-- Service selection tags -->
 <div class="service-tags" id="serviceTags"></div>
 <div id="sidebar"></div>
-</div>
+
 <!-- Tier selection area -->
 <div class="tiers-area" id="tiersArea"></div>
+
 <!-- Subscription length slider -->
 <div class="slider-wrap">
 <label for="subSlider">
@@ -379,6 +490,7 @@
 </label>
 <input id="subSlider" max="24" min="3" step="3" type="range" value="3"/>
 </div>
+
 <!-- Final summary section -->
 <div class="summary">
 <div class="summary-price" id="finalPriceDisplay">$0.00</div>
@@ -386,266 +498,394 @@
 <div class="savings-bubble" id="savingsBubble">You're saving $0.00 per month</div>
 <input id="bundleName" placeholder="Name your bundle" type="text"/>
 <button class="buy-button" onclick="openPandaDocModal()">Buy My Bundle</button>
-
 </div>
-<script>
 
-<script>
-  const subSlider = document.getElementById('subSlider');
-  const subLengthDisplay = document.getElementById('subLength');
-  const subDiscountLabel = document.getElementById('subDiscountLabel');
-
-  function updateSliderFill(slider) {
-    const val = (slider.value - slider.min) / (slider.max - slider.min) * 100;
-    slider.style.background = `linear-gradient(to right, #FFBA38 0%, #FFBA38 ${val}%, #BBBBBB ${val}%, #BBBBBB 100%)`;
-  }
-
-  subSlider.addEventListener('input', function () {
-    subLengthDisplay.textContent = this.value;
-
-  Update discount label text dynamically
-    const discountMap = {
-      3: '0% off',
-      6: '2% off',
-      9: '3.5% off',
-      12: '5% off',
-      15: '6.5% off',
-      18: '8% off',
-      21: '9% off',
-      24: '10% off'
-    };
-    subDiscountLabel.textContent = discountMap[this.value] || '0% off';
-    updateSliderFill(this);
-  });
-
-  // Init on load
-  function updateSidebar() {
-  const container = document.getElementById("sidebar");
-  const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
-  if (selected.length === 0) {
-    container.innerHTML = '';
-    return;
-  }
-
-  let html = '';
-  let total = 0;
-
-  selected.forEach(([product, tier]) => {
-    const price = pricing[product][tier];
-    total += price;
-    html += `
-      <div class="product-block">
-        <span class="product-name">${product}</span>
-        <span class="tier-name">${tier}</span>
-      </div>
-    `;
-  });
-
-  html += `
-    <div class="total-block">
-      Total: $${total.toFixed(2)} <span style="font-size: 0.85rem; font-weight: 400;">/ month</span>
+<!-- Tier Details Modal -->
+<div id="tierDetailsModal" class="tier-modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <div class="modal-header">
+      <h2 id="modalServiceTitle">Service Tier Details</h2>
     </div>
-  `;
+    <div id="modalContent"></div>
+  </div>
+</div>
 
-  container.innerHTML = html;
-}
-
-// Hook into existing renderSummary function
-const originalRenderSummary = renderSummary;
-renderSummary = function () {
-  originalRenderSummary();
-  updateSidebar();
-};
-updateSidebar();
-
-    updateSliderFill(subSlider);
-</script>
 <script>
-  const products = [
-    "Meta Ads", "Google Ads", "TikTok Ads", "SEO",
-    "GBP Ranker", "Backlinks", "Content", "Social Posts"
-  ];
+// Product and pricing data
+const products = [
+  "Meta Ads", "Google Ads", "TikTok Ads", "SEO",
+  "GBP Ranker", "Backlinks", "Content", "Social Posts"
+];
 
-  const pricing = {
-    "Meta Ads": { Base: 770, Standard: 980, Premium: 1190 },
-    "Google Ads": { Base: 770, Standard: 980, Premium: 1190 },
-    "TikTok Ads": { Base: 770, Standard: 980, Premium: 1190 },
-    "SEO": { Base: 770, Standard: 980, Premium: 1190 },
-    "GBP Ranker": { Base: 315, Standard: 420, Premium: 525 },
-    "Backlinks": { Base: 420, Standard: 630, Premium: 840 },
-    "Content": { Base: 210, Standard: 420, Premium: 630 },
-    "Social Posts": { Base: 315, Standard: 525, Premium: 735 }
-  };
+const pricing = {
+  "Meta Ads": { Base: 770, Standard: 980, Premium: 1410 },
+  "Google Ads": { Base: 770, Standard: 980, Premium: 1410 },
+  "TikTok Ads": { Base: 770, Standard: 980, Premium: 1410 },
+  "SEO": { Base: 790, Standard: 1000, Premium: 1450 },
+  "GBP Ranker": { Base: 315, Standard: 420, Premium: 675 },
+  "Backlinks": { Base: 420, Standard: 630, Premium: 990 },
+  "Content": { Base: 210, Standard: 420, Premium: 760 },
+  "Social Posts": { Base: 315, Standard: 525, Premium: 895 }
+};
 
-  const logos = {
-    "Meta Ads": {
-      Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/348f698a-51e1-445e-97cf-df704334cf82/Meta+logo.png?format=1000w",
-      Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/348f698a-51e1-445e-97cf-df704334cf82/Meta+logo.png?format=1000w",
-      Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/b420567e-72b1-4cec-adf2-c655a2d65b63/Meta+premium+logo.png?format=1000w"
-    },
-    "Google Ads": {
-      Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/051181f0-7847-4b5e-8bbb-f1beb8c579c4/Google+logo.png?format=1000w",
-      Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/051181f0-7847-4b5e-8bbb-f1beb8c579c4/Google+logo.png?format=1000w",
-      Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/26113377-495f-4661-bc61-cd8c696853b6/google+premium+logo.png?format=1000w"
-    },
-    "TikTok Ads": {
-      Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/13406429-467d-47bd-8e03-3d59a11aa68e/TikTok+logo.png?format=1000w",
-      Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/13406429-467d-47bd-8e03-3d59a11aa68e/TikTok+logo.png?format=1000w",
-      Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/a7eb2f8c-9226-4f75-af38-538f0e57656b/tik+tok+premium+logo.png?format=1000w"
-    },
-    "SEO": {
-      Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/52dfb2a7-fc3a-4241-9702-f18e42f972a3/SEO+logo.png?format=1000w",
-      Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/52dfb2a7-fc3a-4241-9702-f18e42f972a3/SEO+logo.png?format=1000w",
-      Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/f1d3100c-0a5e-4f92-96b3-4ec1a656db04/SEO+premium+logo.png?format=1000w"
-    },
-    "GBP Ranker": {
-      Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/9fa62907-9484-4b4e-8223-f8e2b90e5da4/GBP+ranker+logo.png?format=1000w",
-      Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/9fa62907-9484-4b4e-8223-f8e2b90e5da4/GBP+ranker+logo.png?format=1000w",
-      Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/ac40a8f7-f30b-4392-b744-83b786d004bf/GBP+premium+logo.png?format=1000w"
-    },
-    "Backlinks": {
-      Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/b53aaa01-41a5-4934-8313-1518213bc0ae/Backlinks+logo.png?format=1000w",
-      Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/b53aaa01-41a5-4934-8313-1518213bc0ae/Backlinks+logo.png?format=1000w",
-      Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/20807f97-95fc-48a3-ad25-bc7f77e43b9d/backlinks+premium+logo.png?format=1000w"
-    },
-    "Content": {
-      Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/f30eb3cb-36d8-4c1b-be73-4d791858ee53/Content+Design+logo.png?format=1000w",
-      Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/f30eb3cb-36d8-4c1b-be73-4d791858ee53/Content+Design+logo.png?format=1000w",
-      Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/5f9850bd-6df9-4294-86c9-980a41bf4da3/content+premium+logo.png?format=1000w"
-    },
-    "Social Posts": {
-      Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/707f676b-7980-40d9-aa76-57d8561a167c/Social+Media+logo.png?format=1000w",
-      Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/707f676b-7980-40d9-aa76-57d8561a167c/Social+Media+logo.png?format=1000w",
-      Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/0302cd83-9ae7-4a6c-a6e1-636e1483e769/social+media+premium+logo.png?format=1000w"
-    }
-  };
+const logos = {
+  "Meta Ads": {
+    Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/348f698a-51e1-445e-97cf-df704334cf82/Meta+logo.png?format=1000w",
+    Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/348f698a-51e1-445e-97cf-df704334cf82/Meta+logo.png?format=1000w",
+    Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/b420567e-72b1-4cec-adf2-c655a2d65b63/Meta+premium+logo.png?format=1000w"
+  },
+  "Google Ads": {
+    Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/051181f0-7847-4b5e-8bbb-f1beb8c579c4/Google+logo.png?format=1000w",
+    Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/051181f0-7847-4b5e-8bbb-f1beb8c579c4/Google+logo.png?format=1000w",
+    Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/26113377-495f-4661-bc61-cd8c696853b6/google+premium+logo.png?format=1000w"
+  },
+  "TikTok Ads": {
+    Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/13406429-467d-47bd-8e03-3d59a11aa68e/TikTok+logo.png?format=1000w",
+    Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/13406429-467d-47bd-8e03-3d59a11aa68e/TikTok+logo.png?format=1000w",
+    Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/a7eb2f8c-9226-4f75-af38-538f0e57656b/tik+tok+premium+logo.png?format=1000w"
+  },
+  "SEO": {
+    Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/52dfb2a7-fc3a-4241-9702-f18e42f972a3/SEO+logo.png?format=1000w",
+    Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/52dfb2a7-fc3a-4241-9702-f18e42f972a3/SEO+logo.png?format=1000w",
+    Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/f1d3100c-0a5e-4f92-96b3-4ec1a656db04/SEO+premium+logo.png?format=1000w"
+  },
+  "GBP Ranker": {
+    Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/9fa62907-9484-4b4e-8223-f8e2b90e5da4/GBP+ranker+logo.png?format=1000w",
+    Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/9fa62907-9484-4b4e-8223-f8e2b90e5da4/GBP+ranker+logo.png?format=1000w",
+    Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/ac40a8f7-f30b-4392-b744-83b786d004bf/GBP+premium+logo.png?format=1000w"
+  },
+  "Backlinks": {
+    Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/b53aaa01-41a5-4934-8313-1518213bc0ae/Backlinks+logo.png?format=1000w",
+    Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/b53aaa01-41a5-4934-8313-1518213bc0ae/Backlinks+logo.png?format=1000w",
+    Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/20807f97-95fc-48a3-ad25-bc7f77e43b9d/backlinks+premium+logo.png?format=1000w"
+  },
+  "Content": {
+    Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/f30eb3cb-36d8-4c1b-be73-4d791858ee53/Content+Design+logo.png?format=1000w",
+    Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/f30eb3cb-36d8-4c1b-be73-4d791858ee53/Content+Design+logo.png?format=1000w",
+    Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/5f9850bd-6df9-4294-86c9-980a41bf4da3/content+premium+logo.png?format=1000w"
+  },
+  "Social Posts": {
+    Base: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/707f676b-7980-40d9-aa76-57d8561a167c/Social+Media+logo.png?format=1000w",
+    Standard: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/707f676b-7980-40d9-aa76-57d8561a167c/Social+Media+logo.png?format=1000w",
+    Premium: "https://images.squarespace-cdn.com/content/v1/673fc8d414047c5c20a42e65/0302cd83-9ae7-4a6c-a6e1-636e1483e769/social+media+premium+logo.png?format=1000w"
+  }
+};
 
-  const features = {
-    "Backlinks": {
-      Base: ["10 backlinks", "13 in-content links", "DA 10+"],
-      Standard: ["15 backlinks", "23 in-content links", "DA 30+"],
-      Premium: ["20 backlinks", "41 in-content links", "DA 50+"]
-    },
-    "Content": {
-      Base: ["1 article/mo", "500 words", "AI GPT-4o written"],
-      Standard: ["2 articles/mo", "1,000 words", "SEO keyword boost"],
-      Premium: ["4 articles/mo", "2,000 words", "Advanced topic research"]
-    },
-    "GBP Ranker": {
-      Base: ["1 image/wk optimized", "AI review replies", "Weekly Q&A"],
-      Standard: ["3 images/wk optimized", "AI data training", "Bi-weekly Q&A"],
-      Premium: ["Daily images + drip", "Human verification", "Custom AI tuning"]
-    },
-    "Google Ads": {
-      Base: ["Search/display campaigns", "Basic targeting", "Pixel + conversion setup"],
-      Standard: ["Keyword research", "Negative keywords", "Ad testing"],
-      Premium: ["Keyword expansion", "Performance Max", "Dedicated strategist"]
-    },
-    "Meta Ads": {
-      Base: ["3 graphics", "Basic campaign build", "Pixel + conversion setup"],
-      Standard: ["6 graphics", "Ad copy & budget guidance", "Retargeting setup"],
-      Premium: ["Unlimited creative sets", "Conversion testing", "Full funnel buildout"]
-    },
-    "SEO": {
-      Base: ["10 keywords", "Google Analytics & GSC", "On-page audits"],
-      Standard: ["20 keywords", "Schema setup", "Alt/title tag SEO"],
-      Premium: ["40 keywords", "Backlink strategy", "Technical SEO audit"]
-    },
-    "Social Posts": {
-      Base: ["1 post/week", "4 total posts", "1 channel"],
-      Standard: ["4 posts/week", "16 total posts", "3 channels"],
-      Premium: ["Posts every day", "28 total posts", "6 channels"]
-    },
-    "TikTok Ads": {
-      Base: ["Basic campaign build", "Ad copy creation", "Pixel setup"],
-      Standard: ["Audience targeting", "Conversion tracking", "Ad testing"],
-      Premium: ["UGC creative coordination", "Advanced targeting", "Scaling strategy"]
-    }
-  };
+const features = {
+  "Backlinks": {
+    Base: ["10 backlinks", "13 in-content links", "DA 10+"],
+    Standard: ["15 backlinks", "23 in-content links", "DA 30+"],
+    Premium: ["20 backlinks", "41 in-content links", "DA 50+"]
+  },
+  "Content": {
+    Base: ["1 article/mo", "500 words", "AI GPT-4o written"],
+    Standard: ["2 articles/mo", "1,000 words", "SEO keyword boost"],
+    Premium: ["4 articles/mo", "2,000 words", "Advanced topic research"]
+  },
+  "GBP Ranker": {
+    Base: ["1 image/wk optimized", "AI review replies", "Weekly Q&A"],
+    Standard: ["3 images/wk optimized", "AI data training", "Bi-weekly Q&A"],
+    Premium: ["Daily images + drip", "Human verification", "Custom AI tuning"]
+  },
+  "Google Ads": {
+    Base: ["Search/display campaigns", "Basic targeting", "Pixel + conversion setup"],
+    Standard: ["Keyword research", "Negative keywords", "Ad testing"],
+    Premium: ["Keyword expansion", "Performance Max", "Dedicated strategist"]
+  },
+  "Meta Ads": {
+    Base: ["3 graphics", "Basic campaign build", "Pixel + conversion setup"],
+    Standard: ["6 graphics", "Ad copy & budget guidance", "Retargeting setup"],
+    Premium: ["Unlimited creative sets", "Conversion testing", "Full funnel buildout"]
+  },
+  "SEO": {
+    Base: ["10 keywords", "Google Analytics & GSC", "On-page audits"],
+    Standard: ["20 keywords", "Schema setup", "Alt/title tag SEO"],
+    Premium: ["40 keywords", "Backlink strategy", "Technical SEO audit"]
+  },
+  "Social Posts": {
+    Base: ["1 post/week", "4 total posts", "1 channel"],
+    Standard: ["4 posts/week", "16 total posts", "3 channels"],
+    Premium: ["Posts every day", "28 total posts", "6 channels"]
+  },
+  "TikTok Ads": {
+    Base: ["Basic campaign build", "Ad copy creation", "Pixel setup"],
+    Standard: ["Audience targeting", "Conversion tracking", "Ad testing"],
+    Premium: ["UGC creative coordination", "Advanced targeting", "Scaling strategy"]
+  }
+};
+    
+// Define detailed service features for modal popups
+const detailedServiceFeatures = {
+  "Social Posts": {
+    features: [
+      { name: "Posting Frequency", Base: "1 Post / Week", Standard: "4 Posts / Week", Premium: "Everyday", description: "How often we post content." },
+      { name: "Original Posts Per Month", Base: "4 Posts", Standard: "16 Posts", Premium: "28 Posts", description: "The number of posts we create for your account each month." },
+      { name: "Social Channels", Base: "1 Channel", Standard: "3 Channels", Premium: "6 Channels", description: "The number of social media platforms we post to based on your selection." },
+      { name: "Posting Time Optimization", Base: false, Standard: false, Premium: true, description: "Posts scheduled at times of peak engagement using analytics." },
+      { name: "Licensed Images", Base: true, Standard: true, Premium: true, description: "Each post includes one licensed stock image, usually as the featured image." },
+      { name: "Image Submissions", Base: true, Standard: true, Premium: true, description: "Clients can submit custom images, and we'll create posts with them." },
+      { name: "Trending Hashtags", Base: true, Standard: true, Premium: true, description: "We research and select the best hashtags based on trends and traffic." },
+      { name: "Scheduled Posts", Base: true, Standard: true, Premium: true, description: "Posts are scheduled according to your preference or optimized for peak traffic times." },
+      { name: "3 Point Inspection", Base: true, Standard: true, Premium: true, description: "Each post is checked for grammar, spelling, originality, and creativity." },
+      { name: "Quality Assurance Audit", Base: true, Standard: true, Premium: true, description: "Posts are reviewed by a specialist to ensure high quality." },
+      { name: "Monthly Reporting", Base: true, Standard: true, Premium: true, description: "A report showing published posts and their metrics is sent to you monthly." }
+    ]
+  },
+  "Content": {
+    features: [
+      { name: "Blog Articles", Base: "1 Blog Article", Standard: "2 Blog Articles", Premium: "4 Blog Articles", description: "The number of blog articles we create for your account each month." },
+      { name: "Word Count", Base: "500 Words", Standard: "1,000 Words", Premium: "2,000 Words", description: "The word count for each article." },
+      { name: "SEO Keyword Boost", Base: true, Standard: true, Premium: true, description: "Researching and integrating SEO keywords into your articles for better visibility." },
+      { name: "AI Enhanced Topic Research", Base: true, Standard: true, Premium: true, description: "Identifying the best topics based on trends and competitiveness." },
+      { name: "AI GPT-4o Written", Base: true, Standard: true, Premium: true, description: "High-quality content created by GPT-4o AI." },
+      { name: "Curated Stock Images", Base: true, Standard: true, Premium: true, description: "Each article includes one licensed stock image, typically as the featured image." },
+      { name: "Human Reviewed & Refined", Base: true, Standard: true, Premium: true, description: "Our editors meticulously polish each piece for accuracy and quality." },
+      { name: "Article Publishing", Base: true, Standard: true, Premium: true, description: "Our team publishes approved articles directly to your website." }
+    ]
+  },
+  "Backlinks": {
+    features: [
+      { name: "Backlink Domain Authority", Base: "DA 10+", Standard: "DA 30+", Premium: "DA 50+", description: "The higher the domain authority of a site, the more valuable its backlink is for SEO." },
+      { name: "Total Amount of Links", Base: "10 Backlinks", Standard: "15 Backlinks", Premium: "20 Backlinks", description: "The number of backlinks provided each month based on your selected tier." },
+      { name: "Total Amount of In-Content Links", Base: "13 In-Content Backlinks", Standard: "23 In-Content Backlinks", Premium: "41 In-Content Backlinks", description: "The number of backlinks embedded within webpage content to boost SEO." },
+      { name: "Target URL", Base: "1 URL", Standard: "1 URL", Premium: "1 URL", description: "The specific page that backlinks will direct traffic to." },
+      { name: "Social Bookmark", Base: "2 (x2)", Standard: "3 (x3)", Premium: "4 (x3)", description: "Backlinks created by submitting your site to reputable social bookmarking sites." },
+      { name: "Q&A Content Submission", Base: "1 (x2)", Standard: "2 (x3)", Premium: "3 (x3)", description: "Backlinks generated by providing answers on reputable Q&A websites." },
+      { name: "Image Sharing", Base: "2", Standard: "3", Premium: "4", description: "Backlinks generated by sharing images that link to your website." },
+      { name: "Business Profile Link", Base: "2", Standard: "3", Premium: "4", description: "Backlinks created by adding your site information to reputable online profiles." },
+      { name: "Directory Submission", Base: "1", Standard: "1", Premium: "1", description: "Backlinks created by listing your site on reputable online directories." },
+      { name: "Citation Submission", Base: "1", Standard: "1", Premium: "1", description: "Backlinks generated by submitting your site to reputable citation listings." },
+      { name: "Classified Ad Submission", Base: "1", Standard: "1", Premium: "1", description: "Backlinks created by submitting your site to reputable online classified ads." },
+      { name: "Web 2.0 Blog Content", Base: false, Standard: "500 Words", Premium: "1,000 Words", description: "Content created for submission to Web 2.0 blogs." },
+      { name: "Web 2.0 Blog Posting", Base: false, Standard: "1 (x3)", Premium: "1 (x3)", description: "Backlinks created by submitting blogs to reputable Web 2.0 platforms." },
+      { name: "Press Release Content", Base: false, Standard: false, Premium: "1,000 Words", description: "Content created for press release submissions." },
+      { name: "Press Release Submission", Base: false, Standard: false, Premium: "1 (x2)", description: "Backlinks generated by submitting press releases to reputable news and press sites." },
+      { name: "Monthly Backlink Report", Base: true, Standard: true, Premium: true, description: "A monthly report detailing all backlinks generated for your account." }
+    ]
+  },
+  "GBP Ranker": {
+    features: [
+      { name: "AI Enhanced Image Optimization", Base: "1 Image / Week", Standard: "3 Image / Week", Premium: "Every day", description: "We auto optimize your images with keywords in the filename & meta description plus geotag them for better visibility and SEO." },
+      { name: "AI Q&A's", Base: "Every Month", Standard: "Every Two Weeks", Premium: "Every Week", description: "We ask then answer questions on your Google Business Profile." },
+      { name: "AI Data-Driven Training", Base: true, Standard: true, Premium: true, description: "We auto train our AI using your website data and information to create content that perfectly reflects your business." },
+      { name: "AI Custom Tuning", Base: true, Standard: true, Premium: true, description: "We auto optimize our AI to continuously analyze and adjust your profile settings based on top-performing strategies." },
+      { name: "AI Review Replies", Base: true, Standard: true, Premium: true, description: "We auto respond to all your Google reviews using AI." },
+      { name: "Optimized Image Drip", Base: true, Standard: true, Premium: true, description: "Upload unlimited images for AI processing. We optimize their meta data for your target keywords plus geo-tag them for your target cities, then drip them out over time for maximum impact." },
+      { name: "Image Upload Reminders", Base: true, Standard: true, Premium: true, description: "We'll notify you when we're running low on images to optimize and use." },
+      { name: "Human Content Verification", Base: true, Standard: true, Premium: true, description: "We ensure all AI-generated content is reviewed by humans for quality and accuracy." },
+      { name: "Custom Requests", Base: true, Standard: true, Premium: true, description: "We can customize the content to match your brand. Whether you want to sound funnier, more professional, include certain hashtags, we can accomodate." },
+      { name: "Weekly Work Logs", Base: true, Standard: true, Premium: true, description: "Receive weekly summary emails that show exactly what was done in the previous week, and what we're going to do in the upcoming week." },
+      { name: "Monthly Performance Reports", Base: true, Standard: true, Premium: true, description: "We provide monthly reports with rankings and heatmaps for your Google listing's key target search terms." }
+    ]
+  },
+      "SEO": {
+    features: [
+      { name: "Primary Keywords", Base: "10 Keywords", Standard: "20 Keywords", Premium: "40 Keywords", description: "The number of keywords we'll monitor and prioritize for higher rankings, with regular tracking of their performance." },
+      { name: "SSL Certification Check", Base: true, Standard: true, Premium: true, description: "Ensuring your website is secure and trusted by search engines." },
+      { name: "Google Analytics", Base: true, Standard: true, Premium: true, description: "Setting up Google Analytics to track and report on your website's traffic and user behavior." },
+      { name: "Google Search Console", Base: true, Standard: true, Premium: true, description: "Configuring Google Search Console to monitor and optimize your website's visibility in Google search results." },
+      { name: "XML Sitemap Setup & Submission", Base: true, Standard: true, Premium: true, description: "Creating and submitting a sitemap to search engines for effective indexing." },
+      { name: "Robots.txt Setup & Optimization", Base: true, Standard: true, Premium: true, description: "Configuring your robots.txt file to guide search engines on which parts of your site to crawl and index." },
+      { name: "Google Analytics Goal Setup", Base: true, Standard: true, Premium: true, description: "Setting up goals in Google Analytics to track important user actions like purchases or form submissions." },
+      { name: "Competitor Research", Base: true, Standard: true, Premium: true, description: "Analyzing competitors' strategies to give your SEO efforts an edge." },
+      { name: "Schema Setup", Base: true, Standard: true, Premium: true, description: "Adding schema markup to your website to help search engines better understand your content." },
+      { name: "Monthly Report Setup & Schedule", Base: true, Standard: true, Premium: true, description: "Setting up automated reports to keep you informed of SEO progress." },
+      { name: "On-page Audits", Base: true, Standard: true, Premium: true, description: "Regularly auditing your website optimize existing content." },
+      { name: "Google Search Console Management", Base: true, Standard: true, Premium: true, description: "Resolving errors flagged by Google to improve site performance." },
+      { name: "Title Tag Optimization", Base: true, Standard: true, Premium: true, description: "Enhancing title tags to improve click-through rates and rankings." },
+      { name: "Meta Description Optimization", Base: true, Standard: true, Premium: true, description: "Refining meta descriptions to attract more clicks from search results." },
+      { name: "Image Alt & Title Tag Optimization", Base: true, Standard: true, Premium: true, description: "Optimizing image descriptions for better search visibility." },
+      { name: "Internal Linking", Base: true, Standard: true, Premium: true, description: "Improving site navigation and SEO by linking related content within your website." },
+      { name: "Outbound Linking", Base: true, Standard: true, Premium: true, description: "Optimizing external links to boost credibility." },
+      { name: "URL Optimization", Base: true, Standard: true, Premium: true, description: "Simplifying and optimizing URLs for better search engine understanding and user experience." },
+      { name: "301 Page Redirects", Base: true, Standard: true, Premium: true, description: "Managing redirects from old URLs to new ones to preserve SEO value." },
+      { name: "Backlink Audits", Base: true, Standard: true, Premium: true, description: "Reviewing all backlinks, manually disavowing any flagged as harmful to your site's SEO." },
+      { name: "Monthly Ranking & Analytics Report", Base: true, Standard: true, Premium: true, description: "Providing monthly insights into your site's search engine rankings and traffic." },
+      { name: "Monthly Progress Report", Base: true, Standard: true, Premium: true, description: "Summarizing the results and impact of SEO efforts each month." }
+    ]
+  },
+  "TikTok Ads": {
+    features: [
+      { name: "Budget Requirements", Base: "$0 - $2,500", Standard: "$2,500 - $5,000", Premium: "$5,000+", description: "The monthly budget needed to support your selected service tier." },
+      { name: "Campaign Build-Out", Base: true, Standard: true, Premium: true, description: "Structuring and launching comprehensive ad campaigns aligned with your goals." },
+      { name: "Pixel Installation & Configuration", Base: true, Standard: true, Premium: true, description: "Setting up tracking pixels to monitor and optimize campaign performance." },
+      { name: "Conversion Tracking Setup", Base: true, Standard: true, Premium: true, description: "Implementing systems to accurately track conversions and measure success." },
+      { name: "Audience Targeting", Base: true, Standard: true, Premium: true, description: "Identifying and selecting the most relevant audience segments for your ads." },
+      { name: "Ad Copy Creation", Base: true, Standard: true, Premium: true, description: "Crafting compelling ad copy designed to capture attention and drive action." },
+      { name: "Offer Recommendations", Base: true, Standard: true, Premium: true, description: "Suggesting effective offers to boost engagement and conversions" },
+      { name: "Budget Recommendations", Base: true, Standard: true, Premium: true, description: "Providing guidance on optimal budget allocation for your campaigns." },
+      { name: "Retargeting Ads", Base: true, Standard: true, Premium: true, description: "Creating ads aimed at re-engaging users who have previously interacted with your brand." },
+      { name: "Weekly Performance Review & Enhancements", Base: true, Standard: true, Premium: true, description: "Regular updates to optimize your ad account for better performance." },
+      { name: "Performance Insights", Base: true, Standard: true, Premium: true, description: "Delivering reports and analysis on key metrics and trends in your campaigns as needed." },
+      { name: "Landing Page Recommendations", Base: true, Standard: true, Premium: true, description: "Suggesting improvements to your landing pages to increase conversion rates." },
+      { name: "Offer Strategy Recommendations", Base: true, Standard: true, Premium: true, description: "Advising on the best offers to attract and convert your target audience." },
+      { name: "Ad Copy Optimizations", Base: true, Standard: true, Premium: true, description: "Enhancing your ad copy to improve engagement and effectiveness." },
+      { name: "Audience Testing", Base: true, Standard: true, Premium: true, description: "Experimenting with different audience segments to find the most responsive groups." },
+      { name: "Ad Testing", Base: true, Standard: true, Premium: true, description: "Running tests on different ad variations to optimize performance." },
+      { name: "Budget Management", Base: true, Standard: true, Premium: true, description: "Overseeing and adjusting your budget to ensure optimal spending." },
+      { name: "Conversion Tracking Audits", Base: true, Standard: true, Premium: true, description: "Reviewing and optimizing your conversion tracking setup to ensure accurate data." },
+      { name: "Monthly Progress Report", Base: true, Standard: true, Premium: true, description: "Summarizing your campaign's monthly performance with key takeaways and next steps." }
+    ]
+  },
+  "Google Ads": {
+    features: [
+      { name: "Budget Requirements", Base: "$0 - $2,500", Standard: "$2,500 - $5,000", Premium: "$5,000+", description: "The monthly budget needed to support your selected service tier." },
+      { name: "Search Campaigns", Base: true, Standard: true, Premium: true, description: "Text ads on Google Search results for specific keywords." },
+      { name: "Display Campaigns", Base: true, Standard: true, Premium: true, description: "Visual banners across the Google Display Network (websites, apps, videos)." },
+      { name: "Shopping Campaigns", Base: true, Standard: true, Premium: true, description: "Product ads with images and prices on Google Shopping and other networks." },
+      { name: "Video Campaigns", Base: true, Standard: true, Premium: true, description: "Ads on YouTube and the Google Display Network." },
+      { name: "App Campaigns", Base: true, Standard: true, Premium: true, description: "Ads promoting mobile apps across Google Search, YouTube, and Play Store." },
+      { name: "Performance Max Campaigns", Base: true, Standard: true, Premium: true, description: "Automated campaigns maximizing performance across all Google channels." },
+      { name: "Demand Gen Campaigns", Base: true, Standard: true, Premium: true, description: "Driving demand and conversions on YouTube, Discover, and Gmail." },
+      { name: "Campaign Build-Out", Base: true, Standard: true, Premium: true, description: "Structuring and setting up your Google Ads campaign." },
+      { name: "Pixel Installation & Configuration", Base: true, Standard: true, Premium: true, description: "Setting up tracking pixels to monitor user actions." },
+      { name: "Conversion Tracking Setup", Base: true, Standard: true, Premium: true, description: "Implementing tracking to measure campaign success." },
+      { name: "Keyword Research", Base: true, Standard: true, Premium: true, description: "Identifying the best keywords to target in your ads." },
+      { name: "Negative Keywords", Base: true, Standard: true, Premium: true, description: "Excluding irrelevant keywords to avoid wasted spend" },
+      { name: "Location Targeting", Base: true, Standard: true, Premium: true, description: "Defining geographic areas where your ads will be shown." },
+      { name: "Audience Targeting", Base: true, Standard: true, Premium: true, description: "Selecting specific audience segments to reach with your ads." },
+      { name: "Ad Copy Creation", Base: true, Standard: true, Premium: true, description: "Crafting compelling text for your Google ads." },
+      { name: "Ad Extensions", Base: true, Standard: true, Premium: true, description: "Adding extra information to your ads to improve visibility" },
+      { name: "Budget Recommendations", Base: true, Standard: true, Premium: true, description: "Suggesting an optimal budget for your campaign." },
+      { name: "Retargeting Ads", Base: true, Standard: true, Premium: true, description: "Creating ads to re-engage visitors who didn't convert." },
+      { name: "Weekly Performance Review & Enhancements", Base: true, Standard: true, Premium: true, description: "Regularly reviewing and optimizing campaign performance." },
+      { name: "Conversion Tracking Audits", Base: true, Standard: true, Premium: true, description: "Checking and refining your conversion tracking setup." },
+      { name: "Landing Page Recommendations", Base: true, Standard: true, Premium: true, description: "Suggesting improvements to boost landing page effectiveness." },
+      { name: "Ad Copy Optimizations", Base: true, Standard: true, Premium: true, description: "Refining ad text for better engagement and results." },
+      { name: "Extension Testing", Base: true, Standard: true, Premium: true, description: "Testing different ad extensions to enhance ad performance." },
+      { name: "Audience Testing", Base: true, Standard: true, Premium: true, description: "Experimenting with various audience segments to find the best fit" },
+      { name: "Ad Testing", Base: true, Standard: true, Premium: true, description: "Running tests on different ad variations to optimize performance." },
+      { name: "Budget Management", Base: true, Standard: true, Premium: true, description: "Overseeing and adjusting budget allocation for optimal spend." },
+      { name: "Performance Insights", Base: true, Standard: true, Premium: true, description: "Analyzing key metrics to understand and improve campaign outcomes." },
+      { name: "Monthly Progress Report", Base: true, Standard: true, Premium: true, description: "Summarizing campaign performance and progress each month." }
+    ]
+  },
+     "Meta Ads": {
+    features: [
+      { name: "Budget Requirements", Base: "$0 - $2,500", Standard: "$2,500 - $5,000", Premium: "$5,000+", description: "The monthly budget needed to support your selected service tier." },
+      { name: "Meta Ads", Base: true, Standard: true, Premium: true, description: "Ads that appear across Facebook and its family of apps, including Messenger and Audience Network." },
+      { name: "Instagram Ads", Base: true, Standard: true, Premium: true, description: "Visual and video ads displayed in Instagram's feed, Stories, Explore, and Reels." },
+      { name: "Custom Graphic Image Creatives", Base: "3 Graphics", Standard: "6 Graphics", Premium: "9 Graphics", description: "Designing tailored visual graphics to enhance your ad campaigns." },
+      { name: "Campaign Build-Out", Base: true, Standard: true, Premium: true, description: "Structuring and launching comprehensive ad campaigns aligned with your goals." },
+      { name: "Pixel Installation & Configuration", Base: true, Standard: true, Premium: true, description: "Setting up tracking pixels to monitor and optimize campaign performance." },
+      { name: "Conversion Tracking Setup", Base: true, Standard: true, Premium: true, description: "Implementing systems to accurately track conversions and measure success." },
+      { name: "Audience Targeting", Base: true, Standard: true, Premium: true, description: "Identifying and selecting the most relevant audience segments for your ads." },
+      { name: "Ad Copy Creation", Base: true, Standard: true, Premium: true, description: "Crafting compelling ad copy designed to capture attention and drive action." },
+      { name: "Offer Recommendations", Base: true, Standard: true, Premium: true, description: "Suggesting effective offers to boost engagement and conversions" },
+      { name: "Budget Recommendations", Base: true, Standard: true, Premium: true, description: "Providing guidance on optimal budget allocation for your campaigns." },
+      { name: "In-App Lead Form Creation", Base: true, Standard: true, Premium: true, description: "Designing and setting up lead forms within the app to capture user information." },
+      { name: "Retargeting Ads", Base: true, Standard: true, Premium: true, description: "Creating ads aimed at re-engaging users who have previously interacted with your brand." },
+      { name: "Weekly Performance Review & Enhancements", Base: true, Standard: true, Premium: true, description: "Regular updates to optimize your ad account for better performance." },
+      { name: "Performance Insights", Base: true, Standard: true, Premium: true, description: "Delivering reports and analysis on key metrics and trends in your campaigns as needed." },
+      { name: "Landing Page Recommendations", Base: true, Standard: true, Premium: true, description: "Suggesting improvements to your landing pages to increase conversion rates." },
+      { name: "Offer Strategy Recommendations", Base: true, Standard: true, Premium: true, description: "Advising on the best offers to attract and convert your target audience." },
+      { name: "Ad Copy Optimizations", Base: true, Standard: true, Premium: true, description: "Enhancing your ad copy to improve engagement and effectiveness." },
+      { name: "Audience Testing", Base: true, Standard: true, Premium: true, description: "Experimenting with different audience segments to find the most responsive groups." },
+      { name: "Ad Testing", Base: true, Standard: true, Premium: true, description: "Running tests on different ad variations to optimize performance." },
+      { name: "Budget Management", Base: true, Standard: true, Premium: true, description: "Overseeing and adjusting your budget to ensure optimal spending." },
+      { name: "Conversion Tracking Audits", Base: true, Standard: true, Premium: true, description: "Reviewing and optimizing your conversion tracking setup to ensure accurate data." },
+      { name: "Monthly Progress Report", Base: true, Standard: true, Premium: true, description: "Summarizing your campaign's monthly performance with key takeaways and next steps." }
+    ]
+  }
+};
 
+// Application state variables
 const selectedTiers = {};
 let currentlyOpenService = null;
 
-</script>
-<script>
-  function renderTags() {
-    const container = document.getElementById("serviceTags");
-    container.innerHTML = "";
-    products.forEach(service => {
-      const tag = document.createElement("div");
-      tag.className = "tag";
-      tag.textContent = service;
-     if (service === currentlyOpenService) {
-  tag.classList.add("active");
-} else if (selectedTiers[service]) {
-  tag.classList.add("selected");
+// Initialize page components
+function renderTags() {
+  const container = document.getElementById("serviceTags");
+  container.innerHTML = "";
+  products.forEach(service => {
+    const tag = document.createElement("div");
+    tag.className = "tag";
+    tag.textContent = service;
+    if (service === currentlyOpenService) {
+      tag.classList.add("active");
+    } else if (selectedTiers[service]) {
+      tag.classList.add("selected");
+    }
+
+    tag.onclick = () => {
+      currentlyOpenService = service;
+      renderTiers(service);
+      renderTags(); // refresh highlight
+    };
+    container.appendChild(tag);
+  });
 }
 
-      tag.onclick = () => {
-        currentlyOpenService = service;
-renderTiers(service);
-        renderTags(); // refresh highlight
-      };
-      container.appendChild(tag);
-    });
-  }
+function renderTiers(service) {
+  const container = document.getElementById("tiersArea");
+  container.innerHTML = "";
+  const row = document.createElement("div");
+  row.className = "tier-row";
 
-  function renderTiers(service) {
-    const container = document.getElementById("tiersArea");
-    container.innerHTML = "";
-    const row = document.createElement("div");
-    row.className = "tier-row";
+  ["Base", "Standard", "Premium"].forEach(tier => {
+    const card = document.createElement("div");
+    card.className = "tier-card";
+    if (selectedTiers[service] === tier) card.classList.add("selected");
 
-    ["Base", "Standard", "Premium"].forEach(tier => {
-      const card = document.createElement("div");
-      card.className = "tier-card";
-      if (selectedTiers[service] === tier) card.classList.add("selected");
+    const feat = features[service]?.[tier] || ["", "", ""];
+    
+    // Add view details button
+    const detailsBtn = document.createElement("button");
+    detailsBtn.className = "tier-details-btn";
+    detailsBtn.textContent = "i";
+    detailsBtn.title = "View tier details";
+    detailsBtn.onclick = (e) => {
+      e.stopPropagation(); // Prevent selecting the tier
+      openTierDetailsModal(service, tier);
+    };
 
-      const feat = features[service]?.[tier] || ["", "", ""];
-      card.innerHTML = `
+    card.innerHTML = `
       <img src="${logos[service][tier]}" alt="${service} ${tier} logo" style="max-width: 60px; ${tier === 'Standard' ? 'filter: drop-shadow(0 0 12px #FFBA38);' : ''}" />
-        <h3>${tier}</h3>
-        <div class="tier-price">$${pricing[service][tier]}</div>
-        <div class="features">
-          <span style="color: #FFBA38;">✔️ ${feat[0]}</span>
-          <span style="color: #FFBA38;">✔️ ${feat[1]}</span>
-          <span style="color: #FFBA38;">✔️ ${feat[2]}</span>
-        </div>
-      `;
+      <h3>${tier}</h3>
+      <div class="tier-price">$${pricing[service][tier]}</div>
+      <div class="features">
+        <span style="color: #FFBA38;">✔️ ${feat[0]}</span>
+        <span style="color: #FFBA38;">✔️ ${feat[1]}</span>
+        <span style="color: #FFBA38;">✔️ ${feat[2]}</span>
+      </div>
+    `;
+    
+    card.appendChild(detailsBtn);
 
-      card.onclick = () => {
-        selectedTiers[service] = selectedTiers[service] === tier ? null : tier;
-        renderTiers(service);
-        renderSummary();
-        renderTags();
-      };
+    card.onclick = () => {
+      selectedTiers[service] = selectedTiers[service] === tier ? null : tier;
+      renderTiers(service);
+      renderSummary();
+      renderTags();
+    };
 
-      row.appendChild(card);
-    });
+    row.appendChild(card);
+  });
 
-    container.appendChild(row);
-  }
+  container.appendChild(row);
+}
+    
+function getSubscriptionDiscount(months) {
+  if (months === 6) return 2;
+  if (months === 9) return 3.5;
+  if (months === 12) return 5;
+  if (months === 15) return 6.5;
+  if (months === 18) return 8;
+  if (months === 21) return 9;
+  if (months === 24) return 10;
+  return 0;
+}
 
-  function getSubscriptionDiscount(months) {
-    if (months === 6) return 2;
-    if (months === 9) return 3.5;
-    if (months === 12) return 5;
-    if (months === 15) return 6.5;
-    if (months === 18) return 8;
-    if (months === 21) return 9;
-    if (months === 24) return 10;
-    return 0;
-  }
+function getBundleDiscount(num) {
+  if (num === 2) return 2;
+  if (num === 3) return 5;
+  if (num === 4) return 7;
+  if (num >= 5) return 10;
+  return 0;
+}
 
-  function getBundleDiscount(num) {
-    if (num === 2) return 2;
-    if (num === 3) return 5;
-    if (num === 4) return 7;
-    if (num >= 5) return 10;
-    return 0;
-  }
-
- function renderSummary() {
+function renderSummary() {
   const subMonths = parseInt(document.getElementById("subSlider").value);
   const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
   const productCount = selected.length;
@@ -662,7 +902,29 @@ renderTiers(service);
   document.getElementById("savingsBubble").textContent = `You're saving $${totalSaved.toFixed(2)} per month`;
 
   // Update sidebar
+  updateSidebar();
+  
+  // Save bundle data to localStorage
+  let finalPrice = 0;
+  try {
+    finalPrice = parseFloat(final.toFixed(2));
+  } catch (e) {
+    finalPrice = 0;
+  }
+
+  const bundleData = {
+    selectedTiers,
+    subLength: parseInt(document.getElementById("subSlider").value),
+    bundleName: document.getElementById("bundleName").value,
+    finalMonthly: finalPrice
+  };
+
+  localStorage.setItem("buzzwordBundle", JSON.stringify(bundleData));
+}
+
+function updateSidebar() {
   const container = document.getElementById("sidebar");
+  const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
   if (selected.length === 0) {
     container.innerHTML = '';
     return;
@@ -671,45 +933,94 @@ renderTiers(service);
   let html = '';
   selected.forEach(([product, tier]) => {
     html += `
-      <div class="product-block">
+      <div class="sidebar-item">
         <span class="product-name">${product}</span>
-        <span class="tier-name">${tier}</span>
+        <span class="tier">${tier}</span>
       </div>
     `;
   });
 
+  const subMonths = parseInt(document.getElementById("subSlider").value);
+  const productCount = selected.length;
+  let rawTotal = selected.reduce((sum, [product, tier]) => sum + pricing[product][tier], 0);
+
+  const bundleDiscount = getBundleDiscount(productCount);
+  const subDiscount = getSubscriptionDiscount(subMonths);
+
+  const afterBundle = rawTotal * (1 - bundleDiscount / 100);
+  const final = afterBundle * (1 - subDiscount / 100);
+
   html += `
-    <div class="total-block">
-$${final.toFixed(2)} <span style="font-size: 0.85rem; font-weight: 400;">/ month</span>
+    <div class="sidebar-total">
+      $${final.toFixed(2)}
+      <span class="per-month">/ month</span>
     </div>
   `;
 
   container.innerHTML = html;
 }
-// ✅ Safe save: don't break rendering if final is undefined
-let finalPrice = 0;
-try {
-  finalPrice = parseFloat(final.toFixed(2));
-} catch (e) {
-  finalPrice = 0;
+
+// Tier details modal functions
+function openTierDetailsModal(service, tier) {
+  const modal = document.getElementById("tierDetailsModal");
+  const titleElement = document.getElementById("modalServiceTitle");
+  const contentElement = document.getElementById("modalContent");
+  
+  // Set the modal title
+  titleElement.textContent = `${service} - ${tier} Tier`;
+  
+  // Generate table of features for this service
+  let tableHtml = `
+    <table class="tier-feature-table">
+      <tr>
+        <th>Feature</th>
+        <th>Details</th>
+        <th>Description</th>
+      </tr>
+  `;
+  
+  // Get the service features
+  const serviceFeatures = detailedServiceFeatures[service]?.features || [];
+  
+  serviceFeatures.forEach(feature => {
+    let valueDisplay = '';
+    
+    if (typeof feature[tier] === 'boolean') {
+      valueDisplay = feature[tier] ? '<span class="tier-feature-check">✓</span>' : '<span class="tier-feature-x">✗</span>';
+    } else {
+      valueDisplay = feature[tier] || 'N/A';
+    }
+    
+    tableHtml += `
+      <tr>
+        <td><strong>${feature.name}</strong></td>
+        <td>${valueDisplay}</td>
+        <td>${feature.description}</td>
+      </tr>
+    `;
+  });
+  
+  tableHtml += '</table>';
+  contentElement.innerHTML = tableHtml;
+  
+  // Display the modal
+  modal.style.display = "block";
 }
 
-const bundleData = {
-  selectedTiers,
-  subLength: parseInt(document.getElementById("subSlider").value),
-  bundleName: document.getElementById("bundleName").value,
-  finalMonthly: finalPrice
-};
+function closeTierDetailsModal() {
+  const modal = document.getElementById("tierDetailsModal");
+  modal.style.display = "none";
+}
 
-localStorage.setItem("buzzwordBundle", JSON.stringify(bundleData));
-
-
-  // Initialize slider and color fill
+// Event listeners
+document.addEventListener("DOMContentLoaded", () => {
+  // Initialize slider
   const subSlider = document.getElementById("subSlider");
   function updateSliderFill(slider) {
     const val = (slider.value - slider.min) / (slider.max - slider.min) * 100;
     slider.style.background = `linear-gradient(to right, #FFBA38 0%, #FFBA38 ${val}%, #BBBBBB ${val}%, #BBBBBB 100%)`;
   }
+  
   subSlider.addEventListener("input", function () {
     document.getElementById("subLength").textContent = this.value;
     const discountLabelMap = {
@@ -720,397 +1031,93 @@ localStorage.setItem("buzzwordBundle", JSON.stringify(bundleData));
     updateSliderFill(this);
     renderSummary();
   });
-
-  // Initial load
-  updateSliderFill(subSlider);
   
- // ✅ Restore saved bundle from localStorage and render all views correctly
-document.addEventListener("DOMContentLoaded", () => {
+  // Close modal when clicking the X
+  document.querySelector(".close-modal").addEventListener("click", closeTierDetailsModal);
+  
+  // Close modal when clicking outside the modal content
+  window.addEventListener("click", function(event) {
+    const modal = document.getElementById("tierDetailsModal");
+    if (event.target === modal) {
+      closeTierDetailsModal();
+    }
+  });
+  
+  // Restore saved bundle from localStorage
   const saved = localStorage.getItem("buzzwordBundle");
   if (saved) {
     try {
       const { selectedTiers: savedTiers, subLength, bundleName } = JSON.parse(saved);
-
-      // ✅ Replace entire selectedTiers object
-      selectedTiers = savedTiers || {};
+      
+      // Replace entire selectedTiers object
+      Object.assign(selectedTiers, savedTiers || {});
       document.getElementById("subSlider").value = subLength || 3;
       document.getElementById("bundleName").value = bundleName || "";
-
-      // ✅ Use only services that exist in pricingData
-      const validServices = Object.keys(pricingData);
-      const firstService = Object.keys(savedTiers).find(service => validServices.includes(service)) || validServices[0];
+      
+      // Use first service from saved tiers as the currently open one
+      const firstService = Object.keys(savedTiers).find(service => products.includes(service)) || products[0];
       currentlyOpenService = firstService;
-
-      renderTags();
-      renderTiers(currentlyOpenService);
-      renderSummary();
     } catch (e) {
       console.error("Error loading saved bundle:", e);
-      renderTags();
-      renderSummary();
     }
   } else {
-    renderTags();
-    renderSummary();
+    // Default to first product if no saved bundle
+    currentlyOpenService = products[0];
   }
+  
+  // Initial render
+  renderTags();
+  renderTiers(currentlyOpenService);
+  renderSummary();
+  updateSliderFill(subSlider);
 });
 
-</script>
-<style>
-  :root {
-    --white: #ffffff;
-    --black: #000000;
-    --grey: #bbbbbb;
-    --highlight: #FFBA38;
-    --hover: #FFE400;
-    --premium-glow: 0 0 12px #FFBA38;
-  }
-
-  body {
-    background: transparent !important;
-    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
-    margin: 0;
-    padding: 2rem;
-    color: var(--black);
-  }
-
-.builder-wrapper {
-  max-width: 1200px;
-  margin: auto;
-  background: transparent;
-  border-radius: 20px;
-  padding: 2rem;
-  box-shadow: none;
-}
-
-
-  .service-tags {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-
- .tag {
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--muted);
-  border-radius: 999px;
-  cursor: pointer;
-  font-weight: 500;
-  background: #fefefe;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  transition: all 0.25s ease-in-out;
-}
-
-.tag:hover {
-  box-shadow: 0 4px 10px rgba(255, 186, 56, 0.4);
-  transform: translateY(-2px);
-}
-
-  .tag.active {
-  background: #333333;
-  color: var(--white);
-  border-color: #333333;
-}
-
-.tag.selected {
-  background: var(--highlight);
-  color: var(--white);
-  border-color: var(--highlight);
-}
-
-  .tier-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-  }
-
-  .tier-card {
-    flex: 1 1 30%;
-    border: 1px solid var(--grey);
-    border-radius: 20px;
-    padding: 1rem;
-    transition: 0.2s;
-    cursor: pointer;
-    text-align: center;
-    background-color: #fefefe;
-  }
-
-  .tier-card:hover {
-    border-color: var(--hover);
-  }
-
-  .tier-card.selected {
-    border: 2px solid var(--highlight);
-    box-shadow: 0 0 10px rgba(255, 186, 56, 0.4);
-    background-color: #fffaf0;
-  }
-
-  .tier-card img {
-    max-height: 60px;
-    margin-bottom: 0.75rem;
-  }
-
-  .tier-price {
-    font-weight: bold;
-    color: var(--highlight);
-    font-size: 1.25rem;
-    margin: 0.5rem 0;
-  }
-
-  .features {
-    margin-top: 1rem;
-    text-align: left;
-    font-size: 0.95rem;
-  }
-
- .features span {
-  display: block;
-  margin: 2px 0;
-}
-
- .features span::before {
-  content: "";
-}
-
-  .slider-wrap {
-    margin-top: 2rem;
-  }
-
-  input[type="range"] {
-    -webkit-appearance: none;
-    width: 100%;
-    height: 10px;
-    background: var(--grey);
-    border-radius: 5px;
-    outline: none;
-    margin-top: 0.5rem;
-    transition: background 0.3s ease-in-out;
-  }
-
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: var(--highlight);
-    cursor: pointer;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
-  }
-
-  input[type="range"]::-moz-range-thumb {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: var(--highlight);
-    cursor: pointer;
-  }
-
- .summary {
-  margin: 3rem auto 2rem;
-  max-width: 600px;
-  background: #ffffff;
-  border-radius: 15px;
-  padding: 2rem;
-  text-align: center;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-}
-
-
-  .summary-price {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--highlight);
-  white-space: nowrap;
-}
-
-
-  .summary-label {
-    margin-top: 0.25rem;
-    font-size: 1rem;
-    color: var(--grey);
-  }
-
-  .savings-bubble {
-    margin-top: 0.75rem;
-    display: inline-block;
-    background: var(--hover);
-    padding: 0.4rem 1rem;
-    border-radius: 999px;
-    font-weight: 600;
-    color: var(--black);
-    font-size: 0.9rem;
-  }
-
-  input#bundleName {
-    margin-top: 2rem;
-    padding: 0.75rem;
-    width: 50%;
-    font-size: 1rem;
-    border: 1px solid var(--grey);
-    border-radius: 10px;
-  }
-
-  .buy-button {
-    display: block;
-    width: fit-content;
-    margin: 1rem auto 0;
-    background: var(--highlight);
-    color: var(--white);
-    padding: 0.75rem 2rem;
-    font-weight: bold;
-    font-size: 1rem;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: background 0.2s ease-in-out;
-  }
-
-  .buy-button:hover {
-    background: var(--hover);
-    color: var(--black);
-  }
-
-  @media (max-width: 768px) {
-    .tier-card {
-      flex: 1 1 100%;
-    }
-
-    input#bundleName {
-      width: 100%;
-    }
-    .sidebar-total {
-  font-size: 1.25rem;
-}
-
-.sidebar-total .per-month {
-  font-size: 0.75rem;
-}
-  }
-</style>
-<script>
-  function updateSidebar() {
-    const container = document.getElementById("sidebar");
-    const selected = Object.entries(selectedTiers).filter(([_, tier]) => tier);
-    if (selected.length === 0) {
-      container.innerHTML = '';
-      return;
-    }
-
-    let html = '';
-    selected.forEach(([product, tier]) => {
-      html += `
-        <div class="sidebar-item">
-          <span class="product-name">${product}</span>
-          <span class="tier">${tier}</span>
-        </div>
-      `;
-    });
-
-  const subMonths = parseInt(document.getElementById("subSlider").value);
-const productCount = selected.length;
-let rawTotal = selected.reduce((sum, [product, tier]) => sum + pricing[product][tier], 0);
-
-const bundleDiscount = getBundleDiscount(productCount);
-const subDiscount = getSubscriptionDiscount(subMonths);
-
-const afterBundle = rawTotal * (1 - bundleDiscount / 100);
-const final = afterBundle * (1 - subDiscount / 100);
-
-html += `
-  <div class="sidebar-total">
-    $${final.toFixed(2)}
-    <span class="per-month">/ month</span>
-  </div>
-`;
-
-
-    container.innerHTML = html;
-  }
-
-  const originalRenderSummary = renderSummary;
-  renderSummary = function () {
-    originalRenderSummary();
-    updateSidebar();
-  };
-  updateSidebar();
-</script>
-<div id="pandadocModal"
-     style="display:none; position:fixed; inset:0; width:100vw; height:100vh;
-            background:rgba(0,0,0,.8); z-index:99999; justify-content:center; align-items:center;">
-  <div style="position:relative; width:90%; height:90%; background:#ffffff;
-              border-radius:12px; overflow:hidden;">
-    <button onclick="closePandaDocModal()"
-            style="position:absolute; top:10px; right:10px; background:#FFBA38;
-                   color:#ffffff; border:none; border-radius:6px; padding:.5rem 1rem;
-                   font-weight:bold; cursor:pointer; z-index:10;">
-      Close
-    </button>
-
-    <!-- PandaDoc form will be injected here -->
-    <div id="form-container-377ffc49-8123-4582-8181-d7f87b7a9621"
-         style="width:100%; height:100%;"></div>
-  </div>
-</div>
-
-<script>
-/* ---------- helper to hide modal ---------- */
-function closePandaDocModal () {
-  document.getElementById('pandadocModal').style.display = 'none';
-}
-
-/* ---------- open modal, inject PandaDoc iframe with pre‑filled variables ---------- */
-function openPandaDocModal () {
+// Initialize variables for PandaDoc modal
+function openPandaDocModal() {
   const modal = document.getElementById('pandadocModal');
   modal.style.display = 'flex';
 
   const containerId = 'form-container-377ffc49-8123-4582-8181-d7f87b7a9621';
-  const container   = document.getElementById(containerId);
+  const container = document.getElementById(containerId);
 
   /* do this only the first time the modal opens */
   if (!container.hasChildNodes()) {
-
     /* gather live data from the page */
-    const bundleName       = document.getElementById('bundleName').value.trim();
-    const subLength        = document.getElementById('subSlider').value;          // numeric, e.g. "12"
-    const finalMonthly     = document.getElementById('finalPriceDisplay').textContent.replace('$','');
+    const bundleName = document.getElementById('bundleName').value.trim();
+    const subLength = document.getElementById('subSlider').value;
+    const finalMonthly = document.getElementById('finalPriceDisplay').textContent.replace('$','');
     const selectedServices = Object.entries(selectedTiers)
-                                  .filter(([ , tier]) => tier)
-                                  .map(([product, tier]) => `${product}: ${tier}`)
-                                  .join(', ');
+                                .filter(([ , tier]) => tier)
+                                .map(([product, tier]) => `${product}: ${tier}`)
+                                .join(', ');
 
     /* -------- build PandaDoc‑compliant embed URL -------- */
-  const pandaBaseURL = 'https://eform.pandadoc.com/?eform=0b4441ee-2edf-425e-b78f-43cc608a1d7f';
+    const pandaBaseURL = 'https://eform.pandadoc.com/?eform=0b4441ee-2edf-425e-b78f-43cc608a1d7f';
 
     /* JSON of custom variables the template expects */
     const variablePayload = {
       bundleName,
-      subLength,          // just the number
+      subLength,
       finalMonthly,
       selectedServices
     };
 
-    /* One single “variables” parameter with URL‑encoded JSON */
+    /* One single "variables" parameter with URL‑encoded JSON */
     const variablesParam = encodeURIComponent(JSON.stringify(variablePayload));
     const iframeSrc = `${pandaBaseURL}&variables=${variablesParam}`;
 
     /* -------- create & insert iframe -------- */
     const iframe = document.createElement('iframe');
     iframe.frameBorder = 0;
-    iframe.width       = '100%';
-    iframe.height      = '100%';
-    iframe.src         = iframeSrc;
+    iframe.width = '100%';
+    iframe.height = '100%';
+    iframe.src = iframeSrc;
 
     container.appendChild(iframe);
 
     /* -------- listen for PandaDoc events (optional) -------- */
-    const eventMethod   = window.addEventListener ? 'addEventListener' : 'attachEvent';
-    const messageEvent  = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
+    const eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
+    const messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
 
     window[eventMethod](messageEvent, function (e) {
       if (e && e.data && iframe && e.source === iframe.contentWindow) {
@@ -1119,14 +1126,14 @@ function openPandaDocModal () {
           if (msgObj && msgObj.event) {
             const evt = msgObj.event.replace('embed.form.','');
 
-            /* handle “completed” → create Stripe checkout session */
+            /* handle "completed" → create Stripe checkout session */
             if (evt === 'completed') {
               fetch('/.netlify/functions/create-checkout-session', {
-                method : 'POST',
+                method: 'POST',
                 headers: { 'Content-Type':'application/json' },
-                body   : JSON.stringify({
+                body: JSON.stringify({
                   selectedTiers,
-                  subLength   : parseInt(subLength,10),
+                  subLength: parseInt(subLength,10),
                   bundleName,
                   finalMonthly: parseFloat(finalMonthly)
                 })
@@ -1150,11 +1157,31 @@ function openPandaDocModal () {
     }, false);
   }
 }
+
+function closePandaDocModal() {
+  document.getElementById('pandadocModal').style.display = 'none';
+}
 </script>
-<!-- ========= end PandaDoc MODAL ========= -->
 
-
-
+<!-- PandaDoc Modal -->
+<div id="pandadocModal"
+     style="display:none; position:fixed; inset:0; width:100vw; height:100vh;
+            background:rgba(0,0,0,.8); z-index:99999; justify-content:center; align-items:center;">
+  <div style="position:relative; width:90%; height:90%; background:#ffffff;
+              border-radius:12px; overflow:hidden;">
+    <button onclick="closePandaDocModal()"
+            style="position:absolute; top:10px; right:10px; background:#FFBA38;
+                   color:#ffffff; border:none; border-radius:6px; padding:.5rem 1rem;
+                   font-weight:bold; cursor:pointer; z-index:10;">
+      Close
+    </button>
+    <!-- PandaDoc form will be injected here -->
+    <div id="form-container-377ffc49-8123-4582-8181-d7f87b7a9621"
+         style="width:100%; height:100%;"></div>
+  </div>
+</div>
 
 <script async type='module' src='https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js'></script>
 <zapier-interfaces-chatbot-embed is-popup='true' chatbot-id='cma6zv294001y12wdgvajk0lj'></zapier-interfaces-chatbot-embed>
+</body>
+</html>
