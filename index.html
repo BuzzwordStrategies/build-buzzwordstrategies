@@ -462,7 +462,7 @@
 <div class="summary-label">Final Monthly Price</div>
 <div class="savings-bubble" id="savingsBubble">You're saving $0.00 per month</div>
 <input id="bundleName" placeholder="Name your bundle" type="text"/>
-<button class="buy-button" onclick="openPandaDocModal()">Buy My Bundle</button>
+<button class="buy-button" onclick="openDocuSignModal()">Buy My Bundle</button>
 </div>
 
 <!-- Tier Details Modal -->
@@ -862,114 +862,54 @@ document.addEventListener("DOMContentLoaded", () => {
   updateTopCartSummary(); // Update the top cart summary
 });
 
-// Initialize variables for PandaDoc modal
-function openPandaDocModal() {
-  const modal = document.getElementById('pandadocModal');
-  modal.style.display = 'flex';
+function openDocuSignModal() {
+  // Generate a unique bundle ID
+  const bundleID = "bwb-" + Date.now() + "-" + Math.random().toString(36).substring(2, 9);
+  
+  // Get bundle details from the page
+  const bundleName = document.getElementById('bundleName').value.trim() || 'My Bundle';
+  const subLength = document.getElementById('subSlider').value;
+  const finalMonthly = document.getElementById('finalPriceDisplay').textContent.replace('$','');
+  
+  // Format selected services as a string
+  const selectedServices = Object.entries(selectedTiers)
+    .filter(([ , tier]) => tier)
+    .map(([product, tier]) => `${product}: ${tier}`)
+    .join(', ');
 
-  const containerId = 'form-container-377ffc49-8123-4582-8181-d7f87b7a9621';
-  const container = document.getElementById(containerId);
+  // Show loading state
+  const buyButton = document.querySelector('.buy-button');
+  const originalText = buyButton.textContent;
+  buyButton.disabled = true;
+  buyButton.textContent = 'Preparing contract...';
 
-  /* do this only the first time the modal opens */
-  if (!container.hasChildNodes()) {
-    /* gather live data from the page */
-    const bundleName = document.getElementById('bundleName').value.trim();
-    const subLength = document.getElementById('subSlider').value;
-    const finalMonthly = document.getElementById('finalPriceDisplay').textContent.replace('$','');
-    const selectedServices = Object.entries(selectedTiers)
-                                .filter(([ , tier]) => tier)
-                                .map(([product, tier]) => `${product}: ${tier}`)
-                                .join(', ');
-
-    /* -------- build PandaDoc‑compliant embed URL -------- */
-    const pandaBaseURL = 'https://eform.pandadoc.com/?eform=0b4441ee-2edf-425e-b78f-43cc608a1d7f';
-
-    /* JSON of custom variables the template expects */
-    const variablePayload = {
+  // Call our Netlify function to create the DocuSign envelope
+  fetch('/.netlify/functions/create-docusign-envelope', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      bundleID,
       bundleName,
       subLength,
       finalMonthly,
       selectedServices
-    };
-
-    /* One single "variables" parameter with URL‑encoded JSON */
-    const variablesParam = encodeURIComponent(JSON.stringify(variablePayload));
-    const iframeSrc = `${pandaBaseURL}&variables=${variablesParam}`;
-
-    /* -------- create & insert iframe -------- */
-    const iframe = document.createElement('iframe');
-    iframe.frameBorder = 0;
-    iframe.width = '100%';
-    iframe.height = '100%';
-    iframe.src = iframeSrc;
-
-    container.appendChild(iframe);
-
-    /* -------- listen for PandaDoc events (optional) -------- */
-    const eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
-    const messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
-
-    window[eventMethod](messageEvent, function (e) {
-      if (e && e.data && iframe && e.source === iframe.contentWindow) {
-        try {
-          const msgObj = JSON.parse(e.data);
-          if (msgObj && msgObj.event) {
-            const evt = msgObj.event.replace('embed.form.','');
-
-            /* handle "completed" → create Stripe checkout session */
-            if (evt === 'completed') {
-              fetch('/.netlify/functions/create-checkout-session', {
-                method: 'POST',
-                headers: { 'Content-Type':'application/json' },
-                body: JSON.stringify({
-                  selectedTiers,
-                  subLength: parseInt(subLength,10),
-                  bundleName,
-                  finalMonthly: parseFloat(finalMonthly)
-                })
-              })
-              .then(r => r.json())
-              .then(json => {
-                if (json.url) {
-                  window.location.href = json.url;
-                } else {
-                  alert('Checkout failed. Please try again.');
-                }
-              })
-              .catch(err => {
-                console.error(err);
-                alert('Error starting checkout.');
-              });
-            }
-          }
-        } catch (err) {}
-      }
-    }, false);
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.url) {
+      // Redirect to DocuSign
+      window.location.href = data.url;
+    } else {
+      console.error('Error:', data.error);
+      alert('Error generating contract. Please try again.');
+      // Reset button
+      buyButton.disabled = false;
+      buyButton.textContent = originalText;
   }
-}
-
-function closePandaDocModal() {
-  document.getElementById('pandadocModal').style.display = 'none';
+});
 }
 </script>
-
-<!-- PandaDoc Modal -->
-<div id="pandadocModal"
-     style="display:none; position:fixed; inset:0; width:100vw; height:100vh;
-            background:rgba(0,0,0,.8); z-index:99999; justify-content:center; align-items:center;">
-  <div style="position:relative; width:90%; height:90%; background:#ffffff;
-              border-radius:12px; overflow:hidden;">
-    <button onclick="closePandaDocModal()"
-            style="position:absolute; top:10px; right:10px; background:#FFBA38;
-                   color:#ffffff; border:none; border-radius:6px; padding:.5rem 1rem;
-                   font-weight:bold; cursor:pointer; z-index:10;">
-      Close
-    </button>
-    <!-- PandaDoc form will be injected here -->
-    <div id="form-container-377ffc49-8123-4582-8181-d7f87b7a9621"
-         style="width:100%; height:100%;"></div>
-  </div>
-</div>
 
 <script async type='module' src='https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js'></script>
 <zapier-interfaces-chatbot-embed is-popup='true' chatbot-id='cma6zv294001y12wdgvajk0lj'></zapier-interfaces-chatbot-embed>
