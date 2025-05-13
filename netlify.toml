@@ -1,8 +1,43 @@
+functionsDirectory = "C:\\Users\\josh\\v2-build-buzzwordstrategies\\netlify\\functions"
+functionsDirectoryOrigin = "config-v1"
+redirectsOrigin = "config"
+plugins = []
+headers = []
+
 [build]
-  functions = "netlify/functions"
-  publish = "."
+publish = "C:\\Users\\josh\\v2-build-buzzwordstrategies\\build"
+publishOrigin = "config"
+commandOrigin = "config"
+command = "npm run build"
+functions = "C:\\Users\\josh\\v2-build-buzzwordstrategies\\netlify\\functions"
+
+  [build.environment]
+  NODE_VERSION = "18"
+
+  [build.processing]
+
+    [build.processing.css]
+
+    [build.processing.html]
+
+    [build.processing.images]
+
+    [build.processing.js]
+
+  [build.services]
+
+[functions]
+
+  [functions."*"]
 
 [[redirects]]
-  from = "/.netlify/functions/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
+from = "/*"
+to = "/index.html"
+status = 200
+force = false
+
+  [redirects.query]
+
+  [redirects.conditions]
+
+  [redirects.headers]
