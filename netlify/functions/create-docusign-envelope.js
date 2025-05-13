@@ -1,109 +1,50 @@
 const docusign = require('docusign-esign');
+const jwt = require('jsonwebtoken');
 
 exports.handler = async (event) => {
+  const { bundleID, bundleName, subLength, finalMonthly, selectedServices } = JSON.parse(event.body);
+  const dsApiClient = new docusign.ApiClient();
+  dsApiClient.setBasePath('https://demo.docusign.net/restapi'); // Demo environment
+
+  const privateKey = process.env.DOCUSIGN_SECRET_KEY.replace(/\\n/g, '\n'); // Handle newline in env
+  const assertion = jwt.sign(
+    { sub: process.env.DOCUSIGN_USER_ID, scope: 'signature' },
+    privateKey,
+    { algorithm: 'RS256', expiresIn: '1h', issuer: process.env.DOCUSIGN_INTEGRATION_KEY }
+  );
+
   try {
-    console.log('DocuSign function called');
-    
-    if (event.httpMethod !== 'POST') {
-      return { statusCode: 405, body: JSON.stringify({ error: 'Method not allowed' }) };
-    }
+    const results = await dsApiClient.requestJWTUserToken(process.env.DOCUSIGN_INTEGRATION_KEY, process.env.DOCUSIGN_USER_ID, ['signature'], assertion);
+    dsApiClient.addDefaultHeader('Authorization', `Bearer ${results.body.access_token}`);
 
-    const data = JSON.parse(event.body);
-    const { bundleID, bundleName, subLength, finalMonthly, selectedServices } = data;
-
-    // DocuSign configuration
-    const INTEGRATION_KEY = process.env.DOCUSIGN_INTEGRATION_KEY;
-    const USER_ID = process.env.DOCUSIGN_USER_ID || '31781807-3baa-4ccf-b93d-fad33296057b';
-    const ACCOUNT_ID = process.env.DOCUSIGN_ACCOUNT_ID;
-    const TEMPLATE_ID = process.env.DOCUSIGN_TEMPLATE_ID;
-    const SECRET_KEY = process.env.DOCUSIGN_SECRET_KEY;
-    const BASE_URL = 'https://demo.docusign.net/restapi';
-
-    // Create DocuSign API client
-    const dsApiClient = new docusign.ApiClient();
-    dsApiClient.setBasePath(BASE_URL);
-    
-    // Configure OAuth basePath
-    dsApiClient.setOAuthBasePath('account-d.docusign.com');
-    
-    try {
-      // Get JWT access token
-      const jwtToken = await dsApiClient.requestJWTUserToken(
-        INTEGRATION_KEY,
-        USER_ID,
-        'signature',
-        SECRET_KEY,
-        3600
-      );
-      
-      const accessToken = jwtToken.body.access_token;
-      dsApiClient.addDefaultHeader('Authorization', 'Bearer ' + accessToken);
-      
-    } catch (authError) {
-      console.error('JWT Auth Error:', authError);
-      // Fallback to simpler token approach
-      dsApiClient.addDefaultHeader('Authorization', 'Bearer ' + SECRET_KEY);
-    }
-    
-    // Create envelope definition
-    const envelopeDefinition = new docusign.EnvelopeDefinition();
-    envelopeDefinition.templateId = TEMPLATE_ID;
-    envelopeDefinition.status = 'sent';
-    
-    // Create tabs for the template
-    const textTabs = [
-      { tabLabel: 'bundleID', value: bundleID || '' },
-      { tabLabel: 'bundleName', value: bundleName || '' },
-      { tabLabel: 'subLength', value: subLength || '' },
-      { tabLabel: 'finalMonthly', value: finalMonthly || '' },
-      { tabLabel: 'selectedServices', value: selectedServices || '' }
-    ];
-    
-    // Create template role
-    const signer = new docusign.TemplateRole();
-    signer.roleName = 'Client';
-    signer.tabs = { textTabs: textTabs };
-    
-    // Add the signer to the envelope
-    envelopeDefinition.templateRoles = [signer];
-    
-    // Create the Envelopes API instance
-    const envelopesApi = new docusign.EnvelopesApi(dsApiClient);
-    
-    // Create the envelope
-    const envelopeResult = await envelopesApi.createEnvelope(ACCOUNT_ID, { envelopeDefinition });
-    
-    // Create a recipient view for immediate signing
-    const viewRequest = new docusign.RecipientViewRequest();
-    viewRequest.returnUrl = `https://www.buzzwordstrategies.com/.netlify/functions/docusign-success?bundleID=${bundleID}&bundleName=${encodeURIComponent(bundleName)}&finalMonthly=${finalMonthly}&subLength=${subLength}`;
-    viewRequest.authenticationMethod = 'none';
-    viewRequest.email = 'customer@example.com';  // Placeholder email
-    viewRequest.userName = 'Customer';  // Placeholder name
-    viewRequest.recipientId = '1';
-    viewRequest.clientUserId = '1001';
-    
-    // Get the recipient view
-    const recipientViewResult = await envelopesApi.createRecipientView(
-      ACCOUNT_ID, 
-      envelopeResult.envelopeId, 
-      { recipientViewRequest: viewRequest }
-    );
-
-    // Return the URL
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ url: recipientViewResult.url })
+    const envelope = {
+      emailSubject: `Sign Contract for ${bundleName}`,
+      templateId: process.env.DOCUSIGN_TEMPLATE_ID,
+      templateRoles: [{
+        email: 'customer@example.com', // Replace with dynamic email
+        name: 'Customer Name', // Replace with dynamic name
+        roleName: 'Signer1',
+        tabs: {
+          textTabs: [
+            { tabLabel: 'bundleID', value: bundleID },
+            { tabLabel: 'bundleName', value: bundleName },
+            { tabLabel: 'subLength', value: subLength },
+            { tabLabel: 'finalMonthly', value: finalMonthly },
+            { tabLabel: 'selectedServices', value: selectedServices.join(', ') },
+          ],
+        },
+      }],
+      status: 'sent',
     };
-    
+
+    const accountId = process.env.DOCUSIGN_ACCOUNT_ID;
+    const results = await dsApiClient.envelopesApi.createEnvelope(accountId, { envelopeDefinition: envelope });
+    const viewRequest = { returnUrl: `${process.env.URL}/.netlify/functions/docusign-success?bundleID=${bundleID}` };
+    const view = await dsApiClient.envelopesApi.createRecipientView(accountId, results.envelopeId, viewRequest);
+
+    return { statusCode: 200, body: JSON.stringify({ redirectUrl: view.url }) };
   } catch (error) {
-    console.error('DocuSign Error:', error);
-    console.error('Error details:', error.response ? error.response.body : 'No response body');
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ 
-        error: error.message || 'Failed to create envelope',
-        details: error.response ? error.response.body : null
-      })
-    };
+    console.error('DocuSign Error:', error.response ? error.response.body : error.message);
+    return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
   }
 };
