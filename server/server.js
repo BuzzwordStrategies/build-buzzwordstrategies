@@ -2,8 +2,11 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { v4: uuidv4 } = require('uuid');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+require('dotenv').config();
+
+// Import routes
+const stripeRoutes = require('./routes/stripe');
+const supabaseRoutes = require('./routes/supabase');
 
 // Initialize Express app
 const app = express();
@@ -21,6 +24,10 @@ app.get('/api/health', (req, res) => {
     message: 'Buzzword Strategies API is running'
   });
 });
+
+// Use routes
+app.use('/api/stripe', stripeRoutes);
+app.use('/api/supabase', supabaseRoutes);
 
 // Start server
 app.listen(PORT, () => {
